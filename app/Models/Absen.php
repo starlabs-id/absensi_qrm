@@ -29,4 +29,19 @@ class Absen extends Model
     {
         return asset('storage/absen/' . $image);
     }
+
+    public function projek()
+    {
+        return $this->belongsTo(Projek::class);
+    }
+
+    public function tukang()
+    {
+        return $this->belongsTo(Tukang::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

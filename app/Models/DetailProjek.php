@@ -29,4 +29,14 @@ class DetailProjek extends Model
     {
         return asset('storage/detail_projek/' . $image);
     }
+
+    public function projek()
+    {
+        return $this->belongsTo(Projek::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

@@ -1,0 +1,8 @@
+{
+    "/packages/js/laravel/app.js": "/packages/js/laravel/app.js",
+    "/packages/styles/css/themes/lite-purple.min.css": "/packages/styles/css/themes/lite-purple.min.css",
+    "/packages/styles/css/themes/lite-blue.min.css": "/packages/styles/css/themes/lite-blue.min.css",
+    "/packages/styles/css/themes/dark-purple.min.css": "/packages/styles/css/themes/dark-purple.min.css",
+    "/packages/js/script.js": "/packages/js/script.js",
+    "/packages/js/common-bundle-script.js": "/packages/js/common-bundle-script.js"
+}

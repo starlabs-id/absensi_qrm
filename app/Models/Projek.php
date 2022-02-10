@@ -24,4 +24,34 @@ class Projek extends Model
      * @param  mixed $image
      * @return void
      */
+
+     public function detail_projek()
+     {
+         return $this->hasMany(Projek::class);
+     }
+
+     public function absen()
+     {
+         return $this->hasMany(Absen::class);
+     }
+
+     public function absen_lembur()
+     {
+         return $this->hasMany(AbsenLembur::class);
+     }
+
+     public function tukang()
+     {
+         return $this->hasMany(Tukang::class);
+     }
+
+     public function users()
+     {
+         return $this->hasMany(User::class);
+     }
+
+     public function chat()
+     {
+         return $this->hasMany(Chat::class);
+     }
 }

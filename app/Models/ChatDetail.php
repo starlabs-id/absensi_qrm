@@ -24,4 +24,14 @@ class Chat extends Model
      * @param  mixed $image
      * @return void
      */
+
+    public function chat()
+    {
+        return $this->belongsTo(Chat::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

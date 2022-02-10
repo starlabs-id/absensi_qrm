@@ -24,4 +24,14 @@ class Chat extends Model
      * @param  mixed $image
      * @return void
      */
+
+    public function projek()
+    {
+        return $this->belongsTo(Projek::class);
+    }
+
+    public function chat_detail()
+    {
+        return $this->hasMany(ChatDetail::class);
+    }
 }

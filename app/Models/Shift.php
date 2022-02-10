@@ -24,4 +24,9 @@ class Shift extends Model
      * @param  mixed $image
      * @return void
      */
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

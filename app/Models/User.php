@@ -44,4 +44,39 @@ class User extends Authenticatable
     {
         return asset('storage/user/' . $image);
     }
+
+    public function absen()
+    {
+        return $this->belongsTo(Absen::class);
+    }
+
+    public function absen_lembur()
+    {
+        return $this->belongsTo(AbsenLembur::class);
+    }
+
+    public function projek()
+    {
+        return $this->belongsTo(Projek::class);
+    }
+
+    public function detail_projek()
+    {
+        return $this->belongsTo(DetailProjek::class);
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
+    }
+
+    public function chat_detail()
+    {
+        return $this->belongsTo(Chat::class);
+    }
+
+    public function tukang()
+    {
+        return $this->belongsTo(Tukang::class);
+    }
 }

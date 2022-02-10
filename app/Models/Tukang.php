@@ -24,4 +24,24 @@ class Tukang extends Model
      * @param  mixed $image
      * @return void
      */
+
+    public function projek()
+    {
+        return $this->belongsTo(Projek::class);
+    }
+
+    public function absen()
+    {
+        return $this->hasMany(Absen::class);
+    }
+
+    public function absen_lembur()
+    {
+        return $this->hasMany(AbsenLembur::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }
