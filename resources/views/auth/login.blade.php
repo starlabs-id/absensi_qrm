@@ -6,7 +6,9 @@
     <div class="col-md-12">
         <div class="p-4">
             <div class="auth-logo text-center mb-4">
-                <h3>{{ config('app.name') }}</h3>
+                <!-- <h3>{{ config('app.name') }}</h3> -->
+                
+                <img style="width: 20%; height:auto;" src="{{ asset('packages/images/logo.png') }}">
             </div>
             <h1 class="mb-3 text-18">Login</h1>
             <form method="POST" action="{{ route('login') }}">
