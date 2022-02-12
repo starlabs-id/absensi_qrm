@@ -36,7 +36,7 @@
                                 <td>{{ $projek->nama_projek }}</td>
                                 <td>{{ $projek->status }}</td>
                                 <td>{{ $projek->pm }}</td>
-                                <td>{{ $projek->rencana_kerja }}</td>
+                                <td>{{ $projek->area_projek }}</td>
                                 <td>
                                     <a href="#" class="btn btn-primary btn-sm">Detail</a>
                                     <a href="{{ route('admin.projek.edit', $projek->id) }}"
