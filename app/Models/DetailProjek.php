@@ -15,7 +15,7 @@ class DetailProjek extends Model
      * @var array
      */
     protected $fillable = [
-        'projeck_id', 'tanggal', 'foto_1', 'foto_2', 'foto_3', 'foto_4', 'foto_5', 'foto_6', 'foto_7', 'foto_8', 'foto_9', 'foto_10', 'keterangan', 'uraian_pekerjaan', 'volume_rencana', 'volume_sebelumnya', 'volume_hari_ini', 'volume_opname', 'harga_satuan', 'opname_hari_ini', 'total_opname', 'persentase', 'edit_by'
+        'projek_id', 'uraian_pekerjaan', 'volume_kontrak', 'harga_satuan', 'volume_rencana', 'volume_sebelumnya', 'volume_pekerjaan_hari_ini', 'volume_dikerjakan', 'prestasi_keuangan_hari_ini', 'prestasi_fisik_hari_ini', 'tanggal', 'foto_1', 'foto_2', 'foto_3', 'foto_4', 'foto_5', 'foto_6', 'foto_7', 'foto_8', 'foto_9', 'foto_10', 'keterangan', 'edit_by'
     ];
             
     /**

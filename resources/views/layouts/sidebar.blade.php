@@ -8,17 +8,17 @@
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="#">
+                <a class="nav-item-hold" href="{{ route('admin.projek.index') }}">
                     <i class="nav-icon i-Suitcase"></i>
                     <span class="nav-text">Projects</span>
                 </a>
             </li>
-            <li class="nav-item " data-item="">
+            <!-- <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="#">
                     <i class="nav-icon i-Library"></i>
                     <span class="nav-text">Absen</span>
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item" data-item="users">
                 <a class="nav-item-hold" href="#">
                     <i class="nav-icon i-Network"></i>

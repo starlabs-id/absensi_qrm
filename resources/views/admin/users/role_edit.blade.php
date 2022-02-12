@@ -1,15 +1,5 @@
 @extends('layouts.master')
 
-@section('web_title')
-  {{ $konfig->web_title }}
-@endsection
-@section('favicon')
-  {{ $konfig->favicon }}
-@endsection
-@section('logo')
-  {{ $konfig->logo }}
-@endsection
-
 @section('content')
 <div class="row">
 
@@ -49,7 +39,7 @@
               <div class="col-lg-3">
                 @foreach($rows as $row)
                   <label class="checkbox checkbox-success">
-                    <input type="checkbox" name="permission[]" multiple="multiple" value="{!! str_limit($row['id'], 15) !!}" {!! in_array($row->id, $roles) ? 'checked' : '' !!}> {{ $row['name'] }} <br>
+                    <input type="checkbox" name="permission[]" multiple="multiple" value=""{{Str::limit($row->id, 15)}}" {!! in_array($row->id, $roles) ? 'checked' : '' !!}> {{ $row['name'] }} <br>
                     <span class="checkmark"></span>
                   </label>
                 @endforeach

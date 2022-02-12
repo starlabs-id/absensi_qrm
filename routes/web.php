@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProjekController;
 use App\Http\Controllers\Admin\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,13 +28,11 @@ Route::prefix('admin')->group(function () {
         
         //route dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.index');
-        // Route::get('/users', [UsersController::class, 'index'])->name('users.index');
         
         Route::get('users', [UsersController::class, 'index'])->name('users.index');
         Route::post('user_add', [UsersController::class, 'user_add'])->name('user.add');
         Route::get('user_edit/{id}', [UsersController::class, 'user_edit'])->name('user.edit');
         Route::post('user_update', [UsersController::class, 'user_update'])->name('user.update');
-        Route::get('user_destroy/{id}', [UsersController::class, 'user_destroy']);
         Route::get('user_destroy', [UsersController::class, 'user_destroy'])->name('user.destroy');
         Route::post('user_import', [UsersController::class, 'user_import'])->name('user_import');
         Route::get('user_export', [UsersController::class, 'user_export'])->name('user_export');
@@ -53,5 +52,7 @@ Route::prefix('admin')->group(function () {
         Route::post('permission_add', [UsersController::class, 'permission_add'])->name('permission.add');
         Route::post('permission_update', [UsersController::class, 'permission_update'])->name('permission.update');
         Route::get('permission_destroy', [UsersController::class, 'permission_destroy'])->name('permission.destroy');
+
+        Route::resource('/projek', ProjekController::class, ['as' => 'admin']);
     });
 });

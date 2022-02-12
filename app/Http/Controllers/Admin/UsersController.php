@@ -30,15 +30,15 @@ class UsersController extends Controller
         // $this->middleware('permission:role-update', ['only' => ['role_update']]);
         // $this->middleware('permission:role-destroy', ['only' => ['role_destroy']]);
 
-        $this->middleware('permission:user-list', ['only' => ['user']]);
-        $this->middleware('permission:user-add', ['only' => ['user_add']]);
-        $this->middleware('permission:user-update', ['only' => ['user_update']]);
-        $this->middleware('permission:user-destroy', ['only' => ['user_destroy']]);
+        // $this->middleware('permission:user-list', ['only' => ['user']]);
+        // $this->middleware('permission:user-add', ['only' => ['user_add']]);
+        // $this->middleware('permission:user-update', ['only' => ['user_update']]);
+        // $this->middleware('permission:user-destroy', ['only' => ['user_destroy']]);
     }
 
     public function index(Request $request)
     {
-        $users = User::select('users.id', 'users.email', 'users.no_hp', 'users.name as namea', 'roles.id as ris', 'roles.name')
+        $users = User::select('users.id', 'users.email', 'users.no_telp_hp', 'users.name as namea', 'roles.id as ris', 'roles.name')
                     ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
                     ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
                     ->orderBy('users.id', 'DESC')
@@ -56,7 +56,7 @@ class UsersController extends Controller
     {
         $rules = array(
             'name' => 'required|max:50',
-            'titel' => 'required',
+            'email' => 'required',
             'no_telp_hp' => 'required|unique:users,no_telp_hp|numeric',
             'password' => 'required|same:confirm-password',
             'roles' => 'required'
@@ -78,14 +78,16 @@ class UsersController extends Controller
 
         $data->assignRole($request->input('roles'));
 
-        return response()->json(['success' => 'Data berhasil disimpan!']);
+        // return response()->json(['success' => 'Data berhasil disimpan!']);
+        toastr()->success('Data berhasil disimpan!');
+        return redirect()->back();
     }
 
     public function user_edit($id)
     {
         if(request()->ajax())
         {
-            $data = User::select('users.id', 'users.email', 'users.no_telp_hp', 'users.titel', 'users.name as namea', 'roles.id as ris', 'roles.name')
+            $data = User::select('users.id', 'users.email', 'users.no_telp_hp', 'users.name as namea', 'roles.id as ris', 'roles.name')
                         ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
                         ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
                         ->where('users.id', '=', $id)
@@ -98,7 +100,7 @@ class UsersController extends Controller
     {
         $rules = array(
             'name' => 'required|max:50',
-            'titel' => 'required',
+            'email' => 'unique:users,email',
             'no_telp_hp' => 'max:20|unique:users,no_telp_hp',
             'roles' => 'required',
         );
@@ -110,8 +112,7 @@ class UsersController extends Controller
             return response()->json(['errors' => $error->errors()->all()]);
         }
 
-        $data                   = User::find($request->hidden_id);
-        $data->titel             = $request->titel;
+        $data                   = User::find($request->id);
         $data->name             = $request->name;
 
         if($request->input('password')) {
@@ -122,29 +123,31 @@ class UsersController extends Controller
             $data->no_telp_hp = $request->no_telp_hp;
         }
 
+        if($request->input('email')) {
+            $data->email = $request->email;
+        }
+
         $data->save();
         
         DB::table('model_has_roles')->where('model_id', $request->hidden_id)->delete();
         $data->assignRole($request->input('roles'));
 
-        return response()->json(['success' => 'Data berhasil disimpan!']);
+        // return response()->json(['success' => 'Data berhasil disimpan!']);
+        
+
+        toastr()->success('Data berhasil disimpan!');
+        return redirect()->back();
     }
 
-    public function user_destroy($id)
+    public function user_destroy(Request $request)
     {
-        $data = User::findOrFail($id);
-        $data->delete();
+        if ($request->ajax()) {
+            $data = User::find($request->id)->delete();
+
+            toastr()->success('Data berhasil dihapus!');
+            return response()->json($data);
+        }
     }
-
-    // public function user_destroy(Request $request)
-    // {
-    //     if ($request->ajax()) {
-    //         $data = User::find($request->id)->delete();
-
-    //         toastr()->success('Data berhasil dihapus!');
-    //         return response()->json($data);
-    //     }
-    // }
 
 
     // PERMISSION
@@ -240,7 +243,7 @@ class UsersController extends Controller
                                 ->all();
         $role = Roles::where('id', $id)->first();
 
-        return view('users.role_edit', compact('role', 'roles', 'permission'));
+        return view('admin.users.role_edit', compact('role', 'roles', 'permission'));
     }
 
     public function role_update(Request $request)

@@ -7,7 +7,7 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h4 class="card-title mb-3">
-                    Data Admin
+                    Data Users
 
                       <span class="pull-right">
                           <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
@@ -23,18 +23,11 @@
                         {{ csrf_field() }}
 
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <!-- <div class="form-group">
+                                <div class="form-group">
                                   <label>Email</label>
                                   <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="Email" required>
                                   <div class="invalid-feedback">
                                       Masukkan Email!
-                                  </div>
-                                </div> -->
-                                <div class="form-group">
-                                  <label>No. Telepon</label>
-                                  <input type="number" min="0" class="form-control" id="no_telp_hp" name="no_telp_hp" placeholder="No. Telepon" value="{{ old('no_telp_hp') }}" required>
-                                  <div class="invalid-feedback">
-                                      Masukkan No. Telepon!
                                   </div>
                                 </div>
                                 <div class="form-group">
@@ -42,6 +35,13 @@
                                   <input type="text" class="form-control" id="name" name="name" placeholder="Nama" value="{{ old('name') }}" required>
                                   <div class="invalid-feedback">
                                       Masukkan Nama!
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label>No. Telepon</label>
+                                  <input type="number" min="0" class="form-control" id="no_telp_hp" name="no_telp_hp" placeholder="No. Telepon" value="{{ old('no_telp_hp') }}" required>
+                                  <div class="invalid-feedback">
+                                      Masukkan No. Telepon!
                                   </div>
                                 </div>
                             </div>
@@ -59,12 +59,12 @@
                                 <div class="form-group">
                                   <label>Password</label>
                                   <input name="password" type="password" id="myInput" class="form-control" placeholder="Masukkan Password" maxlength="30">
-                                  <input type="checkbox" onclick="myFunction()"> <label>Show Password</label>
+                                  <!-- <input type="checkbox" onclick="myFunction()"> <label>Show Password</label> -->
                                 </div>
                                 <div class="form-group">
                                   <label>Confirm Password</label>
                                   <input name="confirm-password" type="password" id="myInput1" class="form-control" placeholder="Masukkan Konfirmasi Password" maxlength="30">
-                                  <input type="checkbox" onclick="myFunction1()"> <label>Show Password</label>
+                                  <!-- <input type="checkbox" onclick="myFunction1()"> <label>Show Password</label> -->
                                 </div>
                             </div>
 
@@ -85,7 +85,7 @@
                         <tr>
                             <th>No.</th>
                             <th>Nama</th>
-                            <!-- <th>Email</th> -->
+                            <th>Email</th>
                             <th>No. Telp/HP</th>
                             <th>Role</th>
                             <th>Aksi</th>
@@ -97,7 +97,7 @@
                           <tr>
                             <td>{{ $no++ }}</td>
                             <td>{{ $row->namea }}</td>
-                            <!-- <td>{{ $row->email }}</td> -->
+                            <td>{{ $row->email }}</td>
                             <td>{{ $row->no_telp_hp }}</td>
                             <td>
                               @if(!empty($row->getRoleNames()))
@@ -107,15 +107,19 @@
                               @endif
                             </td>
                             <td>
+                              
                                 <a href="#modal-edit" data-toggle="modal" class="btn btn-warning btn-sm btn-edit"
                                   data-id="{{ $row['id'] }}"
                                   data-no_telp_hp="{{ $row['no_telp_hp'] }}"
                                   data-namea="{{ $row['namea'] }}"
                                   data-ris="{{ $row['ris'] }}"><i class="nav-icon i-Pen-5"></i> Edit
                                 </a>
+                              
                                 <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row['id'] }}"><i class="nav-icon i-Remove"></i> Hapus</a>
+                             
                             </td>
                           </tr>
+                          @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -146,6 +150,13 @@
                               </div>
                             </div>
                             <div class="form-group">
+                              <label>Email</label>
+                              <input type="text" class="form-control" name="email" placeholder="Email">
+                              <div class="invalid-feedback">
+                                  Masukkan Email, Minimum 5 Characters, Maximum 30 Characters!
+                              </div>
+                            </div>
+                            <div class="form-group">
                               <label for="no_telp_hp">No. Telepon</label>
                               <input type="number" min="0" class="form-control" name="no_telp_hp" placeholder="No. Telepon">
                               <div class="invalid-feedback">
@@ -156,13 +167,13 @@
                             <div class="form-group">
                               <label>Password</label>
                               <input style="margin-bottom: -15px;" type="password" name="password" class="form-control" placeholder="Masukkan Password" id="myInput2"/><br>
-                              <input type="checkbox" onclick="myFunction2()"> <label>Show Password</label>
+                              <!-- <input type="checkbox" onclick="myFunction2()"> <label>Show Password</label> -->
                               <label style="font-style: italic; color: #aaa;" class="pull-right">Biarkan kosong bila tidak ingin mengganti</label>
                             </div>
                             <div class="form-group">
                               <label>Confirm Password</label>
                               <input style="margin-bottom: -15px;" type="password" name="confirm-password" class="form-control" placeholder="Masukkan Password Konfirmasi" id="myInput3" /><br>
-                              <input type="checkbox" onclick="myFunction3()"> <label>Show Password</label>
+                              <!-- <input type="checkbox" onclick="myFunction3()"> <label>Show Password</label> -->
                               <label style="font-style: italic; color: #aaa;" class="pull-right">Biarkan kosong bila tidak ingin mengganti</label>
                             </div>
                             <div class="form-group">
@@ -185,35 +196,6 @@
                   </div>
                 </div>
 
-
-                {{-- Modal Import --}}
-                <div class="modal fade" id="modal-import">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Import Data</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="{{ route('user_import') }}" method="post" id="frm-import" class="row needs-validation" novalidate enctype="multipart/form-data">
-                                {{ csrf_field() }}
-
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label>File</label>
-                                        <input type="file" class="form-control" id="file" name="file" accept=".xls, .xlsx, .csv" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 
             </div>
         </div>
@@ -230,12 +212,12 @@
         var id = $(this).data('id');
         var namea = $(this).data('namea');
         var ris = $(this).data('ris');
-        // var no_telp_hp = $(this).data('no_telp_hp');
+        var no_telp_hp = $(this).data('no_telp_hp');
         
         $('#nameax').val(namea);
         $('#risx').val(ris);
         $('#idx').val(id);
-        // $('#no_telp_hpx').val(no_telp_hp);
+        $('#no_telp_hpx').val(no_telp_hp);
       });
 
       $('#frm-edit').on('submit', function(e) {
