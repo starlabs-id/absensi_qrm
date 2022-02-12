@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 12 Feb 2022 pada 06.14
+-- Waktu pembuatan: 12 Feb 2022 pada 07.51
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 7.4.27
 
@@ -89,6 +89,16 @@ CREATE TABLE `absen_lemburs` (
 CREATE TABLE `chats` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `projek_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `direktur_utama` int(11) DEFAULT NULL,
+  `superadmin` int(11) DEFAULT NULL,
+  `owner` int(11) DEFAULT NULL,
+  `direktur_teknik` int(11) DEFAULT NULL,
+  `admin_teknik` int(11) DEFAULT NULL,
+  `pm` int(11) DEFAULT NULL,
+  `marketing` int(11) DEFAULT NULL,
+  `gm` int(11) DEFAULT NULL,
+  `co_gm` int(11) DEFAULT NULL,
+  `supervisor` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -103,7 +113,7 @@ CREATE TABLE `chat_details` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `chat_id` bigint(20) UNSIGNED DEFAULT NULL,
   `komentar` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `pengirim` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
