@@ -7,7 +7,6 @@ use App\Models\Absen;
 use App\Models\AbsenLembur;
 use App\Models\Chat;
 use App\Models\ChatDetail;
-use App\Models\DetailShift;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\DB;

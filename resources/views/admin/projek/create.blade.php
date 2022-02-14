@@ -9,9 +9,48 @@
                 <div class="row">
                     <div class="col-md-6 form-group mb-3">
                         <label for="nama_projek">Nama Proyek</label>
-                        <input type="text" class="form-control" id="nama_projek" name="nama_projek">
+                        <input type="text" class="form-control" id="nama_projek" name="nama_projek" required>
                     </div>
-
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="kode_projek">Kode Proyek</label>
+                        <input type="text" class="form-control" id="kode_projek" name="kode_projek" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="area_projek">Area Proyek</label>
+                        <input type="text" class="form-control" id="area_projek" name="area_projek" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="nomor_kontrak">Nomor Kontrak</label>
+                        <input type="text" class="form-control" id="nomor_kontrak" name="nomor_kontrak" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="tanggal_kontrak">Tanggal Kontrak</label>
+                        <input type="date" class="form-control" id="tanggal_kontrak" name="tanggal_kontrak" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="judul_kontrak">Judul Kontrak</label>
+                        <input type="text" class="form-control" id="judul_kontrak" name="judul_kontrak" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="nilai_kontrak">Nilai Kontrak</label>
+                        <input type="text" class="form-control" id="nilai_kontrak" name="nilai_kontrak" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="durasi_kontrak">Durasi Kontrak</label>
+                        <input type="text" class="form-control" id="durasi_kontrak" name="durasi_kontrak" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="durasi_projek">Durasi Proyek</label>
+                        <input type="text" class="form-control" id="durasi_projek" name="durasi_projek" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="lokasi">Lokasi</label>
+                        <input type="text" class="form-control" id="lokasi" name="lokasi" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="pemberi_kerja">Pemberi Kerja</label>
+                        <input type="text" class="form-control" id="pemberi_kerja" name="pemberi_kerja" required>
+                    </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="picker1">Pilih PM</label>
                         <select class="form-control">
@@ -20,7 +59,6 @@
                             <option>Option 1</option>
                         </select>
                     </div>
-
                     <div class="col-md-6 form-group mb-3">
                         <label for="picker1">Pilih Marketing</label>
                         <select class="form-control">
@@ -29,7 +67,6 @@
                             <option>Option 1</option>
                         </select>
                     </div>
-
                     <div class="col-md-6 form-group mb-3">
                         <label for="picker1">Pilih Supervisor</label>
                         <select class="form-control">
@@ -38,7 +75,6 @@
                             <option>Option 1</option>
                         </select>
                     </div>
-
                     <div class="col-md-6 form-group mb-3">
                         <label for="picker1">Pilih Owner</label>
                         <select class="form-control">
@@ -47,25 +83,37 @@
                             <option>Option 1</option>
                         </select>
                     </div>
-
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="volume">Volume</label>
-                        <input class="form-control" id="volume" name="volume">
-                    </div>
-
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="rencana_kerja">Rencana Kerja</label>
-                        <input class="form-control" id="rencana_kerja" name="rencana_kerja">
-                    </div>
-
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="lokasi">Lokasi</label>
-                        <input class="form-control" id="lokasi" name="lokasi">
-                    </div>
-
                     <div class="col-md-6 form-group mb-3">
                         <label for="tanggal_mulai">Tanggal Mulai</label>
-                        <input class="form-control" id="tanggal_mulai" name="tanggal_mulai">
+                        <input type="date" class="form-control" id="tanggal_mulai" name="tanggal_mulai" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="tanggal_selesai">Tanggal Selesai</label>
+                        <input type="date" class="form-control" id="tanggal_selesai" name="tanggal_selesai" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="total_volume_kontrak">Total Volume Kontrak</label>
+                        <input class="form-control" id="total_volume_kontrak" name="total_volume_kontrak" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="total_harga_satuan">Total Harga Satuan</label>
+                        <input class="form-control" id="total_harga_satuan" name="total_harga_satuan" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="total_volume_pekerjaan_sebelumnya">Total Volume Pekerjaan Sebelumnya</label>
+                        <input class="form-control" id="total_volume_pekerjaan_sebelumnya" name="total_volume_pekerjaan_sebelumnya" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="total_volume_pekerjaan_hari_ini">Total Volume Pekerjaan Hari Ini</label>
+                        <input class="form-control" id="total_volume_pekerjaan_hari_ini" name="total_volume_pekerjaan_hari_ini" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="total_prestasi_keuangan">Total Prestasi Keuangan</label>
+                        <input class="form-control" id="total_prestasi_keuangan" name="total_prestasi_keuangan" required>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="total_prestasi_fisik">Total Prestasi Fisik</label>
+                        <input class="form-control" id="total_prestasi_fisik" name="total_prestasi_fisik" required>
                     </div>
 
                     <div class="col-md-12">

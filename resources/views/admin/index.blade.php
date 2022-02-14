@@ -8,7 +8,7 @@
                 <div class="card-body text-center">
                     <i class="i-Add-User"></i>
                     <div class="content">
-                        <p class="text-muted mt-2 mb-0">New Leads</p>
+                        <p class="text-muted mt-2 mb-0">Users</p>
                         <p class="text-primary text-24 line-height-1 mb-2">205</p>
                     </div>
                 </div>
@@ -20,8 +20,8 @@
                 <div class="card-body text-center">
                     <i class="i-Financial"></i>
                     <div class="content">
-                        <p class="text-muted mt-2 mb-0">Sales</p>
-                        <p class="text-primary text-24 line-height-1 mb-2">$4021</p>
+                        <p class="text-muted mt-2 mb-0">Proyek</p>
+                        <p class="text-primary text-24 line-height-1 mb-2">4021</p>
                     </div>
                 </div>
             </div>

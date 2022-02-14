@@ -13,12 +13,36 @@
                     <span class="nav-text">Projects</span>
                 </a>
             </li>
-            <!-- <li class="nav-item " data-item="">
+            <li class="nav-item " data-item="">
+                <a class="nav-item-hold" href="#">
+                    <i class="nav-icon i-Business-Man"></i>
+                    <span class="nav-text">Tukang</span>
+                </a>
+            </li>
+            <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="#">
                     <i class="nav-icon i-Library"></i>
                     <span class="nav-text">Absen</span>
                 </a>
-            </li> -->
+            </li>
+            <li class="nav-item " data-item="">
+                <a class="nav-item-hold" href="#">
+                    <i class="nav-icon i-Over-Time"></i>
+                    <span class="nav-text">Lembur</span>
+                </a>
+            </li>
+            <li class="nav-item " data-item="">
+                <a class="nav-item-hold" href="#">
+                    <i class="nav-icon i-Speach-Bubble-Dialog"></i>
+                    <span class="nav-text">Chat</span>
+                </a>
+            </li>
+            <li class="nav-item " data-item="">
+                <a class="nav-item-hold" href="#">
+                    <i class="nav-icon i-Clock"></i>
+                    <span class="nav-text">Shift</span>
+                </a>
+            </li>
             <li class="nav-item" data-item="users">
                 <a class="nav-item-hold" href="#">
                     <i class="nav-icon i-Network"></i>

@@ -15,7 +15,7 @@ class Absen extends Model
      * @var array
      */
     protected $fillable = [
-        'lokasi', 'ttd', 'jam_datang', 'jam_pulang', 'tanggal', 'hari', 'bulan', 'tahun', 'keterangan', 'foto', 'validasi', 'jam_validasi', 'status', 'projek_id', 'user_id', 'tukang_id', 'volume_hari_ini', 'volume_opname', 'harga_satuan', 'opname_hari_ini', 'total_opname', 'persentase', 'edit_by'
+        'lokasi_datang', 'ttd', 'jam_datang', 'tanggal_datang', 'hari_datang', 'bulan_datang', 'tahun_datang', 'lokasi_pulang', 'jam_pulang', 'tanggal_pulang', 'hari_pulang', 'bulan_pulang', 'tahun_pulang', 'keterangan', 'foto', 'validasi', 'jam_validasi', 'validasi_by', 'status', 'projek_id', 'user_id', 'tukang_id', 'edit_by'
     ];
             
     /**
