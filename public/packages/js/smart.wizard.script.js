@@ -25,13 +25,13 @@ $(document).ready(function () {
     // Smart Wizard
     $('#smartwizard').smartWizard({
         selected: 0,
-        theme: 'default',
+        theme: 'arrows',
         transitionEffect: 'fade',
         showStepURLhash: true,
         toolbarSettings: {
             toolbarPosition: 'both',
             toolbarButtonPosition: 'end',
-            toolbarExtraButtons: [btnFinish, btnCancel]
+            // toolbarExtraButtons: [btnFinish, btnCancel]
         }
     });
 

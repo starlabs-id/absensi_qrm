@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AbsenController;
+use App\Http\Controllers\Admin\AbsenLemburController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DetailProjekController;
 use App\Http\Controllers\Admin\ProjekController;
 use App\Http\Controllers\Admin\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -54,5 +57,14 @@ Route::prefix('admin')->group(function () {
         Route::get('permission_destroy', [UsersController::class, 'permission_destroy'])->name('permission.destroy');
 
         Route::resource('/projek', ProjekController::class, ['as' => 'admin']);
+        Route::get('projek_detail', [ProjekController::class, 'show'])->name('projek.detail');
+
+        Route::resource('/detailprojek', DetailProjekController::class, ['as' => 'admin']);
+        Route::get('projek_edit', [ProjekController::class, 'edit'])->name('projek.edit');
+
+        Route::resource('/absen', AbsenController::class, ['as' => 'admin']);
+
+        Route::resource('/absenlembur', AbsenLemburController::class, ['as' => 'admin']);
+
     });
 });

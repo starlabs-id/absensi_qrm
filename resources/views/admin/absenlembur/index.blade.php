@@ -7,12 +7,12 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h4 class="card-title mb-3">
-                    Data Project
+                    Data Absen Lembur
 
                     <span class="pull-right">
                         <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
                         <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
-                        <a href="{{ route('admin.projek.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
+                        <a href="{{ route('admin.absenlembur.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
                     </span>
                 </h4>
                 <br>
@@ -22,29 +22,33 @@
                         <thead>
                             <tr>
                                 <th scope="col" style="text-align: center;width: 6%">No.</th>
-                                <th scope="col">Nama Projek</th>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Jam Datang</th>
+                                <th scope="col">Jam Pulang</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">PM</th>
-                                <th scope="col">Rencana Kerja</th>
+                                <th scope="col">Keterangan</th>
+                                <th scope="col">Validasi</th>
                                 <th scope="col" style="width: 15%;text-align: center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($projeks as $no => $projek)
+                            @forelse($absenlemburs as $no => $absen)
                             <tr>
-                                <td>{{ ++$no + ($projeks->currentPage()-1) * $projeks->perPage() }}</td>
-                                <td>{{ $projek->nama_projek }}</td>
-                                <td>{{ $projek->status }}</td>
-                                <td>{{ $projek->pm }}</td>
-                                <td>{{ $projek->area_projek }}</td>
+                                <td>{{ ++$no + ($absenlemburs->currentPage()-1) * $absenlemburs->perPage() }}</td>
+                                <td>{{ $absen->hari }}, {{ $absen->tanggal }}</td>
+                                <td>{{ $absen->jam_datang }}</td>
+                                <td>{{ $absen->jam_pulang }}</td>
+                                <td>{{ $absen->status }}</td>
+                                <td>{{ $absen->keterangan }}</td>
+                                <td>{{ $absen->validasi }}</td>
                                 <td>
                                     <a href="#" class="btn btn-primary btn-sm">Detail</a>
-                                    <a href="{{ route('admin.projek.edit', $projek->id) }}"
+                                    <a href="{{ route('admin.absen.edit', $absen->id) }}"
                                         class="btn btn-sm btn-primary">
                                     </a>
 
                                     <button onClick="Delete(this.id)" class="btn btn-sm btn-danger"
-                                        id="{{ $projek->id }}">
+                                        id="{{ $absen->id }}">
                                     </button>
                                 </td>
                             </tr>
@@ -57,7 +61,7 @@
                     </table>
 
                     <div style="text-align: center">
-                        {{ $projeks->links("vendor.pagination.bootstrap-4") }}
+                        {{ $absenlemburs->links("vendor.pagination.bootstrap-4") }}
                     </div>
                 </div>
 
@@ -88,7 +92,7 @@
 
                 //ajax delete
                 jQuery.ajax({
-                    url: "{{ route("admin.projek.index") }}/" + id,
+                    url: "{{ route("admin.absen.index") }}/" + id,
                     data: {
                         "id": id,
                         "_token": token

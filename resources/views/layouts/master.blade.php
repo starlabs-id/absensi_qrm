@@ -131,6 +131,8 @@
         <script src="{{ asset('packages/vendor/sweetalert/sweetalert.all.js') }}"></script>
         <script src="{{ asset('packages/vendor/morris/morris.min.js') }}"></script>
         <script src="{{ asset('packages/vendor/raphael/raphael.min.js') }}"></script>
+        <script src="{{ asset('packages/js/vendor/jquery.smartWizard.min.js') }}"></script>
+        <script src="{{ asset('packages/js/smart.wizard.script.js') }}"></script>
         @yield('graphPage')
 
         @yield('customJs')

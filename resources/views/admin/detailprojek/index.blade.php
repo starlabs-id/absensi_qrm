@@ -7,13 +7,13 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h4 class="card-title mb-3">
-                    Data Project
+                    Detail Proyek
 
-                    <span class="pull-right">
-                        <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
-                        <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
-                        <a href="{{ route('admin.projek.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
-                    </span>
+                      <span class="pull-right">
+                          <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
+                          <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
+                          <a href="{{ route('admin.detailprojek.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
+                      </span>
                 </h4>
                 <br>
                 
@@ -23,28 +23,28 @@
                             <tr>
                                 <th scope="col" style="text-align: center;width: 6%">No.</th>
                                 <th scope="col">Nama Projek</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">PM</th>
-                                <th scope="col">Rencana Kerja</th>
+                                <th scope="col">Uraian Pekerjaan</th>
+                                <th scope="col">Volume Kontrak</th>
+                                <th scope="col">Harga Satuan</th>
                                 <th scope="col" style="width: 15%;text-align: center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($projeks as $no => $projek)
+                            @forelse($detailprojeks as $no => $detailprojek)
                             <tr>
-                                <td>{{ ++$no + ($projeks->currentPage()-1) * $projeks->perPage() }}</td>
-                                <td>{{ $projek->nama_projek }}</td>
-                                <td>{{ $projek->status }}</td>
-                                <td>{{ $projek->pm }}</td>
-                                <td>{{ $projek->area_projek }}</td>
+                                <td>{{ ++$no + ($detailprojeks->currentPage()-1) * $detailprojeks->perPage() }}</td>
+                                <td>{{ $detailprojek->nama_projek }}</td>
+                                <td>{{ $detailprojek->uraian_pekerjaan }}</td>
+                                <td>{{ $detailprojek->volume_kontrak }}</td>
+                                <td>{{ $detailprojek->harga_satuan }}</td>
                                 <td>
                                     <a href="#" class="btn btn-primary btn-sm">Detail</a>
-                                    <a href="{{ route('admin.projek.edit', $projek->id) }}"
+                                    <a href="{{ route('admin.detailprojek.edit', $detailprojek->id) }}"
                                         class="btn btn-sm btn-primary">
                                     </a>
 
                                     <button onClick="Delete(this.id)" class="btn btn-sm btn-danger"
-                                        id="{{ $projek->id }}">
+                                        id="{{ $detailprojek->id }}">
                                     </button>
                                 </td>
                             </tr>
@@ -57,7 +57,7 @@
                     </table>
 
                     <div style="text-align: center">
-                        {{ $projeks->links("vendor.pagination.bootstrap-4") }}
+                        {{ $detailprojeks->links("vendor.pagination.bootstrap-4") }}
                     </div>
                 </div>
 
@@ -88,7 +88,7 @@
 
                 //ajax delete
                 jQuery.ajax({
-                    url: "{{ route("admin.projek.index") }}/" + id,
+                    url: "{{ route("admin.detailprojek.index") }}/" + id,
                     data: {
                         "id": id,
                         "_token": token

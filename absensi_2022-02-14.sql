@@ -1,33 +1,37 @@
-# ************************************************************
-# Sequel Pro SQL dump
-# Version 4541
-#
-# http://www.sequelpro.com/
-# https://github.com/sequelpro/sequelpro
-#
-# Host: 127.0.0.1 (MySQL 5.5.5-10.4.14-MariaDB)
-# Database: absensi
-# Generation Time: 2022-02-14 01:15:52 +0000
-# ************************************************************
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 14 Feb 2022 pada 09.40
+-- Versi server: 10.4.22-MariaDB
+-- Versi PHP: 7.4.27
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `absensi_qrm`
+--
 
-# Dump of table absen_lemburs
-# ------------------------------------------------------------
+-- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `absen_lemburs`;
+--
+-- Struktur dari tabel `absens`
+--
 
-CREATE TABLE `absen_lemburs` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `absens` (
+  `id` bigint(20) UNSIGNED NOT NULL,
   `lokasi_datang` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude_datang` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude_datang` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ttd` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `jam_datang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_datang` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -35,6 +39,47 @@ CREATE TABLE `absen_lemburs` (
   `bulan_datang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tahun_datang` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lokasi_pulang` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude_pulang` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude_pulang` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tanggal_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `hari_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bulan_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tahun_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keterangan` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `foto` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `validasi` enum('yes','no') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_validasi` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `validasi_by` int(11) DEFAULT NULL,
+  `status` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `projek_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `tukang_id` bigint(20) UNSIGNED NOT NULL,
+  `edit_by` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `absen_lemburs`
+--
+
+CREATE TABLE `absen_lemburs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `lokasi_datang` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude_datang` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude_datang` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ttd` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam_datang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tanggal_datang` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `hari_datang` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bulan_datang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tahun_datang` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lokasi_pulang` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude_pulang` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude_pulang` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `jam_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `hari_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -47,80 +92,24 @@ CREATE TABLE `absen_lemburs` (
   `validasi_by` int(11) DEFAULT NULL,
   `total_biaya_lembur` int(11) DEFAULT NULL,
   `status` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `projek_id` bigint(20) unsigned NOT NULL,
-  `absen_id` bigint(20) unsigned NOT NULL,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `tukang_id` bigint(20) unsigned NOT NULL,
-  `edit_by` bigint(20) unsigned NOT NULL,
+  `projek_id` bigint(20) UNSIGNED NOT NULL,
+  `absen_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `tukang_id` bigint(20) UNSIGNED NOT NULL,
+  `edit_by` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
 
-
-# Dump of table absens
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `absens`;
-
-CREATE TABLE `absens` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `lokasi_datang` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ttd` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jam_datang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tanggal_datang` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `hari_datang` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bulan_datang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tahun_datang` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lokasi_pulang` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jam_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tanggal_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `hari_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `bulan_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tahun_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keterangan` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `foto` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `validasi` enum('yes','no') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jam_validasi` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `validasi_by` int(11) DEFAULT NULL,
-  `status` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `projek_id` bigint(20) unsigned NOT NULL,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `tukang_id` bigint(20) unsigned NOT NULL,
-  `edit_by` bigint(20) unsigned NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-
-# Dump of table chat_details
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `chat_details`;
-
-CREATE TABLE `chat_details` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `chat_id` bigint(20) unsigned DEFAULT NULL,
-  `komentar` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pengirim` bigint(20) unsigned DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-
-# Dump of table chats
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `chats`;
+--
+-- Struktur dari tabel `chats`
+--
 
 CREATE TABLE `chats` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `projek_id` bigint(20) unsigned DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `projek_id` bigint(20) UNSIGNED DEFAULT NULL,
   `direktur_utama` int(11) DEFAULT NULL,
   `superadmin` int(11) DEFAULT NULL,
   `owner` int(11) DEFAULT NULL,
@@ -132,20 +121,33 @@ CREATE TABLE `chats` (
   `co_gm` int(11) DEFAULT NULL,
   `supervisor` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
 
+--
+-- Struktur dari tabel `chat_details`
+--
 
-# Dump of table detail_projeks
-# ------------------------------------------------------------
+CREATE TABLE `chat_details` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `chat_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `komentar` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pengirim` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `detail_projeks`;
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `detail_projeks`
+--
 
 CREATE TABLE `detail_projeks` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `projek_id` bigint(20) unsigned DEFAULT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `projek_id` bigint(20) UNSIGNED DEFAULT NULL,
   `uraian_pekerjaan` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `volume_kontrak` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `harga_satuan` int(11) DEFAULT NULL,
@@ -165,183 +167,153 @@ CREATE TABLE `detail_projeks` (
   `foto_9` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `foto_10` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `keterangan` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `edit_by` bigint(20) unsigned NOT NULL,
+  `edit_by` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
 
-
-# Dump of table failed_jobs
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `failed_jobs`;
+--
+-- Struktur dari tabel `failed_jobs`
+--
 
 CREATE TABLE `failed_jobs` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
 
-
-# Dump of table migrations
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `migrations`;
+--
+-- Struktur dari tabel `migrations`
+--
 
 CREATE TABLE `migrations` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) UNSIGNED NOT NULL,
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-LOCK TABLES `migrations` WRITE;
-/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
+--
+-- Dumping data untuk tabel `migrations`
+--
 
-INSERT INTO `migrations` (`id`, `migration`, `batch`)
-VALUES
-	(1,'2014_10_12_000000_create_users_table',1),
-	(2,'2014_10_12_100000_create_password_resets_table',1),
-	(3,'2019_08_19_000000_create_failed_jobs_table',1),
-	(4,'2019_12_14_000001_create_personal_access_tokens_table',1),
-	(5,'2022_02_10_030323_create_projeks_table',1),
-	(6,'2022_02_10_032137_create_detail_projeks_table',1),
-	(7,'2022_02_10_033438_create_tukangs_table',1),
-	(8,'2022_02_10_034600_create_absens_table',1),
-	(9,'2022_02_10_052414_create_absen_lemburs_table',1),
-	(10,'2022_02_10_052932_create_shifts_table',1),
-	(11,'2022_02_10_053856_create_chats_table',1),
-	(12,'2022_02_10_054100_create_chat_details_table',1),
-	(13,'2014_10_12_200000_add_two_factor_columns_to_users_table',2),
-	(14,'2022_02_11_064443_create_permission_tables',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '2014_10_12_000000_create_users_table', 1),
+(2, '2014_10_12_100000_create_password_resets_table', 1),
+(3, '2019_08_19_000000_create_failed_jobs_table', 1),
+(4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(5, '2022_02_10_030323_create_projeks_table', 1),
+(6, '2022_02_10_032137_create_detail_projeks_table', 1),
+(7, '2022_02_10_033438_create_tukangs_table', 1),
+(8, '2022_02_10_034600_create_absens_table', 1),
+(9, '2022_02_10_052414_create_absen_lemburs_table', 1),
+(10, '2022_02_10_052932_create_shifts_table', 1),
+(11, '2022_02_10_053856_create_chats_table', 1),
+(12, '2022_02_10_054100_create_chat_details_table', 1),
+(13, '2014_10_12_200000_add_two_factor_columns_to_users_table', 2),
+(14, '2022_02_11_064443_create_permission_tables', 3);
 
-/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
-
-# Dump of table model_has_permissions
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `model_has_permissions`;
+--
+-- Struktur dari tabel `model_has_permissions`
+--
 
 CREATE TABLE `model_has_permissions` (
-  `permission_id` bigint(20) unsigned NOT NULL,
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
   `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `model_id` bigint(20) unsigned NOT NULL,
-  PRIMARY KEY (`permission_id`,`model_id`,`model_type`),
-  KEY `model_has_permissions_model_id_model_type_index` (`model_id`,`model_type`),
-  CONSTRAINT `model_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE
+  `model_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
 
-
-# Dump of table model_has_roles
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `model_has_roles`;
+--
+-- Struktur dari tabel `model_has_roles`
+--
 
 CREATE TABLE `model_has_roles` (
-  `role_id` bigint(20) unsigned NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL,
   `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `model_id` bigint(20) unsigned NOT NULL,
-  PRIMARY KEY (`role_id`,`model_id`,`model_type`),
-  KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`),
-  CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
+  `model_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-LOCK TABLES `model_has_roles` WRITE;
-/*!40000 ALTER TABLE `model_has_roles` DISABLE KEYS */;
+--
+-- Dumping data untuk tabel `model_has_roles`
+--
 
-INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`)
-VALUES
-	(1,'App\\Models\\User',1),
-	(1,'App\\Models\\User',3);
+INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
+(1, 'App\\Models\\User', 1),
+(1, 'App\\Models\\User', 3);
 
-/*!40000 ALTER TABLE `model_has_roles` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
-
-# Dump of table password_resets
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `password_resets`;
+--
+-- Struktur dari tabel `password_resets`
+--
 
 CREATE TABLE `password_resets` (
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  KEY `password_resets_email_index` (`email`)
+  `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
 
-
-# Dump of table permissions
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `permissions`;
+--
+-- Struktur dari tabel `permissions`
+--
 
 CREATE TABLE `permissions` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`)
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-LOCK TABLES `permissions` WRITE;
-/*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
+--
+-- Dumping data untuk tabel `permissions`
+--
 
-INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`)
-VALUES
-	(6,'user-list','web','2022-02-11 08:07:32','2022-02-12 01:28:45'),
-	(7,'user-add','web','2022-02-12 01:28:52','2022-02-12 01:28:52'),
-	(8,'user-update','web','2022-02-12 01:28:57','2022-02-12 01:28:57'),
-	(9,'user-delete','web','2022-02-12 01:29:02','2022-02-12 01:29:02');
+INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
+(6, 'user-list', 'web', '2022-02-11 00:07:32', '2022-02-11 17:28:45'),
+(7, 'user-add', 'web', '2022-02-11 17:28:52', '2022-02-11 17:28:52'),
+(8, 'user-update', 'web', '2022-02-11 17:28:57', '2022-02-11 17:28:57'),
+(9, 'user-delete', 'web', '2022-02-11 17:29:02', '2022-02-11 17:29:02');
 
-/*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
-
-# Dump of table personal_access_tokens
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `personal_access_tokens`;
+--
+-- Struktur dari tabel `personal_access_tokens`
+--
 
 CREATE TABLE `personal_access_tokens` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tokenable_id` bigint(20) unsigned NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
   `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
-  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
 
-
-# Dump of table projeks
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `projeks`;
+--
+-- Struktur dari tabel `projeks`
+--
 
 CREATE TABLE `projeks` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `nama_projek` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `kode_projek` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `area_projek` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -353,9 +325,9 @@ CREATE TABLE `projeks` (
   `durasi_projek` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `lokasi` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pemberi_kerja` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pm` bigint(20) unsigned DEFAULT NULL,
-  `marketing` bigint(20) unsigned DEFAULT NULL,
-  `supervisor` bigint(20) unsigned DEFAULT NULL,
+  `pm` bigint(20) UNSIGNED DEFAULT NULL,
+  `marketing` bigint(20) UNSIGNED DEFAULT NULL,
+  `supervisor` bigint(20) UNSIGNED DEFAULT NULL,
   `rencana_kerja` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `owner` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_mulai` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -367,100 +339,84 @@ CREATE TABLE `projeks` (
   `total_prestasi_keuangan` int(11) DEFAULT NULL,
   `total_prestasi_fisik` int(11) DEFAULT NULL,
   `status` enum('closing','process') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `edit_by` bigint(20) unsigned NOT NULL,
+  `edit_by` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
 
-
-# Dump of table role_has_permissions
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `role_has_permissions`;
-
-CREATE TABLE `role_has_permissions` (
-  `permission_id` bigint(20) unsigned NOT NULL,
-  `role_id` bigint(20) unsigned NOT NULL,
-  PRIMARY KEY (`permission_id`,`role_id`),
-  KEY `role_has_permissions_role_id_foreign` (`role_id`),
-  CONSTRAINT `role_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-
-# Dump of table roles
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `roles`;
+--
+-- Struktur dari tabel `roles`
+--
 
 CREATE TABLE `roles` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `roles_name_guard_name_unique` (`name`,`guard_name`)
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-LOCK TABLES `roles` WRITE;
-/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+--
+-- Dumping data untuk tabel `roles`
+--
 
-INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`)
-VALUES
-	(1,'Superadmin','web','2022-02-11 08:09:35','2022-02-11 08:09:35');
+INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
+(1, 'Superadmin', 'web', '2022-02-11 00:09:35', '2022-02-11 00:09:35');
 
-/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
+--
+-- Struktur dari tabel `role_has_permissions`
+--
 
-# Dump of table shifts
-# ------------------------------------------------------------
+CREATE TABLE `role_has_permissions` (
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `shifts`;
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `shifts`
+--
 
 CREATE TABLE `shifts` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `nama_shift` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `jam_masuk` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `jam_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `edit_by` bigint(20) unsigned NOT NULL,
+  `edit_by` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
 
-
-# Dump of table tukangs
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `tukangs`;
+--
+-- Struktur dari tabel `tukangs`
+--
 
 CREATE TABLE `tukangs` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `biaya_harian` int(11) DEFAULT NULL,
   `projek_id` int(11) DEFAULT NULL,
   `biaya_lembur` int(11) DEFAULT NULL,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `edit_by` bigint(20) unsigned NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `edit_by` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
 
-
-# Dump of table users
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `users`;
+--
+-- Struktur dari tabel `users`
+--
 
 CREATE TABLE `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
@@ -472,27 +428,250 @@ CREATE TABLE `users` (
   `ttd` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`)
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+--
+-- Dumping data untuk tabel `users`
+--
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `foto`, `no_telp_hp`, `ttd`, `remember_token`, `created_at`, `updated_at`)
-VALUES
-	(1,'Kevin','admin@mail.com',NULL,'$2y$10$S5WiDcE/zz6MbY0co/dS0.iyajRsWRrTLm9Vfv1347Wz3/Gb1Q0I6',NULL,NULL,NULL,'081338639778',NULL,NULL,'2022-02-10 07:50:49','2022-02-12 02:40:50'),
-	(3,'Bareel','superadmin@mail.com',NULL,'$2y$10$US.2COHH1Gvb/9JnjU8VzeJV1Rjpd9V1IGCNvXa/rV2qU1B9yRKKm',NULL,NULL,NULL,'087730786790',NULL,NULL,'2022-02-12 04:04:26','2022-02-12 04:04:26');
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `foto`, `no_telp_hp`, `ttd`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Kevin', 'admin@mail.com', NULL, '$2y$10$S5WiDcE/zz6MbY0co/dS0.iyajRsWRrTLm9Vfv1347Wz3/Gb1Q0I6', NULL, NULL, NULL, '081338639778', NULL, NULL, '2022-02-09 23:50:49', '2022-02-11 18:40:50'),
+(3, 'Bareel', 'bareel@gmail.com', NULL, '$2y$10$US.2COHH1Gvb/9JnjU8VzeJV1Rjpd9V1IGCNvXa/rV2qU1B9yRKKm', NULL, NULL, NULL, '087730786790', NULL, NULL, '2022-02-11 20:04:26', '2022-02-14 02:12:22');
 
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
+--
+-- Indexes for dumped tables
+--
 
+--
+-- Indeks untuk tabel `absens`
+--
+ALTER TABLE `absens`
+  ADD PRIMARY KEY (`id`);
 
+--
+-- Indeks untuk tabel `absen_lemburs`
+--
+ALTER TABLE `absen_lemburs`
+  ADD PRIMARY KEY (`id`);
 
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+--
+-- Indeks untuk tabel `chats`
+--
+ALTER TABLE `chats`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `chat_details`
+--
+ALTER TABLE `chat_details`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `detail_projeks`
+--
+ALTER TABLE `detail_projeks`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indeks untuk tabel `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `model_has_permissions`
+--
+ALTER TABLE `model_has_permissions`
+  ADD PRIMARY KEY (`permission_id`,`model_id`,`model_type`),
+  ADD KEY `model_has_permissions_model_id_model_type_index` (`model_id`,`model_type`);
+
+--
+-- Indeks untuk tabel `model_has_roles`
+--
+ALTER TABLE `model_has_roles`
+  ADD PRIMARY KEY (`role_id`,`model_id`,`model_type`),
+  ADD KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`);
+
+--
+-- Indeks untuk tabel `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD KEY `password_resets_email_index` (`email`);
+
+--
+-- Indeks untuk tabel `permissions`
+--
+ALTER TABLE `permissions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`);
+
+--
+-- Indeks untuk tabel `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
+
+--
+-- Indeks untuk tabel `projeks`
+--
+ALTER TABLE `projeks`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `roles_name_guard_name_unique` (`name`,`guard_name`);
+
+--
+-- Indeks untuk tabel `role_has_permissions`
+--
+ALTER TABLE `role_has_permissions`
+  ADD PRIMARY KEY (`permission_id`,`role_id`),
+  ADD KEY `role_has_permissions_role_id_foreign` (`role_id`);
+
+--
+-- Indeks untuk tabel `shifts`
+--
+ALTER TABLE `shifts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `tukangs`
+--
+ALTER TABLE `tukangs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- AUTO_INCREMENT untuk tabel yang dibuang
+--
+
+--
+-- AUTO_INCREMENT untuk tabel `absens`
+--
+ALTER TABLE `absens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `absen_lemburs`
+--
+ALTER TABLE `absen_lemburs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `chats`
+--
+ALTER TABLE `chats`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `chat_details`
+--
+ALTER TABLE `chat_details`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `detail_projeks`
+--
+ALTER TABLE `detail_projeks`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT untuk tabel `permissions`
+--
+ALTER TABLE `permissions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT untuk tabel `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `projeks`
+--
+ALTER TABLE `projeks`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `shifts`
+--
+ALTER TABLE `shifts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `tukangs`
+--
+ALTER TABLE `tukangs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `model_has_permissions`
+--
+ALTER TABLE `model_has_permissions`
+  ADD CONSTRAINT `model_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `model_has_roles`
+--
+ALTER TABLE `model_has_roles`
+  ADD CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `role_has_permissions`
+--
+ALTER TABLE `role_has_permissions`
+  ADD CONSTRAINT `role_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

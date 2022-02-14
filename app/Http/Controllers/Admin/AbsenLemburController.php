@@ -26,11 +26,11 @@ class AbsenLemburController extends Controller
      */
     public function index()
     {
-        $absenlembur = AbsenLembur::latest()->when(request()->q, function($absenlembur) {
-            $absenlembur = $absenlembur->where('name', 'like', '%'. request()->q . '%');
+        $absenlemburs = AbsenLembur::latest()->when(request()->q, function($absenlemburs) {
+            $absenlemburs = $absenlemburs->where('name', 'like', '%'. request()->q . '%');
         })->paginate(10);
 
-        return view('admin.absenlembur.index', compact('absenlembur'));
+        return view('admin.absenlembur.index', compact('absenlemburs'));
     }
 
     public function create()
@@ -41,6 +41,7 @@ class AbsenLemburController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'lokasi_datang' => 'required',
             'ttd'  => 'required|image|mimes:jpeg,jpg,png|max:2000',
             'foto'  => 'required|image|mimes:jpeg,jpg,png|max:2000',
         ]); 
@@ -54,12 +55,12 @@ class AbsenLemburController extends Controller
 
         $absenlembur = AbsenLembur::create([
             'lokasi_datang'   => $request->lokasi_datang,
-            'jam_datang'   => date('H:i:s'),
-            'tanggal_datang'   => date('d-m-Y'),
+            'jam_datang'   => $request->jam_datang,
+            'tanggal_datang'   => $request->tanggal_datang,
             'hari_datang'   => $request->hari_datang,
             'bulan_datang'   => $request->bulan_datang,
-            'tahun_datang'   => date('Y'),
-            'user_id'   => $request->user_id,
+            'tahun_datang'   => $request->tahun_datang,
+            'user_id'   => Auth::user()->id,
             'projek_id'   => $request->projek_id,
             'tukang_id'   => $request->tukang_id,
             'edit_by'   => Auth::user()->id,
@@ -67,28 +68,32 @@ class AbsenLemburController extends Controller
  
         if($absenlembur){
              //redirect dengan pesan sukses
-             return redirect()->route('karyawan.absenlembur.index')->with(['success' => 'Data Berhasil Disimpan!']);
+             return redirect()->route('admin.absenlembur.index')->with(['success' => 'Data Berhasil Disimpan!']);
          }else{
              //redirect dengan pesan error
-             return redirect()->route('karyawan.absenlembur.index')->with(['error' => 'Data Gagal Disimpan!']);
+             return redirect()->route('admin.absenlembur.index')->with(['error' => 'Data Gagal Disimpan!']);
          }
     }
 
     public function edit(AbsenLembur $absenlembur)
     {
-        return view('karyawan.absenlembur.edit', compact('absenlembur'));
+        return view('admin.absenlembur.edit', compact('absenlembur'));
     }
     
     public function update(Request $request, AbsenLembur $absenlembur)
     {
+        $this->validate($request, [
+            'lokasi_pulang' => 'required',
+        ]); 
+
         $absenlembur = AbsenLembur::findOrFail($absenlembur->id);
         $absenlembur->update([
             'lokasi_pulang'   => $request->lokasi_pulang,
-            'jam_pulang'   => date('H:i:s'),
-            'tanggal_pulang'   => date('d-m-Y'),
+            'jam_pulang'   => $request->jam_pulang,
+            'tanggal_pulang'   => $request->tanggal_pulang,
             'hari_pulang'   => $request->hari_pulang,
             'bulan_pulang'   => $request->bulan_pulang,
-            'tahun_pulang'   => date('Y'),
+            'tahun_pulang'   => $request->tahun_pulang,
             'edit_by'   => Auth::user()->id,
         ]);
 
@@ -104,10 +109,10 @@ class AbsenLemburController extends Controller
 
         if($absenlembur){
             //redirect dengan pesan sukses
-            return redirect()->route('karyawan.absenlembur.index')->with(['success' => 'Data Berhasil Diupdate!']);
+            return redirect()->route('admin.absenlembur.index')->with(['success' => 'Data Berhasil Diupdate!']);
         }else{
             //redirect dengan pesan error
-            return redirect()->route('karyawan.absenlembur.index')->with(['error' => 'Data Gagal Diupdate!']);
+            return redirect()->route('admin.absenlembur.index')->with(['error' => 'Data Gagal Diupdate!']);
         }
     }
     
@@ -115,7 +120,7 @@ class AbsenLemburController extends Controller
     {
         $absenlembur = AbsenLembur::findOrFail($absenlembur->id);
         $absenlembur->update([
-            'validasi'   => $request->validasi,
+            // 'validasi'   => $request->validasi,
             'jam_validasi'   => date('d-m-Y h:i:s'),
             'status' => $request->status,
             'keterangan' => $request->keterangan,
@@ -129,10 +134,10 @@ class AbsenLemburController extends Controller
 
         if($absenlembur){
             //redirect dengan pesan sukses
-            return redirect()->route('karyawan.absenlembur.validasi')->with(['success' => 'Data Berhasil Diupdate!']);
+            return redirect()->route('admin.absenlembur.validasi')->with(['success' => 'Data Berhasil Diupdate!']);
         }else{
             //redirect dengan pesan error
-            return redirect()->route('karyawan.absenlembur.validasi')->with(['error' => 'Data Gagal Diupdate!']);
+            return redirect()->route('admin.absenlembur.validasi')->with(['error' => 'Data Gagal Diupdate!']);
         }
     }
 

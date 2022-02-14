@@ -26,11 +26,11 @@ class AbsenController extends Controller
      */
     public function index()
     {
-        $absen = Absen::latest()->when(request()->q, function($absen) {
-            $absen = $absen->where('name', 'like', '%'. request()->q . '%');
+        $absens = Absen::latest()->when(request()->q, function($absens) {
+            $absens = $absens->where('name', 'like', '%'. request()->q . '%');
         })->paginate(10);
 
-        return view('admin.absen.index', compact('absen'));
+        return view('admin.absen.index', compact('absens'));
     }
 
     public function create()
@@ -41,6 +41,7 @@ class AbsenController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'lokasi_datang' => 'required',
             'ttd'  => 'required|image|mimes:jpeg,jpg,png|max:2000',
             'foto'  => 'required|image|mimes:jpeg,jpg,png|max:2000',
         ]); 
@@ -54,12 +55,12 @@ class AbsenController extends Controller
 
         $absen = Absen::create([
             'lokasi_datang'   => $request->lokasi_datang,
-            'jam_datang'   => date('H:i:s'),
-            'tanggal_datang'   => date('d-m-Y'),
+            'jam_datang'   => $request->jam_datang,
+            'tanggal_datang'   => $request->tanggal_datang,
             'hari_datang'   => $request->hari_datang,
             'bulan_datang'   => $request->bulan_datang,
-            'tahun_datang'   => date('Y'),
-            'user_id'   => $request->user_id,
+            'tahun_datang'   => $request->tahun_datang,
+            'user_id'   => Auth::user()->id,
             'projek_id'   => $request->projek_id,
             'tukang_id'   => $request->tukang_id,
             'edit_by'   => Auth::user()->id,
@@ -81,14 +82,18 @@ class AbsenController extends Controller
     
     public function update(Request $request, Absen $absen)
     {
+        $this->validate($request, [
+            'lokasi_pulang' => 'required',
+        ]); 
+
         $absen = Absen::findOrFail($absen->id);
         $absen->update([
             'lokasi_pulang'   => $request->lokasi_pulang,
-            'jam_pulang'   => date('H:i:s'),
-            'tanggal_pulang'   => date('d-m-Y'),
+            'jam_pulang'   => $request->jam_pulang,
+            'tanggal_pulang'   => $request->tanggal_pulang,
             'hari_pulang'   => $request->hari_pulang,
             'bulan_pulang'   => $request->bulan_pulang,
-            'tahun_pulang'   => date('Y'),
+            'tahun_pulang'   => $request->tahun_pulang,
             'edit_by'   => Auth::user()->id,
         ]);
 
@@ -105,7 +110,7 @@ class AbsenController extends Controller
     {
         $absen = Absen::findOrFail($absen->id);
         $absen->update([
-            'validasi'   => $request->validasi,
+            // 'validasi'   => $request->validasi,
             'jam_validasi'   => date('d-m-Y h:i:s'),
             'status' => $request->status,
             'keterangan' => $request->keterangan,

@@ -38,6 +38,11 @@ class ProjekController extends Controller
         return view('admin.projek.index', compact('projeks'));
     }
 
+    public function show(Request $request)
+    {
+        return view('admin.projek.show');
+    }
+
     public function create()
     {
         return view('admin.projek.create');
@@ -100,8 +105,9 @@ class ProjekController extends Controller
          }
     }
 
-    public function edit(Projek $projek)
+    public function edit()
     {
+        $projek = Projek::get();
         return view('admin.projek.edit', compact('projek'));
     }
 

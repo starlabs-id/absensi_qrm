@@ -15,7 +15,7 @@ class AbsenLembur extends Model
      * @var array
      */
     protected $fillable = [
-        'lokasi', 'ttd', 'jam_datang', 'tanggal_datang', 'hari_datang', 'bulan_datang', 'tahun_datang', 'lokasi_pulang', 'jam_pulang', 'tanggal_pulang', 'hari_pulang', 'bulan_pulang', 'tahun_pulang', 'keterangan', 'foto', 'validasi', 'jam_validasi', 'validasi_by', 'status', 'projek_id', 'user_id', 'tukang_id', 'total_biaya_lembur', 'edit_by'
+        'lokasi_datang', 'longitude_datang', 'latitude_datang', 'ttd', 'jam_datang', 'tanggal_datang', 'hari_datang', 'bulan_datang', 'tahun_datang', 'lokasi_pulang',  'longitude_pulang', 'latitude_pulang', 'jam_pulang', 'tanggal_pulang', 'hari_pulang', 'bulan_pulang', 'tahun_pulang', 'keterangan', 'foto', 'validasi', 'jam_validasi', 'validasi_by', 'status', 'projek_id', 'user_id', 'tukang_id', 'total_biaya_lembur', 'edit_by'
     ];
             
     /**

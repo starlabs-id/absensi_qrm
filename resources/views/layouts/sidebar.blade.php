@@ -14,19 +14,25 @@
                 </a>
             </li>
             <li class="nav-item " data-item="">
+                <a class="nav-item-hold" href="{{ route('admin.detailprojek.index') }}">
+                    <i class="nav-icon i-File-Horizontal-Text"></i>
+                    <span class="nav-text">Projects Detail</span>
+                </a>
+            </li>
+            <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="#">
                     <i class="nav-icon i-Business-Man"></i>
                     <span class="nav-text">Tukang</span>
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="#">
+                <a class="nav-item-hold" href="{{ route('admin.absen.index') }}">
                     <i class="nav-icon i-Library"></i>
                     <span class="nav-text">Absen</span>
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="#">
+                <a class="nav-item-hold" href="{{ route('admin.absenlembur.index') }}">
                     <i class="nav-icon i-Over-Time"></i>
                     <span class="nav-text">Lembur</span>
                 </a>
