@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\Admin\AbsenController;
 use App\Http\Controllers\Admin\AbsenLemburController;
+use App\Http\Controllers\Admin\ChatController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DetailProjekController;
 use App\Http\Controllers\Admin\ProjekController;
+use App\Http\Controllers\Admin\ShiftController;
+use App\Http\Controllers\Admin\TukangController;
 use App\Http\Controllers\Admin\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -65,6 +68,15 @@ Route::prefix('admin')->group(function () {
         Route::resource('/absen', AbsenController::class, ['as' => 'admin']);
 
         Route::resource('/absenlembur', AbsenLemburController::class, ['as' => 'admin']);
+
+        Route::resource('/shift', ShiftController::class, ['as' => 'admin']);
+        Route::get('shift_edit', [ShiftController::class, 'edit'])->name('shift.edit');
+
+        Route::resource('/tukang', TukangController::class, ['as' => 'admin']);
+        Route::get('tukang_edit', [TukangController::class, 'edit'])->name('tukang.edit');
+
+        Route::resource('/chat', ChatController::class, ['as' => 'admin']);
+        Route::get('chat_edit', [ChatController::class, 'edit'])->name('chat.edit');
 
     });
 });

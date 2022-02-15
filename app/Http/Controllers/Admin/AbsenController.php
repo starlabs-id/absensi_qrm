@@ -33,6 +33,15 @@ class AbsenController extends Controller
         return view('admin.absen.index', compact('absens'));
     }
 
+    public function show()
+    {
+        $absens = Absen::latest()->when(request()->q, function($absens) {
+            $absens = $absens->where('name', 'like', '%'. request()->q . '%');
+        })->paginate(10);
+
+        return view('admin.absen.show', compact('absens'));
+    }
+
     public function create()
     {
         return view('admin.absen.create');

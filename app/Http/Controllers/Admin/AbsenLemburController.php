@@ -33,6 +33,15 @@ class AbsenLemburController extends Controller
         return view('admin.absenlembur.index', compact('absenlemburs'));
     }
 
+    public function show()
+    {
+        $absenlemburs = AbsenLembur::latest()->when(request()->q, function($absenlemburs) {
+            $absenlemburs = $absenlemburs->where('name', 'like', '%'. request()->q . '%');
+        })->paginate(10);
+
+        return view('admin.absenlembur.show', compact('absenlemburs'));
+    }
+
     public function create()
     {
         return view('admin.absenlembur.create');

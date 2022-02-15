@@ -50,7 +50,7 @@
                                 <div class="form-group">
                                   <label>Role</label>
                                   <select name="roles" class="form-control" style="width: 100% !important">
-                                      <!-- <option disabled="" selected="">--Pilih Role--</option> -->
+                                      <!-- <option readonly selected="">--Pilih Role--</option> -->
                                       @foreach($role as $key => $name)
                                           <option value="{{$key}}"> {{$name}}</option>
                                       @endforeach
@@ -179,7 +179,7 @@
                             <div class="form-group">
                               <label>Role</label>
                               <select name="roles" id="risx" class="form-control" style="width: 100% !important">
-                                  <!-- <option disabled="" selected="">--Pilih Role--</option> -->
+                                  <!-- <option readonly selected="">--Pilih Role--</option> -->
                                   @foreach($roles as $row)
                                       <option value="{{ $row->id }}"> {{ $row->name }}</option>
                                   @endforeach

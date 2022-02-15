@@ -1,15 +1,5 @@
 @extends('layouts.master')
 
-@section('web_title')
-  {{ $konfig->web_title }}
-@endsection
-@section('favicon')
-  {{ $konfig->favicon }}
-@endsection
-@section('logo')
-  {{ $konfig->logo }}
-@endsection
-
 @section('content')
 <div class="row">
 
@@ -26,46 +16,42 @@
           {{ csrf_field() }}
 
           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <!-- <div class="form-group">
+            <div class="form-group">
               <label for="email">Email</label>
-              <input type="text" class="form-control" id="email" name="email" value="{{ $user['email'] }}" placeholder="Email" readonly>
-            </div> -->
+              <input type="text" class="form-control" id="email" name="email" value="{{ Auth::user()->email }}" placeholder="Email">
+              <input type="hidden" class="form-control" id="id" name="id" value="{{ Auth::user()->id }}" placeholder="Email" readonly>
+            </div>
             <div class="form-group">
               <label for="name">Nama</label>
-              <input type="text" class="form-control" id="name" name="name" placeholder="Nama" value="{{ $user['name'] }}" required>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Nama" value="{{ Auth::user()->name }}" required>
               <div class="invalid-feedback">
                   Masukkan Nama, Minimum 5 Characters, Maximum 30 Characters!
               </div>
             </div>
             <div class="form-group">
-                <label>Titel</label>
-                <select name="titel" id="titel" class="form-control select2" style="width: 100% !important">
-                    <option disabled="" selected="">--Pilih Titel--</option>
-                    <option value="Bapak" {{ $user['titel'] =='Bapak' ? 'selected' : ''  }}>Bapak</option>
-                    <option value="Ibu" {{ $user['titel'] =='Ibu' ? 'selected' : ''  }}>Ibu</option>
-                    <option value="Saudara" {{ $user['titel'] =='Saudara' ? 'selected' : ''  }}>Saudara</option>
-                    <option value="Saudari" {{ $user['titel'] =='Saudari' ? 'selected' : ''  }}>Saudari</option>
-                </select>
-            </div>
-            <div class="form-group">
               <label for="no_telp_hp">No. Telepon</label>
-              <input type="number" min="0" class="form-control" placeholder="No. Telepon" value="{{ $user['no_telp_hp'] }}" readonly>
+              <input type="number" min="0" class="form-control" placeholder="No. Telepon" value="{{ Auth::user()->no_telp_hp }}" readonly>
               <input type="number" min="0" class="form-control" id="no_telp_hp" name="no_telp_hp" placeholder="No. Telepon">
               <div class="invalid-feedback">
                   Masukkan No. Telepon, Minimum 1 Characters, Maximum 16 Characters!
               </div>
               <label style="font-style: italic; color: #aaa;" class="pull-right">Biarkan kosong bila tidak ingin mengganti</label>
             </div>
+            
+            <div class="form-group">
+              @if(Auth::user()->foto == '')
+              <p>Belum ada foto</p>
+              @else
+                <img src="{{ Auth::user()->foto }}" class="rounded" style="width:200px">
+              @endif
+            </div>
+            <div class="form-group">
+                <label for="foto">Foto</label>
+                <input type="file" class="form-control" id="foto" name="foto" accept="image/png, image/jpg, image/jpeg" >
+            </div>
           </div>
 
           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <!-- <div class="form-group">
-              <label for="alamat">Alamat</label>
-              <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Alamat" value="{{ $user['alamat'] }}">
-              <div class="invalid-feedback">
-                  Masukkan Alamat, Minimum 1 Characters, Maximum 400 Characters!
-              </div>
-            </div> -->
             <div class="form-group">
               <label>Password</label>
               <input name="password" type="password" id="myInput" class="form-control" placeholder="Masukkan Password" maxlength="30">

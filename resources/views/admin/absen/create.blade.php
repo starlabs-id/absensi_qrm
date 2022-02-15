@@ -77,31 +77,31 @@
                 <div class="row">
                     <div class="col-md-6 form-group mb-3">
                         <label for="projek_id">Projek</label>
-                        <input type="text" disabled="" class="form-control" id="projek_id" name="projek_id">
+                        <input type="text" readonly class="form-control" id="projek_id" name="projek_id">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="tukang_id">Tukang</label>
-                        <input type="text" disabled="" class="form-control" id="tukang_id" name="tukang_id">
+                        <input type="text" readonly class="form-control" id="tukang_id" name="tukang_id">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="jam_datang">Jam Datang</label>
-                        <input type="text" disabled="" class="form-control" id="jam_datang" name="jam_datang" value="{{ date('H:i:s') }}">
+                        <input type="text" readonly class="form-control" id="jam_datang" name="jam_datang" value="{{ date('H:i:s') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="tanggal_datang">Tanggal Datang</label>
-                        <input type="text" disabled="" class="form-control" id="tanggal_datang" name="tanggal_datang" value="{{ date('d-m-Y') }}">
+                        <input type="text" readonly class="form-control" id="tanggal_datang" name="tanggal_datang" value="{{ date('d-m-Y') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="hari_datang">Hari</label>
-                        <input type="text" disabled="" class="form-control" id="hari_datang" name="hari_datang" value="{{ hari_ini() }}">
+                        <input type="text" readonly class="form-control" id="hari_datang" name="hari_datang" value="{{ hari_ini() }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="bulan_datang">Bulan</label>
-                        <input type="text" disabled="" class="form-control" id="bulan_datang" name="bulan_datang" value="{{ $hariIni->monthName }}">
+                        <input type="text" readonly class="form-control" id="bulan_datang" name="bulan_datang" value="{{ $hariIni->monthName }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="tahun_datang">Tahun</label>
-                        <input type="text" disabled="" class="form-control" id="tahun_datang" name="tahun_datang" value="{{ date('Y') }}">
+                        <input type="text" readonly class="form-control" id="tahun_datang" name="tahun_datang" value="{{ date('Y') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="foto">Foto</label>
@@ -109,7 +109,7 @@
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="lokasi_datang">Lokasi Datang</label>
-                        <textarea type="text" disabled="" class="form-control" id="lokasi_datang" name="lokasi_datang"></textarea>
+                        <textarea type="text" readonly class="form-control" id="lokasi_datang" name="lokasi_datang"></textarea>
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="ttd">Tanda Tangan</label>

@@ -30,11 +30,11 @@ class ShiftController extends Controller
      */
     public function index()
     {
-        $shift = Shift::latest()->when(request()->q, function($shift) {
-            $shift = $shift->where('name', 'like', '%'. request()->q . '%');
+        $shifts = Shift::latest()->when(request()->q, function($shifts) {
+            $shifts = $shifts->where('name', 'like', '%'. request()->q . '%');
         })->paginate(10);
 
-        return view('admin.shift.index', compact('shift'));
+        return view('admin.shift.index', compact('shifts'));
     }
 
     public function create()

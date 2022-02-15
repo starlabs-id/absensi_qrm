@@ -12,7 +12,10 @@ use App\Models\ModelHasRoles;
 use App\Models\Permission;
 use App\Models\RolePermission;
 use App\Models\Roles;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
+use Image;
 
 class UsersController extends Controller
 {
@@ -274,5 +277,62 @@ class UsersController extends Controller
 
             return response()->json($data);
         }
+    }
+
+
+    // PROFILE
+    public function profil()
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        return view('admin.users.profil', compact('user'));
+    }
+
+    public function profil_update(Request $request)
+    {
+        request()->validate([
+            'name' => 'required|max:50',
+            'no_telp_hp' => 'max:20|unique:users,no_telp_hp',
+            'password' => 'same:confirm-password',
+            'foto' => 'required|image|mimes:jpeg,jpg,png|max:2000',
+        ],
+        [
+            'name.required' => 'Nama harus dilengkapi!',
+            'name.max' => 'Nama tidak boleh lebih dari :max karakter!',
+
+            'no_telp_hp.unique' => 'No. Telpon sudah ada!',
+            'no_telp_hp.max' => 'No. Telpon tidak boleh lebih dari :max karakter!',
+
+            'foto.required' => 'Foto harus dilengkapi!',
+            'foto.max' => 'Foto tidak boleh lebih dari :max mb!',
+            'foto.mimes' => 'Foto harus jpg, png, atau jpeg!',
+
+            'password.same' => 'Password Konfirmasi tidak sesuai!',
+        ]);
+
+        $data                   = User::find(Auth::user()->id);
+        $data->name             = $request->name;
+
+        if($request->input('password')) {
+            $data->password = bcrypt(($request->password));
+        }
+
+        if($request->input('no_telp_hp')) {
+            $data->no_telp_hp = $request->no_telp_hp;
+        }
+
+        if ($request->hasFile('foto')) {
+            $file       =   $request->file('foto');
+            $fileName   =   Auth::user()->id . "_user";
+            $location   =   public_path('images/users/'. $fileName);
+            Image::make($file)->save($location);
+            $data->foto = $fileName;
+        }
+        
+
+        $data->save();
+
+        toastr()->success('Data berhasil disimpan!');
+        return redirect()->back();
     }
 }

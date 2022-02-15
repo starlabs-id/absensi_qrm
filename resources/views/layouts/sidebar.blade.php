@@ -20,7 +20,7 @@
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="#">
+                <a class="nav-item-hold" href="{{ route('admin.tukang.index') }}">
                     <i class="nav-icon i-Business-Man"></i>
                     <span class="nav-text">Tukang</span>
                 </a>
@@ -38,13 +38,13 @@
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="#">
+                <a class="nav-item-hold" href="{{ route('admin.chat.index') }}">
                     <i class="nav-icon i-Speach-Bubble-Dialog"></i>
                     <span class="nav-text">Chat</span>
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="#">
+                <a class="nav-item-hold" href="{{ route('admin.shift.index') }}">
                     <i class="nav-icon i-Clock"></i>
                     <span class="nav-text">Shift</span>
                 </a>

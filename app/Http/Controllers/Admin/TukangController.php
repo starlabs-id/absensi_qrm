@@ -29,11 +29,11 @@ class TukangController extends Controller
      */
     public function index()
     {
-        $tukang = Tukang::latest()->when(request()->q, function($tukang) {
-            $tukang = $tukang->where('name', 'like', '%'. request()->q . '%');
+        $tukangs = Tukang::latest()->when(request()->q, function($tukangs) {
+            $tukangs = $tukangs->where('name', 'like', '%'. request()->q . '%');
         })->paginate(10);
 
-        return view('admin.tukang.index', compact('tukang'));
+        return view('admin.tukang.index', compact('tukangs'));
     }
 
     public function create()

@@ -29,11 +29,11 @@ class ChatController extends Controller
      */
     public function index()
     {
-        $chat = Chat::latest()->when(request()->q, function($chat) {
-            $chat = $chat->where('name', 'like', '%'. request()->q . '%');
+        $chats = Chat::latest()->when(request()->q, function($chats) {
+            $chats = $chats->where('name', 'like', '%'. request()->q . '%');
         })->paginate(10);
 
-        return view('admin.chat.index', compact('chat'));
+        return view('admin.chat.index', compact('chats'));
     }
 
     public function create()
@@ -84,7 +84,6 @@ class ChatController extends Controller
     {
         return view('admin.chat.edit', compact('chat'));
     }
-
     
     public function update(Request $request, Chat $chat)
     {
@@ -142,5 +141,30 @@ class ChatController extends Controller
                 'status' => 'error'
             ]);
         }
+    }
+
+    public function show(Request $request)
+    {
+        return view('admin.chat.detail');
+    }
+
+    public function store_chat_detail(Request $request)
+    {
+        $this->validate($request, [
+            'komentar'  => 'required',
+        ]); 
+        $chatdetail = ChatDetail::create([
+            'komentar'   => $request->komentar,
+            'chat_id'   => $request->chat_id,
+            'pengirim'   => $request->user_id,
+        ]);
+ 
+        if($chatdetail){
+             //redirect dengan pesan sukses
+             return redirect()->route('admin.chat.index')->with(['success' => 'Data Berhasil Disimpan!']);
+         }else{
+             //redirect dengan pesan error
+             return redirect()->route('admin.chat.index')->with(['error' => 'Data Gagal Disimpan!']);
+         }
     }
 }

@@ -17,14 +17,18 @@
         <!-- <i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen></i> -->
         <div class="dropdown">
             <div  class="user col align-self-end">
-                <img src="{{ asset('packages/images/user/avatar.png') }}" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @if(Auth::user()->foto == '')
+                    <img src="{{ auth()->user()->avatar_url }}" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @else
+                    <img src="{{ asset('packages/images/user/Auth::user()->foto') }}" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @endif
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     <div class="dropdown-header">
                         <i class="i-Lock-User mr-1"></i> {{ Auth::user()->name }} <br>
                         {{ Auth::user()->no_telp_hp }}
                     </div>
-                    <a href="" class="dropdown-item">
+                    <a href="{{ route('profil') }}" class="dropdown-item">
                         <i class="nav-icon i-Network pull-left"></i> Update Profile
                     </a>
                     <a href="{{ route('logout') }}" class="dropdown-item" onclick="return logout(event);" data-popup="tooltip" data-original-title="Logout" data-placement="top">

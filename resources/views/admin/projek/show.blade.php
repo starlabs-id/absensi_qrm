@@ -192,7 +192,7 @@
                         </div>
 
                         <div id="chat">
-                            <h4>Chat</h4>
+                            <h4>Chat Room</h4>
                             <br>
                             
                             <div data-sidebar-container="chat" class="card chat-sidebar-container">
