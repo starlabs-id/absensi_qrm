@@ -17,16 +17,11 @@
         <!-- <i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen></i> -->
         <div class="dropdown">
             <div  class="user col align-self-end">
-                @if(Auth::user()->foto == '')
-                    <img src="{{ auth()->user()->avatar_url }}" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                @else
-                    <img src="{{ asset('packages/images/user/Auth::user()->foto') }}" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                @endif
-
+                <img src="{{ auth()->user()->avatar_url }}" id="userDropdown" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     <div class="dropdown-header">
                         <i class="i-Lock-User mr-1"></i> {{ Auth::user()->name }} <br>
-                        {{ Auth::user()->no_telp_hp }}
+                        {{ Auth::user()->email }}
                     </div>
                     <a href="{{ route('profil') }}" class="dropdown-item">
                         <i class="nav-icon i-Network pull-left"></i> Update Profile

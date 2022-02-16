@@ -19,7 +19,7 @@
             <div class="form-group">
               <label for="email">Email</label>
               <input type="text" class="form-control" id="email" name="email" value="{{ Auth::user()->email }}" placeholder="Email">
-              <input type="hidden" class="form-control" id="id" name="id" value="{{ Auth::user()->id }}" placeholder="Email" readonly>
+              <input type="hidden" class="form-control" id="id" name="id" value="{{ Auth::user()->id }}" placeholder="id" readonly>
             </div>
             <div class="form-group">
               <label for="name">Nama</label>
@@ -42,12 +42,12 @@
               @if(Auth::user()->foto == '')
               <p>Belum ada foto</p>
               @else
-                <img src="{{ Auth::user()->foto }}" class="rounded" style="width:200px">
+                <img src="{{ auth()->user()->avatar_url }}" class="rounded" style="width:200px">
               @endif
             </div>
             <div class="form-group">
                 <label for="foto">Foto</label>
-                <input type="file" class="form-control" id="foto" name="foto" accept="image/png, image/jpg, image/jpeg" >
+                <input type="file" class="form-control" id="foto" name="foto" accept="image/png, image/jpg, image/jpeg">
             </div>
           </div>
 

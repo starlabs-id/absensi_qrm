@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 14 Feb 2022 pada 09.40
+-- Waktu pembuatan: 16 Feb 2022 pada 10.06
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 7.4.27
 
@@ -250,7 +250,15 @@ CREATE TABLE `model_has_roles` (
 
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (1, 'App\\Models\\User', 1),
-(1, 'App\\Models\\User', 3);
+(1, 'App\\Models\\User', 3),
+(2, 'App\\Models\\User', 4),
+(4, 'App\\Models\\User', 13),
+(5, 'App\\Models\\User', 5),
+(5, 'App\\Models\\User', 6),
+(6, 'App\\Models\\User', 9),
+(7, 'App\\Models\\User', 10),
+(9, 'App\\Models\\User', 11),
+(10, 'App\\Models\\User', 8);
 
 -- --------------------------------------------------------
 
@@ -286,7 +294,46 @@ INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at
 (6, 'user-list', 'web', '2022-02-11 00:07:32', '2022-02-11 17:28:45'),
 (7, 'user-add', 'web', '2022-02-11 17:28:52', '2022-02-11 17:28:52'),
 (8, 'user-update', 'web', '2022-02-11 17:28:57', '2022-02-11 17:28:57'),
-(9, 'user-delete', 'web', '2022-02-11 17:29:02', '2022-02-11 17:29:02');
+(9, 'user-delete', 'web', '2022-02-11 17:29:02', '2022-02-11 17:29:02'),
+(10, 'projek-list', 'web', '2022-02-16 05:23:38', '2022-02-16 05:23:38'),
+(11, 'projek-add', 'web', '2022-02-16 05:23:44', '2022-02-16 05:23:44'),
+(12, 'projek-update', 'web', '2022-02-16 05:23:51', '2022-02-16 05:23:51'),
+(13, 'projek-delete', 'web', '2022-02-16 05:23:58', '2022-02-16 05:23:58'),
+(14, 'projekdetail-list', 'web', '2022-02-16 05:24:18', '2022-02-16 05:24:18'),
+(15, 'projekdetail-add', 'web', '2022-02-16 05:24:23', '2022-02-16 05:24:23'),
+(16, 'projekdetail-update', 'web', '2022-02-16 05:24:30', '2022-02-16 05:24:30'),
+(17, 'projekdetail-delete', 'web', '2022-02-16 05:24:35', '2022-02-16 05:24:35'),
+(18, 'tukang-list', 'web', '2022-02-16 05:24:49', '2022-02-16 05:24:49'),
+(19, 'tukang-add', 'web', '2022-02-16 05:24:55', '2022-02-16 05:24:55'),
+(20, 'tukang-update', 'web', '2022-02-16 05:25:07', '2022-02-16 05:25:07'),
+(21, 'tukang-delete', 'web', '2022-02-16 05:25:15', '2022-02-16 05:25:15'),
+(22, 'absen-list', 'web', '2022-02-16 05:25:29', '2022-02-16 05:25:29'),
+(23, 'absen-add', 'web', '2022-02-16 05:25:32', '2022-02-16 05:25:32'),
+(24, 'absen-update', 'web', '2022-02-16 05:25:36', '2022-02-16 05:25:36'),
+(25, 'absen-delete', 'web', '2022-02-16 05:25:40', '2022-02-16 05:25:40'),
+(26, 'absenlembur-list', 'web', '2022-02-16 05:25:54', '2022-02-16 05:25:54'),
+(27, 'absenlembur-add', 'web', '2022-02-16 05:26:06', '2022-02-16 05:26:06'),
+(28, 'absenlembur-update', 'web', '2022-02-16 05:26:10', '2022-02-16 05:26:10'),
+(29, 'absenlembur-delete', 'web', '2022-02-16 05:26:15', '2022-02-16 05:26:15'),
+(30, 'chat-list', 'web', '2022-02-16 05:26:40', '2022-02-16 05:26:40'),
+(31, 'chat-add', 'web', '2022-02-16 05:26:46', '2022-02-16 05:26:46'),
+(32, 'chat-update', 'web', '2022-02-16 05:26:55', '2022-02-16 05:26:55'),
+(33, 'chat-delete', 'web', '2022-02-16 05:27:02', '2022-02-16 05:27:02'),
+(34, 'chatdetail-list', 'web', '2022-02-16 05:27:23', '2022-02-16 05:27:23'),
+(35, 'chatdetail-add', 'web', '2022-02-16 05:27:28', '2022-02-16 05:27:28'),
+(36, 'shift-list', 'web', '2022-02-16 05:27:43', '2022-02-16 05:27:43'),
+(37, 'shift-add', 'web', '2022-02-16 05:27:47', '2022-02-16 05:27:47'),
+(38, 'shift-update', 'web', '2022-02-16 05:27:51', '2022-02-16 05:27:51'),
+(39, 'shift-delete', 'web', '2022-02-16 05:27:56', '2022-02-16 05:27:56'),
+(41, 'role-list', 'web', '2022-02-16 05:32:52', '2022-02-16 05:33:01'),
+(42, 'role-add', 'web', '2022-02-16 05:33:05', '2022-02-16 05:33:05'),
+(43, 'role-update', 'web', '2022-02-16 05:33:19', '2022-02-16 05:33:19'),
+(44, 'role-delete', 'web', '2022-02-16 05:33:24', '2022-02-16 05:33:24'),
+(45, 'permission-list', 'web', '2022-02-16 05:33:36', '2022-02-16 05:33:36'),
+(46, 'permission-add', 'web', '2022-02-16 05:33:39', '2022-02-16 05:33:39'),
+(47, 'permission-update', 'web', '2022-02-16 05:33:49', '2022-02-16 05:33:49'),
+(48, 'permission-delete', 'web', '2022-02-16 05:33:56', '2022-02-16 05:33:56'),
+(49, 'validasi-update', 'web', '2022-02-16 05:46:23', '2022-02-16 05:46:23');
 
 -- --------------------------------------------------------
 
@@ -339,10 +386,18 @@ CREATE TABLE `projeks` (
   `total_prestasi_keuangan` int(11) DEFAULT NULL,
   `total_prestasi_fisik` int(11) DEFAULT NULL,
   `status` enum('closing','process') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `total_pekerja` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `edit_by` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `projeks`
+--
+
+INSERT INTO `projeks` (`id`, `nama_projek`, `kode_projek`, `area_projek`, `nomor_kontrak`, `tanggal_kontrak`, `judul_kontrak`, `nilai_kontrak`, `durasi_kontrak`, `durasi_projek`, `lokasi`, `pemberi_kerja`, `pm`, `marketing`, `supervisor`, `rencana_kerja`, `owner`, `tanggal_mulai`, `tanggal_selesai`, `total_volume_kontrak`, `total_harga_satuan`, `total_volume_pekerjaan_sebelumnya`, `total_volume_pekerjaan_hari_ini`, `total_prestasi_keuangan`, `total_prestasi_fisik`, `status`, `total_pekerja`, `edit_by`, `created_at`, `updated_at`) VALUES
+(1, 'Tol Bali Mandara', 'A', 'A', 'A', '2022-02-01', 'A', 'A', 'A', NULL, 'A', 'A', 11, 5, 8, 'A', '13', '2022-02-01', NULL, 10, 0, 10, 0, 0, 0, 'process', '15', 1, '2022-02-16 07:03:36', '2022-02-16 07:03:36');
 
 -- --------------------------------------------------------
 
@@ -363,7 +418,17 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(1, 'Superadmin', 'web', '2022-02-11 00:09:35', '2022-02-11 00:09:35');
+(1, 'Superadmin', 'web', '2022-02-11 00:09:35', '2022-02-11 00:09:35'),
+(2, 'Direktur Utama', 'web', '2022-02-16 05:40:08', '2022-02-16 05:40:08'),
+(3, 'Direktur Teknik', 'web', '2022-02-16 05:40:49', '2022-02-16 05:40:49'),
+(4, 'Owner', 'web', '2022-02-16 05:41:27', '2022-02-16 05:41:27'),
+(5, 'Marketing', 'web', '2022-02-16 05:42:08', '2022-02-16 05:42:08'),
+(6, 'Admin Teknik', 'web', '2022-02-16 05:44:17', '2022-02-16 05:44:17'),
+(7, 'GM', 'web', '2022-02-16 05:44:57', '2022-02-16 05:44:57'),
+(8, 'Co GM', 'web', '2022-02-16 05:46:08', '2022-02-16 05:46:08'),
+(9, 'PM', 'web', '2022-02-16 05:48:09', '2022-02-16 05:48:09'),
+(10, 'Supervisor', 'web', '2022-02-16 05:52:48', '2022-02-16 05:52:48'),
+(11, 'Karyawan', 'web', '2022-02-16 05:53:45', '2022-02-16 05:53:45');
 
 -- --------------------------------------------------------
 
@@ -375,6 +440,209 @@ CREATE TABLE `role_has_permissions` (
   `permission_id` bigint(20) UNSIGNED NOT NULL,
   `role_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `role_has_permissions`
+--
+
+INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
+(6, 1),
+(7, 1),
+(8, 1),
+(9, 1),
+(10, 1),
+(10, 2),
+(10, 3),
+(10, 4),
+(10, 5),
+(10, 6),
+(10, 7),
+(10, 8),
+(10, 9),
+(10, 10),
+(10, 11),
+(11, 1),
+(11, 2),
+(11, 3),
+(11, 6),
+(11, 7),
+(11, 9),
+(11, 10),
+(12, 1),
+(12, 2),
+(12, 3),
+(12, 6),
+(12, 7),
+(12, 9),
+(12, 10),
+(13, 1),
+(13, 2),
+(13, 3),
+(13, 6),
+(13, 7),
+(13, 9),
+(14, 1),
+(14, 2),
+(14, 3),
+(14, 4),
+(14, 5),
+(14, 6),
+(14, 7),
+(14, 8),
+(14, 9),
+(14, 10),
+(14, 11),
+(15, 1),
+(15, 2),
+(15, 3),
+(15, 6),
+(15, 7),
+(15, 9),
+(15, 10),
+(16, 1),
+(16, 2),
+(16, 3),
+(16, 6),
+(16, 7),
+(16, 9),
+(17, 1),
+(17, 2),
+(17, 3),
+(17, 6),
+(17, 7),
+(17, 9),
+(18, 1),
+(18, 2),
+(18, 3),
+(18, 6),
+(18, 7),
+(18, 8),
+(18, 9),
+(18, 10),
+(19, 1),
+(19, 2),
+(19, 3),
+(19, 6),
+(19, 7),
+(19, 9),
+(20, 1),
+(20, 2),
+(20, 3),
+(20, 6),
+(20, 7),
+(20, 9),
+(21, 1),
+(21, 2),
+(21, 3),
+(21, 6),
+(21, 7),
+(21, 9),
+(22, 1),
+(22, 2),
+(22, 3),
+(22, 6),
+(22, 7),
+(22, 8),
+(22, 9),
+(22, 10),
+(22, 11),
+(23, 1),
+(23, 2),
+(23, 3),
+(23, 11),
+(24, 1),
+(24, 2),
+(24, 3),
+(24, 11),
+(25, 1),
+(25, 2),
+(25, 3),
+(26, 1),
+(26, 2),
+(26, 3),
+(26, 6),
+(26, 7),
+(26, 8),
+(26, 9),
+(26, 10),
+(26, 11),
+(27, 1),
+(27, 2),
+(27, 3),
+(27, 11),
+(28, 1),
+(28, 2),
+(28, 3),
+(28, 11),
+(29, 1),
+(29, 2),
+(29, 3),
+(30, 1),
+(30, 2),
+(30, 3),
+(30, 5),
+(30, 6),
+(30, 7),
+(30, 8),
+(30, 9),
+(30, 10),
+(31, 1),
+(31, 2),
+(31, 3),
+(31, 6),
+(31, 7),
+(32, 1),
+(32, 2),
+(32, 3),
+(32, 6),
+(32, 7),
+(33, 1),
+(33, 2),
+(33, 3),
+(33, 7),
+(34, 1),
+(34, 2),
+(34, 3),
+(34, 5),
+(34, 6),
+(34, 7),
+(34, 8),
+(34, 9),
+(34, 10),
+(35, 1),
+(35, 2),
+(35, 3),
+(35, 4),
+(35, 5),
+(35, 6),
+(35, 7),
+(35, 8),
+(35, 9),
+(35, 10),
+(36, 1),
+(36, 2),
+(36, 3),
+(36, 6),
+(36, 9),
+(37, 1),
+(37, 2),
+(37, 6),
+(38, 1),
+(38, 6),
+(39, 1),
+(39, 2),
+(39, 6),
+(41, 1),
+(42, 1),
+(43, 1),
+(44, 1),
+(45, 1),
+(46, 1),
+(47, 1),
+(48, 1),
+(49, 1),
+(49, 2),
+(49, 9);
 
 -- --------------------------------------------------------
 
@@ -436,8 +704,16 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `foto`, `no_telp_hp`, `ttd`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Kevin', 'admin@mail.com', NULL, '$2y$10$S5WiDcE/zz6MbY0co/dS0.iyajRsWRrTLm9Vfv1347Wz3/Gb1Q0I6', NULL, NULL, NULL, '081338639778', NULL, NULL, '2022-02-09 23:50:49', '2022-02-11 18:40:50'),
-(3, 'Bareel', 'bareel@gmail.com', NULL, '$2y$10$US.2COHH1Gvb/9JnjU8VzeJV1Rjpd9V1IGCNvXa/rV2qU1B9yRKKm', NULL, NULL, NULL, '087730786790', NULL, NULL, '2022-02-11 20:04:26', '2022-02-14 02:12:22');
+(1, 'Kevin R', 'admin@mail.com', NULL, '$2y$10$KisUOW36KysS/0BKijXQde3MfACHo08vx39.5sUZeWCr/4W83gruW', NULL, NULL, 'sz0fnkw0xS9u1nOSGW0rM9fYKD9g7F2mwnrUfzGS.jpg', '081338639778', NULL, NULL, '2022-02-09 23:50:49', '2022-02-16 04:03:15'),
+(3, 'Bareel', 'bareel@gmail.com', NULL, '$2y$10$US.2COHH1Gvb/9JnjU8VzeJV1Rjpd9V1IGCNvXa/rV2qU1B9yRKKm', NULL, NULL, NULL, '087730786790', NULL, NULL, '2022-02-11 20:04:26', '2022-02-14 02:12:22'),
+(4, 'Yusuf Ali', 'yusufali@gmail.com', NULL, '$2y$10$dYsC1nS.Hcit06Re4T8z9OGfqfwbd1YIke4o0psWXKJ1uSfwMvvfO', NULL, NULL, NULL, '081237728888', NULL, NULL, '2022-02-16 05:54:43', '2022-02-16 05:54:43'),
+(5, 'Ismed Andrian', 'ismedandrian@gmail.com', NULL, '$2y$10$emrs0inLJCMKRqf7cIkE1uLKKaKkEOIyThYDaqVEbOon0Fo97aKmq', NULL, NULL, NULL, '0811386959', NULL, NULL, '2022-02-16 06:03:31', '2022-02-16 06:03:31'),
+(6, 'Andri', 'andri@gmail.com', NULL, '$2y$10$OrxrA8qRVUF3PHdCoL2g9Ow0ZbNwfGBer97RnSxwwVm4/GMsZvpKG', NULL, NULL, NULL, '081310106486', NULL, NULL, '2022-02-16 06:05:06', '2022-02-16 06:05:06'),
+(8, 'Alit', 'alit.arc013@gmail.com', NULL, '$2y$10$IO9qr.ax/NGHzaSNTa55uumr6460K0sLCwd83T.XzQyUAZTa9ftAu', NULL, NULL, NULL, '081237846440', NULL, NULL, '2022-02-16 06:06:38', '2022-02-16 06:06:38'),
+(9, 'Lintang', 'garbhadana@gmail.com', NULL, '$2y$10$8t6Qyj8yW2u4xmlxvEA1x.e0AiUALoKj75l0k2R9FGtNG1GYD4viy', NULL, NULL, NULL, '085847184272', NULL, NULL, '2022-02-16 06:08:17', '2022-02-16 06:08:17'),
+(10, 'Rima', 'rimasilvia22@gmail.com', NULL, '$2y$10$isONkxEzVVfUAgbdHQAQVutrOIWaEyxhJGPVFuAud1YteNaR0/y5C', NULL, NULL, NULL, '08113934003', NULL, NULL, '2022-02-16 06:08:52', '2022-02-16 06:08:52'),
+(11, 'Sukma', 'sukma.naindya0209@gmail.com', NULL, '$2y$10$FgJ5GRHfKZmsMkQG9HackOLDVCR7d64Q4gCj6s0cNIf2BX.GtdufW', NULL, NULL, NULL, '087863200314', NULL, NULL, '2022-02-16 06:14:41', '2022-02-16 06:14:41'),
+(13, 'Luhut', 'opungluhut@gmail.com', NULL, '$2y$10$WfrWrXU..FVCviRY4/rqQ.PVDQYmgnM255liDt05/Jtdb9H6dqdeW', NULL, NULL, NULL, '081111111', NULL, NULL, '2022-02-16 06:32:16', '2022-02-16 06:32:16');
 
 --
 -- Indexes for dumped tables
@@ -610,7 +886,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT untuk tabel `personal_access_tokens`
@@ -622,13 +898,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT untuk tabel `projeks`
 --
 ALTER TABLE `projeks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `shifts`
@@ -646,7 +922,7 @@ ALTER TABLE `tukangs`
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

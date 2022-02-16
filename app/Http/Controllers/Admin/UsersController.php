@@ -15,7 +15,9 @@ use App\Models\Roles;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
-use Image;
+use Intervention\Image\Image;
+use Intervention\Image\Exception\NotReadableException;
+use File;
 
 class UsersController extends Controller
 {
@@ -134,6 +136,7 @@ class UsersController extends Controller
         
         DB::table('model_has_roles')->where('model_id', $request->hidden_id)->delete();
         $data->assignRole($request->input('roles'));
+        
 
         // return response()->json(['success' => 'Data berhasil disimpan!']);
         
@@ -183,11 +186,12 @@ class UsersController extends Controller
     public function permission_update(Request $request)
     {
         request()->validate([
-            'name' => 'required|max:70',
+            'name' => 'required|max:70|unique:permissions,name',
         ],
         [
             'name.required' => 'Nama harus dilengkapi!',
             'name.max' => 'Nama tidak boleh lebih dari :max karakter!',
+            'name.unique' => 'Nama sudah ada!'
         ]);
 
         $data                   = Permission::find($request->id);
@@ -290,6 +294,7 @@ class UsersController extends Controller
 
     public function profil_update(Request $request)
     {
+        // dd($request->all());
         request()->validate([
             'name' => 'required|max:50',
             'no_telp_hp' => 'max:20|unique:users,no_telp_hp',
@@ -322,11 +327,20 @@ class UsersController extends Controller
         }
 
         if ($request->hasFile('foto')) {
-            $file       =   $request->file('foto');
-            $fileName   =   Auth::user()->id . "_user";
-            $location   =   public_path('images/users/'. $fileName);
-            Image::make($file)->save($location);
-            $data->foto = $fileName;
+            
+            Storage::disk('local')->delete('public/user/'.$data->foto);
+
+            //upload image baru
+            $image = $request->file('foto');
+            $image->storeAs('public/user', $image->hashName());
+
+            $data->foto = $image->hashName();
+
+            // $file       =   $request->file('foto');
+            // $fileName   =   time().'_'.$request->name.'.'.$file->getClientOriginalExtension();
+            // $location   =   public_path('storage/user/'. $fileName);
+            // Image::make($file)->save($location);
+            // $data->foto = $fileName;
         }
         
 

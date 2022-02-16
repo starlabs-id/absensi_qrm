@@ -16,6 +16,21 @@
                     </span>
                 </h4>
                 <br>
+                <form action="{{ route('admin.projek.index') }}" method="GET">
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <!-- <div class="input-group-prepend">
+                                <a href="{{ route('admin.projek.create') }}" class="btn btn-primary btn-sm"
+                                    style="padding-top: 10px;"><i class="fa fa-plus-circle"></i> TAMBAH</a>
+                            </div> -->
+                            <input type="text" class="form-control" name="q" placeholder="cari berdasarkan nama proyek">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> CARI
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
                 
                 <div class="table-responsive">
                     <table id="" class="table table-bordered">
@@ -23,8 +38,7 @@
                             <tr>
                                 <th scope="col" style="text-align: center;width: 6%">No.</th>
                                 <th scope="col">Nama Projek</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">PM</th>
+                                <th scope="col">Pemberi Kerja</th>
                                 <th scope="col">Rencana Kerja</th>
                                 <th scope="col" style="width: 15%;text-align: center">Aksi</th>
                             </tr>
@@ -34,18 +48,12 @@
                             <tr>
                                 <td>{{ ++$no + ($projeks->currentPage()-1) * $projeks->perPage() }}</td>
                                 <td>{{ $projek->nama_projek }}</td>
-                                <td>{{ $projek->status }}</td>
-                                <td>{{ $projek->pm }}</td>
-                                <td>{{ $projek->area_projek }}</td>
+                                <td>{{ $projek->pemberi_kerja }}</td>
+                                <td>{{ $projek->rencana_kerja }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-sm">Detail</a>
-                                    <a href="{{ route('admin.projek.edit', $projek->id) }}"
-                                        class="btn btn-sm btn-primary">
-                                    </a>
-
-                                    <button onClick="Delete(this.id)" class="btn btn-sm btn-danger"
-                                        id="{{ $projek->id }}">
-                                    </button>
+                                    <a href="{{ route('admin.projek.show', $projek->id) }}" class="btn btn-success btn-sm">Detail</a>
+                                    <a href="{{ route('admin.projek.edit', $projek->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                    <button onClick="Delete(this.id)" class="btn btn-sm btn-danger" id="{{ $projek->id }}">Hapus</button>
                                 </td>
                             </tr>
                             @empty

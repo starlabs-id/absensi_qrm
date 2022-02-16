@@ -39,93 +39,103 @@
                                 <div class="col-md-3 col-6">
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Nama Proyek</p>
-                                        <span>AAA</span>
+                                        <span>{{ $projeks->nama_projek }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Kode Proyek</p>
-                                        <span>AAA</span>
+                                        <span>{{ $projeks->kode_projek }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Nomor Kontrak</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->nomor_kontrak }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Tanggal Kontrak</p>
-                                        <span>AAAA</span>
+                                        <span>{{ date('d/m/Y', strtotime($projeks['tanggal_kontrak'])) }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Tanggal Selesai</p>
-                                        <span>AAAA</span>
+                                        <span>
+                                            @if($projeks->tanggal_selesai == null)
+                                                {{ $projeks->status }}
+                                            @else
+                                                {{ date('d/m/Y', strtotime($projeks['tanggal_selesai'])) }}
+                                            @endif
+                                        </span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Total Prestasi Fisik</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->total_prestasi_fisik }}</span>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Judul Kontrak</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->judul_kontrak }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Nilai Kontrak</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->nilai_kontrak }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Durasi Kontrak</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->durasi_kontrak }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Durasi Proyek</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->durasi_proyek }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Total Volume Pekerjaan Sebelumnya</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->total_volume_pekerjaan_sebelumnya }}</span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <p class="text-primary mb-1">Total Pekerja</p>
+                                        <span>{{ $projeks->total_pekerja }}</span>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Lokasi</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->lokasi }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Pemberi Kerja</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->pemberi_kerja }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">PM</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->pm }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Marketing</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->marketing }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Total Volume Pekerjaan Hari Ini</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->total_volume_pekerjaan_hari_ini }}</span>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Supervisor</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->supervisor }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Rencana Kerja</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->rencana_kerja }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Owner</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->owner }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Tanggal Mulai</p>
-                                        <span>AAAA</span>
+                                        <span>{{ date('d/m/Y', strtotime($projeks['tanggal_mulai'])) }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Total Prestasi Keuangan</p>
-                                        <span>AAAA</span>
+                                        <span>{{ $projeks->total_prestasi_keuangan }}</span>
                                     </div>
                                 </div>
                             </div>

@@ -41,9 +41,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getImageAttribute($image)
+    public function getImageAttribute($foto)
     {
-        return asset('storage/user/' . $image);
+        return asset('storage/user/' . $foto);
     }
 
     public function absen()
@@ -84,8 +84,8 @@ class User extends Authenticatable
     
     public function getAvatarUrlAttribute()
     {
-    if ($this->avatar != null) :
-        return asset($this->avatar);
+    if($this->foto != null) :
+        return asset('storage/user/' . $this->foto);
     else :
         return 'https://ui-avatars.com/api/?name=' . str_replace(' ', '+', $this->name) . '&background=4e73df&color=ffffff&size=100';
     endif;

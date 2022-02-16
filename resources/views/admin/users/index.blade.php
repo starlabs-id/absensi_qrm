@@ -110,6 +110,7 @@
                               
                                 <a href="#modal-edit" data-toggle="modal" class="btn btn-warning btn-sm btn-edit"
                                   data-id="{{ $row['id'] }}"
+                                  data-hidden_id="{{ $row['id'] }}"
                                   data-no_telp_hp="{{ $row['no_telp_hp'] }}"
                                   data-namea="{{ $row['namea'] }}"
                                   data-ris="{{ $row['ris'] }}"><i class="nav-icon i-Pen-5"></i> Edit
@@ -141,6 +142,7 @@
                             <div class="form-group" hidden>
                               <label>ID</label>
                               <input type="text" id="idx" name="id" class="form-control" placeholder="ID" required>
+                              <input type="text" name="hidden_id" id="hidden_idx"/>
                             </div>
                             <div class="form-group">
                               <label>Nama</label>
@@ -210,6 +212,7 @@
   $(document).ready(function() {
       $('#datatable').on('click', '.btn-edit', function() {
         var id = $(this).data('id');
+        var hidden_id = $(this).data('hidden_id');
         var namea = $(this).data('namea');
         var ris = $(this).data('ris');
         var no_telp_hp = $(this).data('no_telp_hp');
@@ -218,6 +221,7 @@
         $('#risx').val(ris);
         $('#idx').val(id);
         $('#no_telp_hpx').val(no_telp_hp);
+        $('#hidden_idx').val(hidden_id);
       });
 
       $('#frm-edit').on('submit', function(e) {

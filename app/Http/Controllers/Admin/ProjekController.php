@@ -18,6 +18,7 @@ use App\Models\Projek;
 use App\Models\RolePermission;
 use App\Models\Roles;
 use App\Models\Tukang;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
@@ -32,35 +33,61 @@ class ProjekController extends Controller
     public function index()
     {
         $projeks = Projek::latest()->when(request()->q, function($projeks) {
-            $projeks = $projeks->where('name', 'like', '%'. request()->q . '%');
+            $projeks = $projeks->where('nama_projek', 'like', '%'. request()->q . '%');
         })->paginate(10);
 
         return view('admin.projek.index', compact('projeks'));
     }
 
-    public function show(Request $request)
+    public function show($id)
     {
-        return view('admin.projek.show');
+        $projeks = Projek::where('id', '=', $id)->first();
+
+        return view('admin.projek.show', compact('projeks'));
     }
 
     public function create()
     {
-        return view('admin.projek.create');
+        $marketing = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Marketing")
+                    ->get();
+
+        $pm = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "PM")
+                    ->get();
+
+        $supervisor = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Supervisor")
+                    ->get();
+
+        $owner = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Owner")
+                    ->get();
+
+        return view('admin.projek.create', compact('marketing', 'pm', 'supervisor', 'owner'));
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nama_proyek'  => 'required',
-            'kode_proyek'  => 'required',
-            'area_proyek'  => 'required',
+            'nama_projek'  => 'required',
+            'kode_projek'  => 'required',
+            'area_projek'  => 'required',
             'nomor_kontrak'  => 'required',
             'tanggal_kontrak'  => 'required',
             'judul_kontrak'  => 'required',
             'nilai_kontrak'  => 'required',
             'durasi_kontrak'  => 'required',
             'lokasi'  => 'required',
-            'pemberi_kontrak'  => 'required',
+            'pemberi_kerja'  => 'required',
             'pm'  => 'required',
             'marketing'  => 'required',
             'supervisor'  => 'required',
@@ -68,18 +95,19 @@ class ProjekController extends Controller
             'owner'  => 'required',
             'tanggal_mulai'  => 'required',
             'total_volume_pekerjaan_sebelumnya'  => 'required',
+            'total_pekerja'  => 'required',
         ]); 
         $projek = Projek::create([
-            'nama_proyek'   => $request->nama_proyek,
-            'kode_proyek'   => $request->kode_proyek,
-            'area_proyek'   => $request->area_proyek,
+            'nama_projek'   => $request->nama_projek,
+            'kode_projek'   => $request->kode_projek,
+            'area_projek'   => $request->area_projek,
             'nomor_kontrak'   => $request->nomor_kontrak,
             'tanggal_kontrak'   => $request->tanggal_kontrak,
             'judul_kontrak'   => $request->judul_kontrak,
             'nilai_kontrak'   => $request->nilai_kontrak,
             'durasi_kontrak'   => $request->durasi_kontrak,
             'lokasi'   => $request->lokasi,
-            'pemberi_kontrak'   => $request->pemberi_kontrak,
+            'pemberi_kerja'   => $request->pemberi_kerja,
             'pm'   => $request->pm,
             'marketing'   => $request->marketing,
             'supervisor'   => $request->supervisor,
@@ -88,11 +116,12 @@ class ProjekController extends Controller
             'tanggal_mulai'   => $request->tanggal_mulai,
             'total_volume_pekerjaan_sebelumnya'   => $request->total_volume_pekerjaan_sebelumnya,
             'total_volume_kontrak'   => $request->total_volume_kontrak,
-            'total_harga_satuan'   => "0",
-            'total_volume_pekerjaan_hari_ini'   => "0",
-            'total_prestasi_keuangan'   => "0",
-            'total_prestasi_fisik'   => "0",
+            'total_harga_satuan'   => $request->total_harga_satuan,
+            'total_volume_pekerjaan_hari_ini'   => $request->total_volume_pekerjaan_hari_ini,
+            'total_prestasi_keuangan'   => $request->total_prestasi_keuangan,
+            'total_prestasi_fisik'   => $request->total_prestasi_fisik,
             'status'   => "process",
+            'total_pekerja'   => $request->total_pekerja,
             'edit_by'   => Auth::user()->id,
         ]);
  
@@ -124,7 +153,7 @@ class ProjekController extends Controller
             'nilai_kontrak'  => 'required',
             'durasi_kontrak'  => 'required',
             'lokasi'  => 'required',
-            'pemberi_kontrak'  => 'required',
+            'pemberi_kerja'  => 'required',
             'pm'  => 'required',
             'marketing'  => 'required',
             'supervisor'  => 'required',
@@ -134,6 +163,7 @@ class ProjekController extends Controller
             'total_volume_pekerjaan_sebelumnya'  => 'required',
             'total_volume_kontrak'  => 'required',
             'total_harga_satuan'  => 'required',
+            'total_pekerja'  => 'required',
         ]); 
 
         $projek = Projek::findOrFail($projek->id);
@@ -147,7 +177,7 @@ class ProjekController extends Controller
             'nilai_kontrak'   => $request->nilai_kontrak,
             'durasi_kontrak'   => $request->durasi_kontrak,
             'lokasi'   => $request->lokasi,
-            'pemberi_kontrak'   => $request->pemberi_kontrak,
+            'pemberi_kerja'   => $request->pemberi_kerja,
             'pm'   => $request->pm,
             'marketing'   => $request->marketing,
             'supervisor'   => $request->supervisor,
@@ -158,6 +188,7 @@ class ProjekController extends Controller
             'total_volume_kontrak'   => $request->total_volume_kontrak,
             'total_harga_satuan'   => $request->total_harga_satuan,
             'status'   => $request->status,
+            'total_pekerja'   => $request->total_pekerja,
             'edit_by'   => Auth::user()->id,
         ]);
 
