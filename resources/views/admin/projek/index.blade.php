@@ -12,61 +12,39 @@
                     <span class="pull-right">
                         <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
                         <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
-                        <a href="{{ route('admin.projek.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
+                        <a href="{{ route('projek.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
                     </span>
                 </h4>
                 <br>
-                <form action="{{ route('admin.projek.index') }}" method="GET">
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <!-- <div class="input-group-prepend">
-                                <a href="{{ route('admin.projek.create') }}" class="btn btn-primary btn-sm"
-                                    style="padding-top: 10px;"><i class="fa fa-plus-circle"></i> TAMBAH</a>
-                            </div> -->
-                            <input type="text" class="form-control" name="q" placeholder="cari berdasarkan nama proyek">
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> CARI
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
                 
                 <div class="table-responsive">
-                    <table id="" class="table table-bordered">
+                    <table id="datatable" class="display table table-striped" style="width:100%">
                         <thead>
                             <tr>
-                                <th scope="col" style="text-align: center;width: 6%">No.</th>
-                                <th scope="col">Nama Projek</th>
-                                <th scope="col">Pemberi Kerja</th>
-                                <th scope="col">Rencana Kerja</th>
-                                <th scope="col" style="width: 15%;text-align: center">Aksi</th>
+                                <th>No.</th>
+                                <th>Nama Projek</th>
+                                <th>Pemberi Projek</th>
+                                <th>Rencana Projek</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($projeks as $no => $projek)
+                            <?php $no = 1; ?>
+                            @foreach($projeks as $row)
                             <tr>
-                                <td>{{ ++$no + ($projeks->currentPage()-1) * $projeks->perPage() }}</td>
-                                <td>{{ $projek->nama_projek }}</td>
-                                <td>{{ $projek->pemberi_kerja }}</td>
-                                <td>{{ $projek->rencana_kerja }}</td>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $row->nama_projek }}</td>
+                                <td>{{ $row->pemberi_kerja }}</td>
+                                <td>{{ $row->rencana_kerja }}</td>
                                 <td>
-                                    <a href="{{ route('admin.projek.show', $projek->id) }}" class="btn btn-success btn-sm">Detail</a>
-                                    <a href="{{ route('admin.projek.edit', $projek->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                    <button onClick="Delete(this.id)" class="btn btn-sm btn-danger" id="{{ $projek->id }}">Hapus</button>
+                                    <a href="{{ route('projek.show', $row->id) }}" class="btn btn-success btn-sm">Detail</a>
+                                    <a href="{{ route('projek.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row['id'] }}">Hapus</a>
                                 </td>
                             </tr>
-                            @empty
-                                <div class="alert alert-danger">
-                                    Data Belum Tersedia!
-                                </div>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
-
-                    <div style="text-align: center">
-                        {{ $projeks->links("vendor.pagination.bootstrap-4") }}
-                    </div>
                 </div>
 
             </div>
@@ -75,66 +53,40 @@
     <!-- end of col -->
 
 </div>
+@endsection
 
-<script>
-    //ajax delete
-    function Delete(id) {
-        var id = id;
-        var token = $("meta[name='csrf-token']").attr("content");
+@section('customJs')
+<script type="text/javascript">
 
-        swal({
-            title: "APAKAH KAMU YAKIN ?",
-            text: "INGIN MENGHAPUS DATA INI!",
-            icon: "warning",
-            buttons: [
-                'TIDAK',
-                'YA'
-            ],
-            dangerMode: true,
-        }).then(function (isConfirm) {
-            if (isConfirm) {
+  $(document).ready(function() {
+    
+    $('#frm-tambah').on('submit', function(e) {
 
-                //ajax delete
-                jQuery.ajax({
-                    url: "{{ route("admin.projek.index") }}/" + id,
-                    data: {
-                        "id": id,
-                        "_token": token
-                    },
-                    type: 'DELETE',
-                    success: function (response) {
-                        if (response.status == "success") {
-                            swal({
-                                title: 'BERHASIL!',
-                                text: 'DATA BERHASIL DIHAPUS!',
-                                icon: 'success',
-                                timer: 1000,
-                                showConfirmButton: false,
-                                showCancelButton: false,
-                                buttons: false,
-                            }).then(function () {
-                                location.reload();
-                            });
-                        } else {
-                            swal({
-                                title: 'GAGAL!',
-                                text: 'DATA GAGAL DIHAPUS!',
-                                icon: 'error',
-                                timer: 1000,
-                                showConfirmButton: false,
-                                showCancelButton: false,
-                                buttons: false,
-                            }).then(function () {
-                                location.reload();
-                            });
-                        }
-                    }
-                });
+    });
 
-            } else {
-                return true;
+    $('#datatable').on('click','.btn-hapus', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.confirm({
+            icon: 'i-Information',
+            title: 'Alert !',
+            content: 'Apakah anda ingin menghapus data ini ?',
+            type: 'red',
+            typeAnimated: true,
+            buttons: {
+                confirm: function () {
+                    $.get("{{ route('projek.destroy') }}", {id:id}, function(data) {
+                        toastr.success('Data berhasil dihapus');
+                        location.reload();
+                    });
+                },
+                cancel: function () {
+                    $.alert('Batal!');
+                },
             }
-        })
-    }
+        });
+    });
+
+  });
 </script>
 @endsection

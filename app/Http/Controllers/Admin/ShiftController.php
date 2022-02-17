@@ -30,19 +30,12 @@ class ShiftController extends Controller
      */
     public function index()
     {
-        $shifts = Shift::latest()->when(request()->q, function($shifts) {
-            $shifts = $shifts->where('name', 'like', '%'. request()->q . '%');
-        })->paginate(10);
+        $shifts = Shift::get();
 
         return view('admin.shift.index', compact('shifts'));
     }
 
-    public function create()
-    {
-        return view('admin.shift.create');
-    }
-
-    public function store(Request $request)
+    public function add(Request $request)
     {
         $this->validate($request, [
             'nama_shift'  => 'required',
@@ -55,23 +48,12 @@ class ShiftController extends Controller
             'jam_pulang'   => $request->jam_pulang,
             'edit_by'   => Auth::user()->id,
         ]);
- 
-        if($shift){
-             //redirect dengan pesan sukses
-             return redirect()->route('admin.shift.index')->with(['success' => 'Data Berhasil Disimpan!']);
-         }else{
-             //redirect dengan pesan error
-             return redirect()->route('admin.shift.index')->with(['error' => 'Data Gagal Disimpan!']);
-         }
-    }
 
-    public function edit(Shift $shift)
-    {
-        return view('admin.shift.edit', compact('shift'));
+        toastr()->success('Data berhasil disimpan!');
+        return redirect()->back();
     }
-
     
-    public function update(Request $request, Shift $shift)
+    public function update(Request $request)
     {
         $this->validate($request, [
             'nama_shift'  => 'required',
@@ -79,37 +61,25 @@ class ShiftController extends Controller
             'jam_pulang'  => 'required',
         ]); 
 
-        $shift = Shift::findOrFail($shift->id);
+        $shift = Shift::findOrFail($request->id);
         $shift->update([
             'nama_shift'   => $request->nama_shift,
             'jam_masuk'   => $request->jam_masuk,
             'jam_pulang'   => $request->jam_pulang,
             'edit_by'   => Auth::user()->id,
         ]);
-
-        if($shift){
-            //redirect dengan pesan sukses
-            return redirect()->route('admin.shift.index')->with(['success' => 'Data Berhasil Diupdate!']);
-        }else{
-            //redirect dengan pesan error
-            return redirect()->route('admin.shift.index')->with(['error' => 'Data Gagal Diupdate!']);
-        }
+        
+        toastr()->success('Data berhasil disimpan!');
+        return redirect()->back();
     }
 
     
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $shift = Shift::findOrFail($id);
-        $shift->delete();
+        if ($request->ajax()) {
+            $data = Shift::find($request->id)->delete();
 
-        if($shift){
-            return response()->json([
-                'status' => 'success'
-            ]);
-        }else{
-            return response()->json([
-                'status' => 'error'
-            ]);
+            return response()->json($data);
         }
     }
 }

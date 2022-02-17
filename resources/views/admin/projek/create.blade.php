@@ -5,7 +5,7 @@
     <div class="card mb-4">
         <div class="card-body">
             <div class="card-title mb-3">Create Proyek</div>
-            <form action="{{ route('admin.projek.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('projek.add') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-md-6 form-group mb-3">
@@ -105,20 +105,8 @@
                         <input type="number" class="form-control" id="total_harga_satuan" name="total_harga_satuan" required value="{{ old('total_harga_satuan') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
-                        <label for="total_volume_pekerjaan_sebelumnya">Total Volume Pekerjaan Sebelumnya</label>
-                        <input type="number" class="form-control" id="total_volume_pekerjaan_sebelumnya" name="total_volume_pekerjaan_sebelumnya" required value="{{ old('total_volume_pekerjaan_sebelumnya') }}">
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
                         <label for="total_volume_pekerjaan_hari_ini">Total Volume Pekerjaan Hari Ini</label>
                         <input class="form-control" id="total_volume_pekerjaan_hari_ini" name="total_volume_pekerjaan_hari_ini" required value="{{ old('total_volume_pekerjaan_hari_ini') }}">
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="total_prestasi_keuangan">Total Prestasi Keuangan</label>
-                        <input type="number" class="form-control" id="total_prestasi_keuangan" name="total_prestasi_keuangan" required value="{{ old('total_prestasi_keuangan') }}">
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="total_prestasi_fisik">Total Prestasi Fisik</label>
-                        <input type="number" class="form-control" id="total_prestasi_fisik" name="total_prestasi_fisik" required value="{{ old('total_prestasi_fisik') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="total_pekerja">Total Pekerja</label>

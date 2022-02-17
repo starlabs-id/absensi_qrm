@@ -8,13 +8,13 @@
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="{{ route('admin.projek.index') }}">
+                <a class="nav-item-hold" href="{{ route('projek.index') }}">
                     <i class="nav-icon i-Suitcase"></i>
                     <span class="nav-text">Projects</span>
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="{{ route('admin.detailprojek.index') }}">
+                <a class="nav-item-hold" href="{{ route('projekdetail.index') }}">
                     <i class="nav-icon i-File-Horizontal-Text"></i>
                     <span class="nav-text">Projects Detail</span>
                 </a>
@@ -38,13 +38,13 @@
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="{{ route('admin.chat.index') }}">
+                <a class="nav-item-hold" href="{{ route('chat.index') }}">
                     <i class="nav-icon i-Speach-Bubble-Dialog"></i>
                     <span class="nav-text">Chat</span>
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="{{ route('admin.shift.index') }}">
+                <a class="nav-item-hold" href="{{ route('shift.index') }}">
                     <i class="nav-icon i-Clock"></i>
                     <span class="nav-text">Shift</span>
                 </a>

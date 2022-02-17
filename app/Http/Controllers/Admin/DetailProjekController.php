@@ -31,142 +31,140 @@ class DetailProjekController extends Controller
      */
     public function index()
     {
-        $detailprojeks = DetailProjek::latest()->when(request()->q, function($detailprojeks) {
-            $detailprojeks = $detailprojeks->where('name', 'like', '%'. request()->q . '%');
-        })->paginate(10);
+        $detailprojeks = DetailProjek::select('detail_projeks.id', 'detail_projeks.uraian_pekerjaan', 'detail_projeks.volume_kontrak', 'detail_projeks.harga_satuan', 'projeks.id as pid', 'projeks.nama_projek')
+                                    ->leftjoin('projeks', 'projeks.id', '=', 'detail_projeks.projek_id')
+                                    ->orderBy('detail_projeks.id', 'DESC')
+                                    ->get();
 
         return view('admin.detailprojek.index', compact('detailprojeks'));
     }
 
-    public function show(Request $request)
+    public function show($id)
     {
-        return view('admin.detailprojek.show');
+        $detailprojeks = DetailProjek::where('id', '=', $id)->first();
+
+        return view('admin.detailprojek.show', compact('detailprojeks'));
     }
 
     public function create()
     {
-        return view('admin.detailprojek.create');
+        $projek = Projek::get();
+
+        return view('admin.detailprojek.create', compact('projek'));
     }
 
-    public function store(Request $request)
+    public function add(Request $request)
     {
         $this->validate($request, [
-            'nama_proyek'  => 'required',
-            'kode_proyek'  => 'required',
-            'area_proyek'  => 'required',
-            'nomor_kontrak'  => 'required',
-            'tanggal_kontrak'  => 'required',
-            'judul_kontrak'  => 'required',
-            'nilai_kontrak'  => 'required',
-            'durasi_kontrak'  => 'required',
-            'lokasi'  => 'required',
-            'pemberi_kontrak'  => 'required',
-            'pm'  => 'required',
-            'marketing'  => 'required',
-            'supervisor'  => 'required',
-            'rencana_kerja'  => 'required',
-            'owner'  => 'required',
-            'tanggal_mulai'  => 'required',
-            'total_volume_pekerjaan_sebelumnya'  => 'required',
+            'projek_id' => 'required',
+            'uraian_pekerjaan'  => 'required',
+            'volume_kontrak'  => 'required',
+            'harga_satuan'  => 'required',
+            'volume_pekerjaan_hari_ini'  => 'required',
+            'volume_dikerjakan'  => 'required',
+            'prestasi_keuangan_hari_ini'  => 'required',
+            'prestasi_fisik_hari_ini'  => 'required',
+            'tanggal'  => 'required',
         ]); 
         $detailprojeks = Projek::create([
-            'nama_proyek'   => $request->nama_proyek,
-            'kode_proyek'   => $request->kode_proyek,
-            'area_proyek'   => $request->area_proyek,
-            'nomor_kontrak'   => $request->nomor_kontrak,
-            'tanggal_kontrak'   => $request->tanggal_kontrak,
-            'judul_kontrak'   => $request->judul_kontrak,
-            'nilai_kontrak'   => $request->nilai_kontrak,
-            'durasi_kontrak'   => $request->durasi_kontrak,
-            'lokasi'   => $request->lokasi,
-            'pemberi_kontrak'   => $request->pemberi_kontrak,
-            'pm'   => $request->pm,
-            'marketing'   => $request->marketing,
-            'supervisor'   => $request->supervisor,
-            'rencana_kerja'   => $request->rencana_kerja,
-            'owner'   => $request->owner,
-            'tanggal_mulai'   => $request->tanggal_mulai,
-            'total_volume_pekerjaan_sebelumnya'   => $request->total_volume_pekerjaan_sebelumnya,
-            'total_volume_kontrak'   => $request->total_volume_kontrak,
-            'total_harga_satuan'   => "0",
-            'total_volume_pekerjaan_hari_ini'   => "0",
-            'total_prestasi_keuangan'   => "0",
-            'total_prestasi_fisik'   => "0",
-            'status'   => "process",
+            'projek_id'   => $request->projek_id,
+            'uraian_pekerjaan'   => $request->uraian_pekerjaan,
+            'volume_kontrak'   => $request->volume_kontrak,
+            'harga_satuan'   => $request->harga_satuan,
+            'volume_pekerjaan_hari_ini'   => $request->volume_pekerjaan_hari_ini,
+            'volume_dikerjakan'   => $request->volume_dikerjakan,
+            'prestasi_keuangan_hari_ini'   => $request->prestasi_keuangan_hari_ini,
+            'prestasi_fisik_hari_ini'   => $request->prestasi_fisik_hari_ini,
+            'tanggal'   => $request->tanggal,
+            'foto_1'   => $request->foto_1,
+            'foto_2'   => $request->foto_2,
+            'foto_3'   => $request->foto_3,
+            'foto_4'   => $request->foto_4,
+            'foto_5'   => $request->foto_5,
+            'foto_6'   => $request->foto_6,
+            'foto_7'   => $request->foto_7,
+            'foto_8'   => $request->foto_8,
+            'foto_9'   => $request->foto_9,
+            'foto_10'   => $request->foto_10,
+            'keterangan'   => $request->keterangan,
             'edit_by'   => Auth::user()->id,
+        ]);
+
+        $projeks = Projek::findOrFail($request->projek_id);
+
+        $total_volume_pekerjaan_sebelumnya = $projeks->total_volume_pekerjaan_sebelumnya + $detailprojeks->volume_pekerjaan_hari_ini;
+        $total_volume_pekerjaan_hari_ini = $projeks->total_volume_pekerjaan_hari_ini + $detailprojeks->volume_pekerjaan_hari_ini;
+        $total_prestasi_keuangan = $projeks->total_prestasi_keuangan + $detailprojeks->prestasi_keuangan_hari_ini;
+        $total_prestasi_fisik = $projeks->total_prestasi_fisik + $detailprojeks->prestasi_fisik_hari_ini;
+
+        $projeks->update([
+            'total_volume_pekerjaan_sebelumnya'   => $total_volume_pekerjaan_sebelumnya,
+            'total_volume_pekerjaan_hari_ini'   => $total_volume_pekerjaan_hari_ini,
+            'total_prestasi_keuangan'   => $total_prestasi_keuangan,
+            'total_prestasi_fisik'   => $total_prestasi_fisik,
         ]);
  
         if($detailprojeks){
              //redirect dengan pesan sukses
-             return redirect()->route('admin.detailprojek.index')->with(['success' => 'Data Berhasil Disimpan!']);
+             return redirect()->route('detailprojek.index')->with(['success' => 'Data Berhasil Disimpan!']);
          }else{
              //redirect dengan pesan error
-             return redirect()->route('admin.detailprojek.index')->with(['error' => 'Data Gagal Disimpan!']);
+             return redirect()->route('detailprojek.index')->with(['error' => 'Data Gagal Disimpan!']);
          }
     }
 
-    public function edit(DetailProjek $detailprojeks)
+    public function edit($id)
     {
-        $detailprojeks = DetailProjek::get();
+        $detailprojeks = DetailProjek::where('id', '=', $id)->get();
         return view('admin.projek.edit', compact('detailprojeks'));
     }
 
     
-    public function update(Request $request, DetailProjek $detailprojeks)
+    public function update(Request $request)
     {
         $this->validate($request, [
-            'nama_proyek'  => 'required',
-            'kode_proyek'  => 'required',
-            'area_proyek'  => 'required',
-            'nomor_kontrak'  => 'required',
-            'tanggal_kontrak'  => 'required',
-            'judul_kontrak'  => 'required',
-            'nilai_kontrak'  => 'required',
-            'durasi_kontrak'  => 'required',
-            'lokasi'  => 'required',
-            'pemberi_kontrak'  => 'required',
-            'pm'  => 'required',
-            'marketing'  => 'required',
-            'supervisor'  => 'required',
-            'rencana_kerja'  => 'required',
-            'owner'  => 'required',
-            'tanggal_mulai'  => 'required',
-            'total_volume_pekerjaan_sebelumnya'  => 'required',
-            'total_volume_kontrak'  => 'required',
-            'total_harga_satuan'  => 'required',
+            'projek_id' => 'required',
+            'uraian_pekerjaan'  => 'required',
+            'volume_kontrak'  => 'required',
+            'harga_satuan'  => 'required',
+            'volume_pekerjaan_hari_ini'  => 'required',
+            'volume_dikerjakan'  => 'required',
+            'prestasi_keuangan_hari_ini'  => 'required',
+            'prestasi_fisik_hari_ini'  => 'required',
+            'tanggal'  => 'required',
         ]); 
 
-        $detailprojeks = DetailProjek::findOrFail($detailprojeks->id);
+        $detailprojeks = DetailProjek::findOrFail($request->id);
         $detailprojeks->update([
-            'nama_proyek'   => $request->nama_proyek,
-            'kode_proyek'   => $request->kode_proyek,
-            'area_proyek'   => $request->area_proyek,
-            'nomor_kontrak'   => $request->nomor_kontrak,
-            'tanggal_kontrak'   => $request->tanggal_kontrak,
-            'judul_kontrak'   => $request->judul_kontrak,
-            'nilai_kontrak'   => $request->nilai_kontrak,
-            'durasi_kontrak'   => $request->durasi_kontrak,
-            'lokasi'   => $request->lokasi,
-            'pemberi_kontrak'   => $request->pemberi_kontrak,
-            'pm'   => $request->pm,
-            'marketing'   => $request->marketing,
-            'supervisor'   => $request->supervisor,
-            'rencana_kerja'   => $request->rencana_kerja,
-            'owner'   => $request->owner,
-            'tanggal_mulai'   => $request->tanggal_mulai,
-            'total_volume_pekerjaan_sebelumnya'   => $request->total_volume_pekerjaan_sebelumnya,
-            'total_volume_kontrak'   => $request->total_volume_kontrak,
-            'total_harga_satuan'   => $request->total_harga_satuan,
-            'status'   => $request->status,
+            'projek_id'   => $request->projek_id,
+            'uraian_pekerjaan'   => $request->uraian_pekerjaan,
+            'volume_kontrak'   => $request->volume_kontrak,
+            'harga_satuan'   => $request->harga_satuan,
+            'volume_pekerjaan_hari_ini'   => $request->volume_pekerjaan_hari_ini,
+            'volume_dikerjakan'   => $request->volume_dikerjakan,
+            'prestasi_keuangan_hari_ini'   => $request->prestasi_keuangan_hari_ini,
+            'prestasi_fisik_hari_ini'   => $request->prestasi_fisik_hari_ini,
+            'tanggal'   => $request->tanggal,
+            'foto_1'   => $request->foto_1,
+            'foto_2'   => $request->foto_2,
+            'foto_3'   => $request->foto_3,
+            'foto_4'   => $request->foto_4,
+            'foto_5'   => $request->foto_5,
+            'foto_6'   => $request->foto_6,
+            'foto_7'   => $request->foto_7,
+            'foto_8'   => $request->foto_8,
+            'foto_9'   => $request->foto_9,
+            'foto_10'   => $request->foto_10,
+            'keterangan'   => $request->keterangan,
             'edit_by'   => Auth::user()->id,
         ]);
 
         if($detailprojeks){
             //redirect dengan pesan sukses
-            return redirect()->route('admin.detailprojek.index')->with(['success' => 'Data Berhasil Diupdate!']);
+            return redirect()->route('detailprojek.index')->with(['success' => 'Data Berhasil Diupdate!']);
         }else{
             //redirect dengan pesan error
-            return redirect()->route('admin.detailprojek.index')->with(['error' => 'Data Gagal Diupdate!']);
+            return redirect()->route('detailprojek.index')->with(['error' => 'Data Gagal Diupdate!']);
         }
     }
 

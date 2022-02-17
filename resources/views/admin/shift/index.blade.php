@@ -9,55 +9,118 @@
                 <h4 class="card-title mb-3">
                     Data Shift
 
-                      <span class="pull-right">
-                          <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
-                          <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
-                          <a href="{{ route('admin.shift.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
-                      </span>
+                    <span class="pull-right">
+                        <a class="btn btn-primary btn-sm pull-right" role="button" data-toggle="collapse" href="#collapse-tambah" aria-expanded="false" aria-controls="collapse-tambah">Tambah</a>
+                    </span>
                 </h4>
                 <br>
                 
+                <div class="collapse" id="collapse-tambah">
+                    <div class="well">
+                        <form method="post" id="frm-tambah" action="{{ route('shift.add') }}" enctype="multipart/form-data" class="row needs-validation" novalidate>
+                        {{ csrf_field() }}
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="nama_shift">Nama Shift</label>
+                                    <input type="text" class="form-control" id="nama_shift" name="nama_shift" value="{{ old('nama_shift') }}" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="jam_masuk">Jam Masuk</label>
+                                    <input type="text" class="form-control" id="jam_masuk" name="jam_masuk" value="{{ old('jam_masuk') }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="jam_pulang">Jam Pulang</label>
+                                    <input type="text" class="form-control" id="jam_pulang" name="jam_pulang" value="{{ old('jam_pulang') }}" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <button type="submit" class="btn btn-flat btn-success btn-block">Simpan</button>
+                            </div>
+
+                            <br><br>  
+                        
+                        </form>
+                    </div>
+                </div>
+
+                <br>                
                 <div class="table-responsive">
-                    <table id="" class="table table-bordered">
+                    <table id="datatable" class="display table table-striped" style="width:100%">
                         <thead>
-                            <tr>
-                                <th scope="col" style="text-align: center;width: 6%">No.</th>
-                                <th scope="col">Nama Shift</th>
-                                <th scope="col">Jam Masuk</th>
-                                <th scope="col">Jam Pulang</th>
-                                <!-- <th scope="col">Rencana Kerja</th> -->
-                                <th scope="col" style="width: 15%;text-align: center">Aksi</th>
-                            </tr>
+                        <tr>
+                            <th>No.</th>
+                            <th>Nama Shift</th>
+                            <th>Jam Masuk</th>
+                            <th>Jam Pulang</th>
+                            <th>Aksi</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @forelse($shifts as $no => $shift)
-                            <tr>
-                                <td>{{ ++$no + ($shifts->currentPage()-1) * $shifts->perPage() }}</td>
-                                <td>{{ $shift->nama_shift}}</td>
-                                <td>{{ $shift->jam_masuk }}</td>
-                                <td>{{ $shift->jam_pulang }}</td>
-                                <!-- <td>{{ $shift->area_shift}}</td> -->
-                                <td>
-                                    <a href="#" class="btn btn-primary btn-sm">Detail</a>
-                                    <a href="{{ route('admin.shift.edit', $shift->id) }}"
-                                        class="btn btn-sm btn-primary">
-                                    </a>
-
-                                    <button onClick="Delete(this.id)" class="btn btn-sm btn-danger"
-                                        id="{{ $shift->id }}">
-                                    </button>
-                                </td>
-                            </tr>
-                            @empty
-                                <div class="alert alert-danger">
-                                    Data Belum Tersedia!
-                                </div>
-                            @endforelse
+                            <?php $no = 1; ?>
+                            @foreach($shifts as $row)
+                                <tr>
+                                    <td>{{ $no++ }}</td>
+                                    <td>{{ $row->nama_shift }}</td>
+                                    <td>{{ $row->jam_masuk }}</td>
+                                    <td>{{ $row->jam_pulang }}</td>
+                                    <td>
+                                        <a href="#modal-edit" data-toggle="modal" class="btn btn-warning btn-sm btn-edit"
+                                        data-id="{{ $row->id }}"
+                                        data-nama_shift="{{ $row->nama_shift }}"
+                                        data-jam_masuk="{{ $row->jam_masuk }}"
+                                        data-jam_pulang="{{ $row->jam_pulang }}">Edit
+                                        </a>
+                                        <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row->id }}">Hapus</a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
+                </div>
 
-                    <div style="text-align: center">
-                        {{ $shifts->links("vendor.pagination.bootstrap-4") }}
+
+                {{-- Modal Edit --}}
+                <div class="modal fade" id="modal-edit">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Edit Data</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('shift.update') }}" method="post" id="frm-edit" class="row needs-validation" novalidate>
+                                {{ csrf_field() }}
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group" hidden>
+                                        <label>ID</label>
+                                        <input type="text" name="id" id="id" class="form-control" placeholder="ID" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nama_shift">Nama Shift</label>
+                                        <input type="text" class="form-control" id="nama_shiftx" name="nama_shift" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="jam_masuk">Jam Masuk</label>
+                                        <input type="text" class="form-control" id="jam_masukx" name="jam_masuk" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="jam_pulang">Jam Pulang</label>
+                                        <input type="text" class="form-control" id="jam_pulangx" name="jam_pulang" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -67,66 +130,54 @@
     <!-- end of col -->
 
 </div>
+@endsection
 
-<script>
-    //ajax delete
-    function Delete(id) {
-        var id = id;
-        var token = $("meta[name='csrf-token']").attr("content");
+@section('customJs')
+<script type="text/javascript">
+    $(document).ready(function() {
+      $('#datatable').on('click', '.btn-edit', function() {
+        var id = $(this).data('id');
+        var nama_shift = $(this).data('nama_shift');
+        var jam_masuk = $(this).data('jam_masuk');
+        var jam_pulang = $(this).data('jam_pulang');
+        
+        $('#id').val(id);
+        $('#nama_shiftx').val(nama_shift);
+        $('#jam_masukx').val(jam_masuk);
+        $('#jam_pulangx').val(jam_pulang);
+      });
 
-        swal({
-            title: "APAKAH KAMU YAKIN ?",
-            text: "INGIN MENGHAPUS DATA INI!",
-            icon: "warning",
-            buttons: [
-                'TIDAK',
-                'YA'
-            ],
-            dangerMode: true,
-        }).then(function (isConfirm) {
-            if (isConfirm) {
+      $('#frm-edit').on('submit', function(e) {
 
-                //ajax delete
-                jQuery.ajax({
-                    url: "{{ route("admin.shift.index") }}/" + id,
-                    data: {
-                        "id": id,
-                        "_token": token
-                    },
-                    type: 'DELETE',
-                    success: function (response) {
-                        if (response.status == "success") {
-                            swal({
-                                title: 'BERHASIL!',
-                                text: 'DATA BERHASIL DIHAPUS!',
-                                icon: 'success',
-                                timer: 1000,
-                                showConfirmButton: false,
-                                showCancelButton: false,
-                                buttons: false,
-                            }).then(function () {
-                                location.reload();
-                            });
-                        } else {
-                            swal({
-                                title: 'GAGAL!',
-                                text: 'DATA GAGAL DIHAPUS!',
-                                icon: 'error',
-                                timer: 1000,
-                                showConfirmButton: false,
-                                showCancelButton: false,
-                                buttons: false,
-                            }).then(function () {
-                                location.reload();
-                            });
-                        }
-                    }
-                });
+      });
+      
+      $('#frm-tambah').on('submit', function(e) {
 
-            } else {
-                return true;
+      });
+
+      $('#datatable').on('click','.btn-hapus', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.confirm({
+            icon: 'i-Information',
+            title: 'Alert !',
+            content: 'Apakah anda ingin menghapus data ini ?',
+            type: 'red',
+            typeAnimated: true,
+            buttons: {
+                confirm: function () {
+                    $.get("{{ route('shift.destroy') }}", {id:id}, function(data) {
+                        toastr.success('Data berhasil dihapus');
+                        location.reload();
+                    });
+                },
+                cancel: function () {
+                    $.alert('Batal!');
+                },
             }
-        })
-    }
+        });
+      });
+
+    });
 </script>
 @endsection

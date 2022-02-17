@@ -9,53 +9,257 @@
                 <h4 class="card-title mb-3">
                     Data Chat
 
-                      <span class="pull-right">
-                          <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
-                          <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
-                          <a href="{{ route('admin.chat.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
-                      </span>
+                    <span class="pull-right">
+                        <a class="btn btn-primary btn-sm pull-right" role="button" data-toggle="collapse" href="#collapse-tambah" aria-expanded="false" aria-controls="collapse-tambah">Tambah</a>
+                    </span>
                 </h4>
                 <br>
                 
+                <div class="collapse" id="collapse-tambah">
+                    <div class="well">
+                        <form method="post" id="frm-tambah" action="{{ route('chat.add') }}" enctype="multipart/form-data" class="row needs-validation" novalidate>
+                        {{ csrf_field() }}
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="picker1">Pilih Projek</label>
+                                    <select name="projek_id" class="form-control">
+                                        @foreach($projeks as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->nama_projek }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="picker1">Pilih Superadmin</label>
+                                    <select name="superadmin" id="" class="form-control">
+                                        @foreach($superadmin as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->namea }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="picker1">Pilih Direktur Utama</label>
+                                    <select name="direktur_utama" id="" class="form-control">
+                                        @foreach($direktur_utama as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->namea }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="picker1">Pilih Direktur Teknik</label>
+                                    <select name="direktur_teknik" id="" class="form-control">
+                                        @foreach($direktur_teknik as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->namea }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="picker1">Pilih Admin Teknik</label>
+                                    <select name="admin_teknik" id="" class="form-control">
+                                        @foreach($admin_teknik as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->namea }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="picker1">Pilih Owner</label>
+                                    <select name="owner" id="" class="form-control">
+                                        @foreach($owner as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->namea }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="picker1">Pilih PM</label>
+                                    <select name="pm" id="" class="form-control">
+                                        @foreach($pm as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->namea }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="picker1">Pilih PM</label>
+                                    <select name="marketing" id="" class="form-control">
+                                        @foreach($marketing as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->namea }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="picker1">Pilih GM</label>
+                                    <select name="gm" id="" class="form-control">
+                                        @foreach($gm as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->namea }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="picker1">Pilih Co GM</label>
+                                    <select name="co_gm" id="" class="form-control">
+                                        @foreach($co_gm as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->namea }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="picker1">Pilih Supervisor</label>
+                                    <select name="supervisor" id="" class="form-control">
+                                        @foreach($supervisor as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->namea }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <button type="submit" class="btn btn-flat btn-success btn-block">Simpan</button>
+                            </div>
+
+                            <br><br>  
+                        
+                        </form>
+                    </div>
+                </div>
+                <br>
+                
                 <div class="table-responsive">
-                    <table id="" class="table table-bordered">
+                    <table id="datatable" class="display table table-striped" style="width:100%">
                         <thead>
-                            <tr>
-                                <th scope="col" style="text-align: center;width: 6%">No.</th>
-                                <th scope="col">Proyek</th>
-                                <th scope="col">User</th>
-                                <!-- <th scope="col">Rencana Kerja</th> -->
-                                <th scope="col" style="width: 15%;text-align: center">Aksi</th>
-                            </tr>
+                        <tr>
+                            <th>No.</th>
+                            <th>Nama Proyek</th>
+                            <th>Peserta</th>
+                            <th>Aksi</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            @forelse($chats as $no => $chat)
-                            <tr>
-                                <td>{{ ++$no + ($chats->currentPage()-1) * $chats->perPage() }}</td>
-                                <td>{{ $chat->projek_id }}</td>
-                                <td>{{ $chat->proyek_id }}</td>
-                                <!-- <td>{{ $chat->area_chat}}</td> -->
-                                <td>
-                                    <a href="#" class="btn btn-primary btn-sm">Detail</a>
-                                    <a href="{{ route('admin.chat.edit', $chat->id) }}"
-                                        class="btn btn-sm btn-primary">
-                                    </a>
+                            <?php $no = 1; ?>
+                            @foreach($chats as $row)
+                                <tr>
+                                    <td>{{ $no++ }}</td>
+                                    <td>{{ $row->nama_projek }}</td>
+                                    <td>
+                                        @if($row->superadmin == '')
+                                        @else
+                                            {{ $row->superadmin }} 
+                                        @endif
 
-                                    <button onClick="Delete(this.id)" class="btn btn-sm btn-danger"
-                                        id="{{ $chat->id }}">
-                                    </button>
-                                </td>
-                            </tr>
-                            @empty
-                                <div class="alert alert-danger">
-                                    Data Belum Tersedia!
-                                </div>
-                            @endforelse
+                                        @if($row->direktur_utama == '')
+                                        @else
+                                            , {{ $row->direktur_utama }} 
+                                        @endif
+
+                                        @if($row->direktur_teknik == '')
+                                        @else
+                                            , {{ $row->direktur_teknik }} 
+                                        @endif
+
+                                        @if($row->admin_teknik == '')
+                                        @else
+                                            , {{ $row->admin_teknik }} 
+                                        @endif
+
+                                        @if($row->marketing == '')
+                                        @else
+                                            , {{ $row->marketing }}
+                                        @endif
+
+                                        @if($row->gm == '')
+                                        @else
+                                            , {{ $row->gm }}
+                                        @endif
+
+                                        @if($row->co_gm == '')
+                                        @else
+                                            , {{ $row->co_gm }} 
+                                        @endif
+
+                                        @if($row->pm == '')
+                                        @else
+                                            , {{ $row->pm }} 
+                                        @endif
+
+                                        @if($row->supervisor == '')
+                                        @else
+                                            , {{ $row->supervisor }} 
+                                        @endif
+
+                                        @if($row->owner == '')
+                                        @else
+                                            , {{ $row->owner }} 
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="" class="btn btn-success btn-sm">Detail</a>
+                                        <a href="#modal-edit" data-toggle="modal" class="btn btn-warning btn-sm btn-edit"
+                                            data-id="{{ $row->id }}"
+                                            data-projek_id="{{ $row->projek_id }}"
+                                            data-superadmin="{{ $row->superadmin }}"
+                                            data-direktur_utama="{{ $row->direktur_utama }}"
+                                            data-direktur_teknik="{{ $row->direktur_teknik }}"
+                                            data-admin_teknik="{{ $row->admin_teknik }}"
+                                            data-gm="{{ $row->gm }}"
+                                            data-co_gm="{{ $row->co_gm }}"
+                                            data-pm="{{ $row->pm }}"
+                                            data-supervisor="{{ $row->supervisor }}"
+                                            data-marketing="{{ $row->marketing }}"
+                                            data-owner="{{ $row->owner }}">Edit
+                                        </a>
+                                        <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row->id }}">Hapus</a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
+                </div>
 
-                    <div style="text-align: center">
-                        {{ $chats->links("vendor.pagination.bootstrap-4") }}
+
+                {{-- Modal Edit --}}
+                <div class="modal fade" id="modal-edit">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Edit Data</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('chat.update') }}" method="post" id="frm-edit" class="row needs-validation" novalidate>
+                                {{ csrf_field() }}
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group" hidden>
+                                        <label>ID</label>
+                                        <input type="text" name="id" id="id" class="form-control" placeholder="ID" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Projek</label>
+                                        <select name="projek_id" id="projek_id" class="form-control" style="width: 100% !important">
+                                            <option disabled="" selected="">--Pilih Projek--</option>
+                                            @foreach($projeks as $a)
+                                                <option value="{{ $a->id }}">{{ $a->nama_projek }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Marketing</label>
+                                        <select name="marketing" id="marketing" class="form-control" style="width: 100% !important">
+                                            <option disabled="" selected="">--Pilih Marketing--</option>
+                                            @foreach($marketing as $a)
+                                                <option value="{{ $a->id }}">{{ $a->namea }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -65,66 +269,70 @@
     <!-- end of col -->
 
 </div>
+@endsection
 
-<script>
-    //ajax delete
-    function Delete(id) {
-        var id = id;
-        var token = $("meta[name='csrf-token']").attr("content");
+@section('customJs')
+<script type="text/javascript">
+    $(document).ready(function() {
+      $('#datatable').on('click', '.btn-edit', function() {
+        var id = $(this).data('id');
+        var projek_id = $(this).data('projek_id');
+        var superadmin = $(this).data('superadmin');
+        var direktur_utama = $(this).data('direktur_utama');
+        var direktur_teknik = $(this).data('direktur_teknik');
+        var admin_teknik = $(this).data('admin_teknik');
+        var gm = $(this).data('gm');
+        var co_gm = $(this).data('co_gm');
+        var pm = $(this).data('pm');
+        var supervisor = $(this).data('supervisor');
+        var marketing = $(this).data('marketing');
+        var owner = $(this).data('owner');
+        
+        $('#id').val(id);
+        $('#projek_id').val(projek_id);
+        $('#superadmin').val(superadmin);
+        $('#direktur_utama').val(direktur_utama);
+        $('#direktur_teknik').val(direktur_teknik);
+        $('#admin_teknik').val(admin_teknik);
+        $('#gm').val(gm);
+        $('#co_gm').val(co_gm);
+        $('#pm').val(pm);
+        $('#supervisor').val(supervisor);
+        $('#marketing').val(marketing);
+        $('#owner').val(owner);
+      });
 
-        swal({
-            title: "APAKAH KAMU YAKIN ?",
-            text: "INGIN MENGHAPUS DATA INI!",
-            icon: "warning",
-            buttons: [
-                'TIDAK',
-                'YA'
-            ],
-            dangerMode: true,
-        }).then(function (isConfirm) {
-            if (isConfirm) {
+      $('#frm-edit').on('submit', function(e) {
 
-                //ajax delete
-                jQuery.ajax({
-                    url: "{{ route("admin.chat.index") }}/" + id,
-                    data: {
-                        "id": id,
-                        "_token": token
-                    },
-                    type: 'DELETE',
-                    success: function (response) {
-                        if (response.status == "success") {
-                            swal({
-                                title: 'BERHASIL!',
-                                text: 'DATA BERHASIL DIHAPUS!',
-                                icon: 'success',
-                                timer: 1000,
-                                showConfirmButton: false,
-                                showCancelButton: false,
-                                buttons: false,
-                            }).then(function () {
-                                location.reload();
-                            });
-                        } else {
-                            swal({
-                                title: 'GAGAL!',
-                                text: 'DATA GAGAL DIHAPUS!',
-                                icon: 'error',
-                                timer: 1000,
-                                showConfirmButton: false,
-                                showCancelButton: false,
-                                buttons: false,
-                            }).then(function () {
-                                location.reload();
-                            });
-                        }
-                    }
-                });
+      });
+      
+      $('#frm-tambah').on('submit', function(e) {
 
-            } else {
-                return true;
+      });
+
+      $('#datatable').on('click','.btn-hapus', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.confirm({
+            icon: 'i-Information',
+            title: 'Alert !',
+            content: 'Apakah anda ingin menghapus data ini ?',
+            type: 'red',
+            typeAnimated: true,
+            buttons: {
+                confirm: function () {
+                    $.get("{{ route('chat.destroy') }}", {id:id}, function(data) {
+                        toastr.success('Data berhasil dihapus');
+                        location.reload();
+                    });
+                },
+                cancel: function () {
+                    $.alert('Batal!');
+                },
             }
-        })
-    }
+        });
+      });
+
+    });
 </script>
 @endsection

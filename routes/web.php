@@ -59,24 +59,38 @@ Route::prefix('admin')->group(function () {
         Route::post('permission_update', [UsersController::class, 'permission_update'])->name('permission.update');
         Route::get('permission_destroy', [UsersController::class, 'permission_destroy'])->name('permission.destroy');
 
-        Route::resource('/projek', ProjekController::class, ['as' => 'admin']);
-        Route::get('projek_detail', [ProjekController::class, 'show'])->name('projek.detail');
+        Route::get('projek', [ProjekController::class, 'index'])->name('projek.index');
+        Route::get('projek_show/{id}', [ProjekController::class, 'show'])->name('projek.show');
+        Route::get('projek_create', [ProjekController::class, 'create'])->name('projek.create');
+        Route::post('projek_add', [ProjekController::class, 'add'])->name('projek.add');
+        Route::get('projek_edit/{id}', [ProjekController::class, 'edit'])->name('projek.edit');
+        Route::post('projek_update', [ProjekController::class, 'update'])->name('projek.update');
+        Route::get('projek_destroy', [ProjekController::class, 'destroy'])->name('projek.destroy');
 
-        Route::resource('/detailprojek', DetailProjekController::class, ['as' => 'admin']);
-        Route::get('projek_edit', [ProjekController::class, 'edit'])->name('projek.edit');
+        Route::get('projekdetail', [DetailProjekController::class, 'index'])->name('projekdetail.index');
+        Route::get('projekdetail_show/{id}', [DetailProjekController::class, 'show'])->name('projekdetail.show');
+        Route::get('projekdetail_create', [DetailProjekController::class, 'create'])->name('projekdetail.create');
+        Route::post('projekdetail_add', [DetailProjekController::class, 'add'])->name('projekdetail.add');
+        Route::get('projekdetail_edit/{id}', [DetailProjekController::class, 'edit'])->name('projekdetail.edit');
+        Route::post('projekdetail_update', [DetailProjekController::class, 'update'])->name('projekdetail.update');
+        Route::get('projekdetail_destroy', [DetailProjekController::class, 'destroy'])->name('projekdetail.destroy');
 
+        Route::get('shift', [ShiftController::class, 'index'])->name('shift.index');
+        Route::post('shift_add', [ShiftController::class, 'add'])->name('shift.add');
+        Route::post('shift_update', [ShiftController::class, 'update'])->name('shift.update');
+        Route::get('shift_destroy', [ShiftController::class, 'destroy'])->name('shift.destroy');
+
+        Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
+        Route::post('chat_add', [ChatController::class, 'add'])->name('chat.add');
+        Route::post('chat_update', [ChatController::class, 'update'])->name('chat.update');
+        Route::get('chat_destroy', [ChatController::class, 'destroy'])->name('chat.destroy');
+        
         Route::resource('/absen', AbsenController::class, ['as' => 'admin']);
 
         Route::resource('/absenlembur', AbsenLemburController::class, ['as' => 'admin']);
 
-        Route::resource('/shift', ShiftController::class, ['as' => 'admin']);
-        Route::get('shift_edit', [ShiftController::class, 'edit'])->name('shift.edit');
-
         Route::resource('/tukang', TukangController::class, ['as' => 'admin']);
         Route::get('tukang_edit', [TukangController::class, 'edit'])->name('tukang.edit');
-
-        Route::resource('/chat', ChatController::class, ['as' => 'admin']);
-        Route::get('chat_edit', [ChatController::class, 'edit'])->name('chat.edit');
 
     });
 });

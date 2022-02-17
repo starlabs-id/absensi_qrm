@@ -75,7 +75,7 @@ class ProjekController extends Controller
         return view('admin.projek.create', compact('marketing', 'pm', 'supervisor', 'owner'));
     }
 
-    public function store(Request $request)
+    public function add(Request $request)
     {
         $this->validate($request, [
             'nama_projek'  => 'required',
@@ -94,7 +94,6 @@ class ProjekController extends Controller
             'rencana_kerja'  => 'required',
             'owner'  => 'required',
             'tanggal_mulai'  => 'required',
-            'total_volume_pekerjaan_sebelumnya'  => 'required',
             'total_pekerja'  => 'required',
         ]); 
         $projek = Projek::create([
@@ -114,12 +113,9 @@ class ProjekController extends Controller
             'rencana_kerja'   => $request->rencana_kerja,
             'owner'   => $request->owner,
             'tanggal_mulai'   => $request->tanggal_mulai,
-            'total_volume_pekerjaan_sebelumnya'   => $request->total_volume_pekerjaan_sebelumnya,
             'total_volume_kontrak'   => $request->total_volume_kontrak,
             'total_harga_satuan'   => $request->total_harga_satuan,
             'total_volume_pekerjaan_hari_ini'   => $request->total_volume_pekerjaan_hari_ini,
-            'total_prestasi_keuangan'   => $request->total_prestasi_keuangan,
-            'total_prestasi_fisik'   => $request->total_prestasi_fisik,
             'status'   => "process",
             'total_pekerja'   => $request->total_pekerja,
             'edit_by'   => Auth::user()->id,
@@ -127,26 +123,51 @@ class ProjekController extends Controller
  
         if($projek){
              //redirect dengan pesan sukses
-             return redirect()->route('admin.projek.index')->with(['success' => 'Data Berhasil Disimpan!']);
+             return redirect()->route('projek.index')->with(['success' => 'Data Berhasil Disimpan!']);
          }else{
              //redirect dengan pesan error
-             return redirect()->route('admin.projek.index')->with(['error' => 'Data Gagal Disimpan!']);
+             return redirect()->route('projek.index')->with(['error' => 'Data Gagal Disimpan!']);
          }
     }
 
-    public function edit()
+    public function edit($id)
     {
-        $projek = Projek::get();
-        return view('admin.projek.edit', compact('projek'));
+        $projek = Projek::where('id', '=', $id)->first();
+
+        $marketing = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Marketing")
+                    ->get();
+
+        $pm = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "PM")
+                    ->get();
+
+        $supervisor = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Supervisor")
+                    ->get();
+
+        $owner = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Owner")
+                    ->get();
+
+        return view('admin.projek.edit', compact('projek', 'marketing', 'pm', 'supervisor', 'owner'));
     }
 
     
-    public function update(Request $request, Projek $projek)
+    public function update(Request $request)
     {
         $this->validate($request, [
-            'nama_proyek'  => 'required',
-            'kode_proyek'  => 'required',
-            'area_proyek'  => 'required',
+            'nama_projek'  => 'required',
+            'kode_projek'  => 'required',
+            'area_projek'  => 'required',
             'nomor_kontrak'  => 'required',
             'tanggal_kontrak'  => 'required',
             'judul_kontrak'  => 'required',
@@ -160,17 +181,16 @@ class ProjekController extends Controller
             'rencana_kerja'  => 'required',
             'owner'  => 'required',
             'tanggal_mulai'  => 'required',
-            'total_volume_pekerjaan_sebelumnya'  => 'required',
             'total_volume_kontrak'  => 'required',
             'total_harga_satuan'  => 'required',
             'total_pekerja'  => 'required',
         ]); 
 
-        $projek = Projek::findOrFail($projek->id);
+        $projek = Projek::findOrFail($request->id);
         $projek->update([
-            'nama_proyek'   => $request->nama_proyek,
-            'kode_proyek'   => $request->kode_proyek,
-            'area_proyek'   => $request->area_proyek,
+            'nama_projek'   => $request->nama_projek,
+            'kode_projek'   => $request->kode_projek,
+            'area_projek'   => $request->area_projek,
             'nomor_kontrak'   => $request->nomor_kontrak,
             'tanggal_kontrak'   => $request->tanggal_kontrak,
             'judul_kontrak'   => $request->judul_kontrak,
@@ -184,57 +204,46 @@ class ProjekController extends Controller
             'rencana_kerja'   => $request->rencana_kerja,
             'owner'   => $request->owner,
             'tanggal_mulai'   => $request->tanggal_mulai,
-            'total_volume_pekerjaan_sebelumnya'   => $request->total_volume_pekerjaan_sebelumnya,
             'total_volume_kontrak'   => $request->total_volume_kontrak,
             'total_harga_satuan'   => $request->total_harga_satuan,
-            'status'   => $request->status,
             'total_pekerja'   => $request->total_pekerja,
             'edit_by'   => Auth::user()->id,
         ]);
 
-        if($projek){
-            //redirect dengan pesan sukses
-            return redirect()->route('admin.projek.index')->with(['success' => 'Data Berhasil Diupdate!']);
-        }else{
-            //redirect dengan pesan error
-            return redirect()->route('admin.projek.index')->with(['error' => 'Data Gagal Diupdate!']);
-        }
+        toastr()->success('Data berhasil disimpan!');
+        // return redirect()->route('projek.index', [ $request->idjadwal, '#team']);
+        return redirect()->route('projek.index');
     }
 
     
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $projek = Projek::findOrFail($id);
+        if ($request->ajax()) {
+            $projek = Projek::find($request->id);
 
-            $chat = Chat::where('projek_id', '=', $projek->id);
+                $chat = Chat::where('projek_id', '=', $projek->id);
 
-                $chat_detail = ChatDetail::where('chat_id', '=', $chat->id);
-                $chat_detail->delete();
+                    $chat_detail = ChatDetail::where('chat_id', '=', $chat->id);
+                    $chat_detail->delete();
 
-            $chat->delete();
+                $chat->delete();
 
-            $tukang = Tukang::where('projek_id', '=', $projek->id);
-            $tukang->delete();
+                $tukang = Tukang::where('projek_id', '=', $projek->id);
+                $tukang->delete();
 
-            $absen = Absen::where('projek_id', '=', $projek->id);
-            $absen->delete();
+                $absen = Absen::where('projek_id', '=', $projek->id);
+                $absen->delete();
 
-            $absen_lembur = AbsenLembur::where('projek_id', '=', $projek->id);
-            $absen_lembur->delete();
+                $absen_lembur = AbsenLembur::where('projek_id', '=', $projek->id);
+                $absen_lembur->delete();
 
-            $detail_projek = DetailProjek::where('projek_id', '=', $projek->id);
-            $detail_projek->delete();
+                $detail_projek = DetailProjek::where('projek_id', '=', $projek->id);
+                $detail_projek->delete();
 
-        $projek->delete();
+            $projek->delete();
 
-        if($projek){
-            return response()->json([
-                'status' => 'success'
-            ]);
-        }else{
-            return response()->json([
-                'status' => 'error'
-            ]);
+            toastr()->success('Data berhasil dihapus!');
+            return response()->json($projek);
         }
     }
 }

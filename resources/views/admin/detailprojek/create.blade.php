@@ -10,42 +10,42 @@
                     <div class="col-md-6 form-group mb-3">
                         <label for="picker1">Pilih Projek</label>
                         <select class="form-control">
-                            <option>Option 1</option>
-                            <option>Option 1</option>
-                            <option>Option 1</option>
+                            @foreach($projek as $row)
+                                <option value="{{ $row->id }}"> {{ $row->nama_projek }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="uraian_pekerjaan">Uraian Pekerjaan</label>
-                        <input type="text" class="form-control" id="uraian_pekerjaan" name="uraian_pekerjaan" required>
+                        <input type="text" class="form-control" id="uraian_pekerjaan" name="uraian_pekerjaan" required value="{{ old('uraian_pekerjaan') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="volume_kontrak">Volume Kontrak</label>
-                        <input type="text" class="form-control" id="volume_kontrak" name="volume_kontrak" required>
+                        <input type="text" class="form-control" id="volume_kontrak" name="volume_kontrak" required value="{{ old('volume_kontrak') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="harga_satuan">Harga Satuan</label>
-                        <input type="text" class="form-control" id="harga_satuan" name="harga_satuan" required>
+                        <input type="text" class="form-control" id="harga_satuan" name="harga_satuan" required value="{{ old('harga_satuan') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="volume_pekerjaan_hari_ini">Volume Pekerjaan Hari Ini</label>
-                        <input type="text" class="form-control" id="volume_pekerjaan_hari_ini" name="volume_pekerjaan_hari_ini" required>
+                        <input type="text" class="form-control" id="volume_pekerjaan_hari_ini" name="volume_pekerjaan_hari_ini" required value="{{ old('volume_pekerjaan_hari_ini') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="volume_dikerjakan">Volume Dikerjakan</label>
-                        <input type="text" class="form-control" id="volume_dikerjakan" name="volume_dikerjakan" required>
+                        <input type="text" class="form-control" id="volume_dikerjakan" name="volume_dikerjakan" required value="{{ old('volume_dikerjakan') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="prestasi_keuangan_hari_ini">Prestasi Keuangan Hari ini</label>
-                        <input type="text" class="form-control" id="prestasi_keuangan_hari_ini" name="prestasi_keuangan_hari_ini" required>
+                        <input type="text" class="form-control" id="prestasi_keuangan_hari_ini" name="prestasi_keuangan_hari_ini" required value="{{ old('uraian_pekerjaan') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="prestasi_fisik_hari_ini">Prestasi Fisik Hari Ini</label>
-                        <input type="text" class="form-control" id="prestasi_fisik_hari_ini" name="prestasi_fisik_hari_ini" required>
+                        <input type="text" class="form-control" id="prestasi_fisik_hari_ini" name="prestasi_fisik_hari_ini" required value="{{ old('uraian_pekerjaan') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="tanggal">Tanggal</label>
-                        <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                        <input type="date" class="form-control" id="tanggal" name="tanggal" required value="{{ old('uraian_pekerjaan') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="keterangan">Keterangan</label>

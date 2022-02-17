@@ -9,9 +9,9 @@
                 <h4 class="card-title mb-3">
                     Data Permission
 
-                        <span class="pull-right">
-                            <a class="btn btn-primary btn-sm pull-right" role="button" data-toggle="collapse" href="#collapse-tambah" aria-expanded="false" aria-controls="collapse-tambah"><i class="nav-icon i-Add"></i> Tambah Permission</a>
-                        </span>
+                    <span class="pull-right">
+                        <a class="btn btn-primary btn-sm pull-right" role="button" data-toggle="collapse" href="#collapse-tambah" aria-expanded="false" aria-controls="collapse-tambah"><i class="nav-icon i-Add"></i> Tambah Permission</a>
+                    </span>
                 </h4>
                 <br>
                 

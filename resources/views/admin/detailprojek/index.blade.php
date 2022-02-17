@@ -12,53 +12,41 @@
                       <span class="pull-right">
                           <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
                           <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
-                          <a href="{{ route('admin.detailprojek.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
+                          <a href="{{ route('projekdetail.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
                       </span>
                 </h4>
                 <br>
                 
                 <div class="table-responsive">
-                    <table id="" class="table table-bordered">
+                    <table id="datatable" class="display table table-striped" style="width:100%">
                         <thead>
                             <tr>
-                                <th scope="col" style="text-align: center;width: 6%">No.</th>
-                                <th scope="col">Nama Projek</th>
-                                <th scope="col">Uraian Pekerjaan</th>
-                                <th scope="col">Volume Kontrak</th>
-                                <th scope="col">Harga Satuan</th>
-                                <th scope="col" style="width: 15%;text-align: center">Aksi</th>
+                                <th>No.</th>
+                                <th>Nama Projek</th>
+                                <th>Uraian Pekerjaan</th>
+                                <th>Volume Kontrak</th>
+                                <th>Harga Satuan</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($detailprojeks as $no => $detailprojek)
+                            <?php $no = 1; ?>
+                            @foreach($detailprojeks as $row)
                             <tr>
-                                <td>{{ ++$no + ($detailprojeks->currentPage()-1) * $detailprojeks->perPage() }}</td>
-                                <td>{{ $detailprojek->nama_projek }}</td>
-                                <td>{{ $detailprojek->uraian_pekerjaan }}</td>
-                                <td>{{ $detailprojek->volume_kontrak }}</td>
-                                <td>{{ $detailprojek->harga_satuan }}</td>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $row->nama_projek }}</td>
+                                <td>{{ $row->uraian_pekerjaan }}</td>
+                                <td>{{ $row->volume_kontrak }}</td>
+                                <td>{{ $row->harga_satuan }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-sm">Detail</a>
-                                    <a href="{{ route('admin.detailprojek.edit', $detailprojek->id) }}"
-                                        class="btn btn-sm btn-primary">
-                                    </a>
-
-                                    <button onClick="Delete(this.id)" class="btn btn-sm btn-danger"
-                                        id="{{ $detailprojek->id }}">
-                                    </button>
+                                    <a href="{{ route('projekdetail.show', $row->id) }}" class="btn btn-success btn-sm">Detail</a>
+                                    <a href="{{ route('projekdetail.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row['id'] }}">Hapus</a>
                                 </td>
                             </tr>
-                            @empty
-                                <div class="alert alert-danger">
-                                    Data Belum Tersedia!
-                                </div>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
-
-                    <div style="text-align: center">
-                        {{ $detailprojeks->links("vendor.pagination.bootstrap-4") }}
-                    </div>
                 </div>
 
             </div>
@@ -67,66 +55,40 @@
     <!-- end of col -->
 
 </div>
+@endsection
 
-<script>
-    //ajax delete
-    function Delete(id) {
-        var id = id;
-        var token = $("meta[name='csrf-token']").attr("content");
+@section('customJs')
+<script type="text/javascript">
 
-        swal({
-            title: "APAKAH KAMU YAKIN ?",
-            text: "INGIN MENGHAPUS DATA INI!",
-            icon: "warning",
-            buttons: [
-                'TIDAK',
-                'YA'
-            ],
-            dangerMode: true,
-        }).then(function (isConfirm) {
-            if (isConfirm) {
+  $(document).ready(function() {
+    
+    $('#frm-tambah').on('submit', function(e) {
 
-                //ajax delete
-                jQuery.ajax({
-                    url: "{{ route("admin.detailprojek.index") }}/" + id,
-                    data: {
-                        "id": id,
-                        "_token": token
-                    },
-                    type: 'DELETE',
-                    success: function (response) {
-                        if (response.status == "success") {
-                            swal({
-                                title: 'BERHASIL!',
-                                text: 'DATA BERHASIL DIHAPUS!',
-                                icon: 'success',
-                                timer: 1000,
-                                showConfirmButton: false,
-                                showCancelButton: false,
-                                buttons: false,
-                            }).then(function () {
-                                location.reload();
-                            });
-                        } else {
-                            swal({
-                                title: 'GAGAL!',
-                                text: 'DATA GAGAL DIHAPUS!',
-                                icon: 'error',
-                                timer: 1000,
-                                showConfirmButton: false,
-                                showCancelButton: false,
-                                buttons: false,
-                            }).then(function () {
-                                location.reload();
-                            });
-                        }
-                    }
-                });
+    });
 
-            } else {
-                return true;
+    $('#datatable').on('click','.btn-hapus', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.confirm({
+            icon: 'i-Information',
+            title: 'Alert !',
+            content: 'Apakah anda ingin menghapus data ini ?',
+            type: 'red',
+            typeAnimated: true,
+            buttons: {
+                confirm: function () {
+                    $.get("{{ route('projekdetail.destroy') }}", {id:id}, function(data) {
+                        toastr.success('Data berhasil dihapus');
+                        location.reload();
+                    });
+                },
+                cancel: function () {
+                    $.alert('Batal!');
+                },
             }
-        })
-    }
+        });
+    });
+
+  });
 </script>
 @endsection

@@ -9,7 +9,7 @@
                     Detail Projek
                     <span class="pull-right">
                         <button class="btn btn-warning btn-sm pull-right">
-                            <a href="{{ route('admin.projek.index') }}">Kembali</a>
+                            <a href="{{ route('projek.index') }}">Kembali</a>
                         </button>
                     </span>
                 </h4>
