@@ -15,7 +15,7 @@ class Chat extends Model
      * @var array
      */
     protected $fillable = [
-        'projek_id', 'direktur_utama', 'superadmin', 'owner', 'direktur_teknik', 'admin_teknik', 'pm', 'marketing', 'gm', 'co_gm', 'supervisor'
+        'slug', 'projek_id', 'direktur_utama', 'superadmin', 'owner', 'direktur_teknik', 'admin_teknik', 'pm', 'marketing', 'gm', 'co_gm', 'supervisor'
     ];
             
     /**

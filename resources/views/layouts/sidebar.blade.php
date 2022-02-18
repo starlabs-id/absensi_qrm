@@ -20,7 +20,7 @@
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="{{ route('admin.tukang.index') }}">
+                <a class="nav-item-hold" href="{{ route('tukang.index') }}">
                     <i class="nav-icon i-Business-Man"></i>
                     <span class="nav-text">Tukang</span>
                 </a>

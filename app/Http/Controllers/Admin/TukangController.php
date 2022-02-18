@@ -13,9 +13,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\ModelHasRoles;
 use App\Models\Permission;
+use App\Models\Projek;
 use App\Models\Tukang;
 use App\Models\RolePermission;
 use App\Models\Roles;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
@@ -29,19 +31,24 @@ class TukangController extends Controller
      */
     public function index()
     {
-        $tukangs = Tukang::latest()->when(request()->q, function($tukangs) {
-            $tukangs = $tukangs->where('name', 'like', '%'. request()->q . '%');
-        })->paginate(10);
+        $tukangs = Tukang::select('tukangs.*', 'projeks.nama_projek', 'users.name')
+                            ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
+                            ->leftjoin('users', 'users.id', '=', 'tukangs.user_id')
+                            ->orderBy('tukangs.id', 'desc')
+                            ->get();
 
-        return view('admin.tukang.index', compact('tukangs'));
+        $karyawan = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Karyawan")
+                    ->get();
+
+        $projeks = Projek::get();
+
+        return view('admin.tukang.index', compact('tukangs', 'karyawan', 'projeks'));
     }
 
-    public function create()
-    {
-        return view('admin.tukang.create');
-    }
-
-    public function store(Request $request)
+    public function add(Request $request)
     {
         $this->validate($request, [
             'projek_id'  => 'required',
@@ -56,63 +63,18 @@ class TukangController extends Controller
             'biaya_lembur'   => $request->biaya_lembur,
             'edit_by'   => Auth::user()->id,
         ]);
- 
-        if($tukang){
-             //redirect dengan pesan sukses
-             return redirect()->route('admin.tukang.index')->with(['success' => 'Data Berhasil Disimpan!']);
-         }else{
-             //redirect dengan pesan error
-             return redirect()->route('admin.tukang.index')->with(['error' => 'Data Gagal Disimpan!']);
-         }
-    }
 
-    public function edit(Tukang $tukang)
-    {
-        return view('admin.tukang.edit', compact('tukang'));
+        toastr()->success('Data berhasil disimpan!');
+        return redirect()->back();
     }
 
     
-    public function update(Request $request, Tukang $tukang)
+    public function destroy(Request $request)
     {
-        $this->validate($request, [
-            'projek_id'  => 'required',
-            'tukang_id'  => 'required',
-            'biaya_harian'  => 'required',
-            'biaya_lembur'  => 'required',
-        ]); 
+        if ($request->ajax()) {
+            $data = Tukang::find($request->id)->delete();
 
-        $tukang = Tukang::findOrFail($tukang->id);
-        $tukang->update([
-            'projek_id'   => $request->projek_id,
-            'user_id'   => $request->tukang_id,
-            'biaya_harian'   => $request->biaya_harian,
-            'biaya_lembur'   => $request->biaya_lembur,
-            'edit_by'   => Auth::user()->id,
-        ]);
-
-        if($tukang){
-            //redirect dengan pesan sukses
-            return redirect()->route('admin.tukang.index')->with(['success' => 'Data Berhasil Diupdate!']);
-        }else{
-            //redirect dengan pesan error
-            return redirect()->route('admin.tukang.index')->with(['error' => 'Data Gagal Diupdate!']);
-        }
-    }
-
-    
-    public function destroy($id)
-    {
-        $tukang = Tukang::findOrFail($id);
-        $tukang->delete();
-
-        if($tukang){
-            return response()->json([
-                'status' => 'success'
-            ]);
-        }else{
-            return response()->json([
-                'status' => 'error'
-            ]);
+            return response()->json($data);
         }
     }
 }

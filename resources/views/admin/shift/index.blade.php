@@ -52,13 +52,13 @@
                 <div class="table-responsive">
                     <table id="datatable" class="display table table-striped" style="width:100%">
                         <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Nama Shift</th>
-                            <th>Jam Masuk</th>
-                            <th>Jam Pulang</th>
-                            <th>Aksi</th>
-                        </tr>
+                            <tr>
+                                <th>No.</th>
+                                <th>Nama Shift</th>
+                                <th>Jam Masuk</th>
+                                <th>Jam Pulang</th>
+                                <th>Aksi</th>
+                            </tr>
                         </thead>
                         <tbody>
                             <?php $no = 1; ?>

@@ -42,8 +42,24 @@ class ProjekController extends Controller
     public function show($id)
     {
         $projeks = Projek::where('id', '=', $id)->first();
+        
+        $tukangs = Tukang::select('tukangs.*', 'projeks.nama_projek', 'users.name')
+                            ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
+                            ->leftjoin('users', 'users.id', '=', 'tukangs.user_id')
+                            ->orderBy('tukangs.id', 'desc')
+                            ->where('projeks.id', '=', $id)
+                            ->get();
 
-        return view('admin.projek.show', compact('projeks'));
+        $chatdetails = ChatDetail::select('chat_details.*', 'users.name', 'users.foto')
+                            ->leftjoin('chats', 'chats.slug', '=', 'chat_details.chat_id')
+                            ->leftjoin('users', 'users.id', '=', 'chat_details.pengirim')
+                            ->leftjoin('projeks', 'projeks.id', '=', 'chats.projek_id')
+                            ->where('chats.projek_id', '=', $id)
+                            ->get();
+
+        $chats = Chat::where('projek_id', '=', $id)->first();
+
+        return view('admin.projek.show', compact('projeks', 'tukangs', 'chatdetails', 'chats'));
     }
 
     public function create()

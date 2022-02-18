@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-md-6 form-group mb-3">
                         <label for="picker1">Pilih Projek</label>
-                        <select class="form-control">
+                        <select name="projek_id" class="form-control">
                             @foreach($projek as $row)
                                 <option value="{{ $row->id }}"> {{ $row->nama_projek }}</option>
                             @endforeach

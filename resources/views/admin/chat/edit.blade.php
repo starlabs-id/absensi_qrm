@@ -5,203 +5,101 @@
     <div class="card mb-4">
         <div class="card-body">
             <div class="card-title mb-3">Edit Chat</div>
-            <form >
+            <form action="{{ route('chat.update') }}" method="POST" enctype="multipart/form-data">
+                {{ csrf_field() }}
                 <div class="row">
-                    <div class="col-md-12 form-group mb-3">
-                        <label for="picker1">Proyek</label>
-                        <select class="form-control">
-                            <option>Proyek 1</option>
-                            <option>Proyek 2</option>
-                            <option>Proyek 3</option>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="picker1">Pilih Projek</label>
+                        <input type="hidden" name="id" value="{{ $chats['id'] }}" class="form-control" readonly>
+                        <select name="projek_id" id="" class="form-control">
+                            @foreach($projeks as $a)
+                                <option value="{{ $a->id }}" @if($chats["projek_id"]==$a['id']) selected @endif>{{ $a->nama_projek }}</option>
+                            @endforeach
                         </select>
                     </div>
-                    <div class="col-md-12 form-group mb-3">
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="picker1">Superadmin</label>
+                        <select name="superadmin" id="" class="form-control">
+                            @foreach($superadmin as $a)
+                                <option value="{{ $a->id }}" @if($chats["superadmin"]==$a['id']) selected @endif>{{ $a->namea }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
                         <label for="picker1">Direktur Utama</label>
-                        <select class="form-control">
-                            <option>Dirut 1</option>
-                            <option>Dirut 2</option>
-                            <option>Dirut 3</option>
+                        <select name="direktur_utama" id="" class="form-control">
+                            @foreach($direktur_utama as $a)
+                                <option value="{{ $a->id }}" @if($chats["direktur_utama"]==$a['id']) selected @endif>{{ $a->namea }}</option>
+                            @endforeach
                         </select>
                     </div>
-                    <div class="col-md-12 form-group mb-3">
-                        <label for="picker1">Super Admin</label>
-                        <select class="form-control">
-                            <option>Super Admin 1</option>
-                            <option>Super Admin 2</option>
-                            <option>Super Admin 3</option>
-                        </select>
-                    </div>
-                    <div class="col-md-12 form-group mb-3">
-                        <label for="picker1">Owner</label>
-                        <select class="form-control">
-                            <option>Owner 1</option>
-                            <option>Owner 2</option>
-                            <option>Owner 3</option>
-                        </select>
-                    </div>
-                    <div class="col-md-12 form-group mb-3">
+                    <div class="col-md-6 form-group mb-3">
                         <label for="picker1">Direktur Teknik</label>
-                        <select class="form-control">
-                            <option>Direktur Teknik 1</option>
-                            <option>Direktur Teknik 2</option>
-                            <option>Direktur Teknik 3</option>
+                        <select name="direktur_teknik" id="" class="form-control">
+                            @foreach($direktur_teknik as $a)
+                                <option value="{{ $a->id }}" @if($chats["direktur_teknik"]==$a['id']) selected @endif>{{ $a->namea }}</option>
+                            @endforeach
                         </select>
                     </div>
-                    <div class="col-md-12 form-group mb-3">
+                    <div class="col-md-6 form-group mb-3">
                         <label for="picker1">Admin Teknik</label>
-                        <select class="form-control">
-                            <option>Admin Teknik 1</option>
-                            <option>Admin Teknik 2</option>
-                            <option>Admin Teknik 3</option>
+                        <select name="admin_teknik" id="" class="form-control">
+                            @foreach($admin_teknik as $a)
+                                <option value="{{ $a->id }}" @if($chats["admin_teknik"]==$a['id']) selected @endif>{{ $a->namea }}</option>
+                            @endforeach
                         </select>
                     </div>
-                    <div class="col-md-12 form-group mb-3">
-                        <label for="picker1">Project Manager</label>
-                        <select class="form-control">
-                            <option>Project Manager 1</option>
-                            <option>Project Manager 2</option>
-                            <option>Project Manager 3</option>
-                        </select>
-                    </div>
-                    <div class="col-md-12 form-group mb-3">
+                    <div class="col-md-6 form-group mb-3">
                         <label for="picker1">Marketing</label>
-                        <select class="form-control">
-                            <option>Marketing 1</option>
-                            <option>Marketing 2</option>
-                            <option>Marketing 3</option>
+                        <select name="marketing" id="" class="form-control">
+                            @foreach($marketing as $a)
+                                <option value="{{ $a->id }}" @if($chats["marketing"]==$a['id']) selected @endif>{{ $a->namea }}</option>
+                            @endforeach
                         </select>
                     </div>
-                    <div class="col-md-12 form-group mb-3">
-                        <label for="picker1">General Manager</label>
-                        <select class="form-control">
-                            <option>General Manager 1</option>
-                            <option>General Manager 2</option>
-                            <option>General Manager 3</option>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="picker1">GM</label>
+                        <select name="gm" id="" class="form-control">
+                            @foreach($gm as $a)
+                                <option value="{{ $a->id }}" @if($chats["gm"]==$a['id']) selected @endif>{{ $a->namea }}</option>
+                            @endforeach
                         </select>
                     </div>
-                    <div class="col-md-12 form-group mb-3">
-                        <label for="picker1">CO - General Manager</label>
-                        <select class="form-control">
-                            <option>CO - General Manager 1</option>
-                            <option>CO - General Manager 2</option>
-                            <option>CO - General Manager 3</option>
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="picker1">Co GM</label>
+                        <select name="co_gm" id="" class="form-control">
+                            @foreach($co_gm as $a)
+                                <option value="{{ $a->id }}" @if($chats["co_gm"]==$a['id']) selected @endif>{{ $a->namea }}</option>
+                            @endforeach
                         </select>
                     </div>
-                    <div class="col-md-12 form-group mb-3">
+                    <div class="col-md-6 form-group mb-3">
+                        <label for="picker1">PM</label>
+                        <select name="pm" id="" class="form-control">
+                            @foreach($pm as $a)
+                                <option value="{{ $a->id }}" @if($chats["pm"]==$a['id']) selected @endif>{{ $a->namea }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
                         <label for="picker1">Supervisor</label>
-                        <select class="form-control">
-                            <option>Supervisor 1</option>
-                            <option>Supervisor 2</option>
-                            <option>Supervisor 3</option>
-                        </select>
-                    </div>
-                    <!-- <div class="col-md-12 form-group mb-3">
-                        <label for="biaya_harian">Biaya Harian</label>
-                        <input type="text" class="form-control" id="biaya_harian" name="biaya_harian" required>
-                    </div>
-                    <div class="col-md-12 form-group mb-3">
-                        <label for="biaya_lembur">Biaya Lembur</label>
-                        <input type="text" class="form-control" id="biaya_lembur" name="biaya_lembur" required>
-                    </div> -->
-                    <!-- <div class="col-md-6 form-group mb-3">
-                        <label for="nomor_kontrak">Nomor Kontrak</label>
-                        <input type="text" class="form-control" id="nomor_kontrak" name="nomor_kontrak" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="tanggal_kontrak">Tanggal Kontrak</label>
-                        <input type="date" class="form-control" id="tanggal_kontrak" name="tanggal_kontrak" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="judul_kontrak">Judul Kontrak</label>
-                        <input type="text" class="form-control" id="judul_kontrak" name="judul_kontrak" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="nilai_kontrak">Nilai Kontrak</label>
-                        <input type="text" class="form-control" id="nilai_kontrak" name="nilai_kontrak" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="durasi_kontrak">Durasi Kontrak</label>
-                        <input type="text" class="form-control" id="durasi_kontrak" name="durasi_kontrak" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="durasi_projek">Durasi Proyek</label>
-                        <input type="text" class="form-control" id="durasi_projek" name="durasi_projek" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="lokasi">Lokasi</label>
-                        <input type="text" class="form-control" id="lokasi" name="lokasi" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="pemberi_kerja">Pemberi Kerja</label>
-                        <input type="text" class="form-control" id="pemberi_kerja" name="pemberi_kerja" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="picker1">Pilih PM</label>
-                        <select class="form-control">
-                            <option>Option 1</option>
-                            <option>Option 1</option>
-                            <option>Option 1</option>
+                        <select name="supervisor" id="" class="form-control">
+                            @foreach($supervisor as $a)
+                                <option value="{{ $a->id }}" @if($chats["supervisor"]==$a['id']) selected @endif>{{ $a->namea }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-6 form-group mb-3">
-                        <label for="picker1">Pilih Marketing</label>
-                        <select class="form-control">
-                            <option>Option 1</option>
-                            <option>Option 1</option>
-                            <option>Option 1</option>
+                        <label for="picker1">Owner</label>
+                        <select name="owner" id="" class="form-control">
+                            @foreach($owner as $a)
+                                <option value="{{ $a->id }}" @if($chats["owner"]==$a['id']) selected @endif>{{ $a->namea }}</option>
+                            @endforeach
                         </select>
                     </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="picker1">Pilih Supervisor</label>
-                        <select class="form-control">
-                            <option>Option 1</option>
-                            <option>Option 1</option>
-                            <option>Option 1</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="picker1">Pilih Owner</label>
-                        <select class="form-control">
-                            <option>Option 1</option>
-                            <option>Option 1</option>
-                            <option>Option 1</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="tanggal_mulai">Tanggal Mulai</label>
-                        <input type="date" class="form-control" id="tanggal_mulai" name="tanggal_mulai" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="tanggal_selesai">Tanggal Selesai</label>
-                        <input type="date" class="form-control" id="tanggal_selesai" name="tanggal_selesai" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="total_volume_kontrak">Total Volume Kontrak</label>
-                        <input class="form-control" id="total_volume_kontrak" name="total_volume_kontrak" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="total_harga_satuan">Total Harga Satuan</label>
-                        <input class="form-control" id="total_harga_satuan" name="total_harga_satuan" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="total_volume_pekerjaan_sebelumnya">Total Volume Pekerjaan Sebelumnya</label>
-                        <input class="form-control" id="total_volume_pekerjaan_sebelumnya" name="total_volume_pekerjaan_sebelumnya" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="total_volume_pekerjaan_hari_ini">Total Volume Pekerjaan Hari Ini</label>
-                        <input class="form-control" id="total_volume_pekerjaan_hari_ini" name="total_volume_pekerjaan_hari_ini" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="total_prestasi_keuangan">Total Prestasi Keuangan</label>
-                        <input class="form-control" id="total_prestasi_keuangan" name="total_prestasi_keuangan" required>
-                    </div>
-                    <div class="col-md-6 form-group mb-3">
-                        <label for="total_prestasi_fisik">Total Prestasi Fisik</label>
-                        <input class="form-control" id="total_prestasi_fisik" name="total_prestasi_fisik" required>
-                    </div> -->
 
                     <div class="col-md-12">
-                            <button class="btn btn-primary">Submit</button>
+                        <button class="btn btn-primary">Submit</button>
                     </div>
                 </div>
             </form>

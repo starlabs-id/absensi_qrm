@@ -188,15 +188,20 @@
                                     <thead>
                                         <tr>
                                             <th>No.</th>
-                                            <th>Nama Tukang</th>
+                                            <th>Karyawan</th>
+                                            <th>Biaya Harian</th>
+                                            <th>Biaya Lembur</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
+                                    <?php $no = 1; ?>
+                                    @foreach($tukangs as $row)
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td>{{ $row->name }}</td>
+                                        <td>Rp. {{ number_format($row->biaya_harian, 2, ',', '.') }}</td>
+                                        <td>Rp. {{ number_format($row->biaya_lembur, 2, ',', '.') }}</td>
+                                    </tr>
+                                    @endforeach
                                 </table>
                             </div>
                         </div>
@@ -210,40 +215,52 @@
                                 <div data-sidebar-content="chat" class="chat-content-wrap">
 
                                     <div class="chat-content perfect-scrollbar" data-suppress-scroll-x="true">
-                                        <div class="d-flex mb-4">
-                                            <div class="message flex-grow-1">
-                                                <div class="d-flex">
-                                                    <p class="mb-1 text-title text-16 flex-grow-1">Frank Powell</p>
-                                                    <span class="text-small text-muted">25 min ago</span>
+                                        @foreach($chatdetails as $row)
+                                            <div class="d-flex mb-4">
+                                                <div class="message flex-grow-1">
+                                                    <div class="d-flex">
+                                                        <p class="mb-1 text-title text-16 flex-grow-1">{{ $row->name }}</p>
+                                                        <span class="text-small text-muted">{{ $row->created_at->diffForHumans() }}</span>
+                                                    </div>
+                                                    <p class="m-0">{{ $row->komentar }}</p>
                                                 </div>
-                                                <p class="m-0">Do you ever find yourself falling into the “discount trap?</p>
+                                                <img src="{{ asset('storage/user/' . $row->foto) }}" alt="" class="avatar-sm rounded-circle ml-3">
                                             </div>
-                                            <img src="http://gull-html-laravel.ui-lib.com/assets/images/faces/13.jpg" alt="" class="avatar-sm rounded-circle ml-3">
-                                        </div>
-                                        <div class="d-flex mb-4">
-                                            <div class="message flex-grow-1">
-                                                <div class="d-flex">
-                                                    <p class="mb-1 text-title text-16 flex-grow-1">Frank Powell</p>
-                                                    <span class="text-small text-muted">25 min ago</span>
-                                                </div>
-                                                <p class="m-0">Do you ever find yourself falling into the “discount trap?</p>
-                                            </div>
-                                            <img src="http://gull-html-laravel.ui-lib.com/assets/images/faces/13.jpg" alt="" class="avatar-sm rounded-circle ml-3">
-                                        </div>
-
+                                        @endforeach
                                     </div>
 
                                     <div class="pl-3 pr-3 pt-3 pb-3 box-shadow-1 chat-input-area" >
-                                        <form  class="inputForm" >
+                                        <form class="inputForm" action="{{ route('chat_detail.add') }}" method="POST" enctype="multipart/form-data">
+                                        {{ csrf_field() }}
                                             <div class="form-group">
-                                                <textarea class="form-control form-control-rounded"  placeholder="Type your message"
-                                                    name="message" id="message" cols="30" rows="3"></textarea>
+                                                <input type="hidden" name="chat_id" value="{{ $chats['slug'] }}" class="form-control" readonly>
+                                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" class="form-control" readonly>
+                                                <textarea class="form-control form-control-rounded" placeholder="Type your message" name="komentar" id="komentar" cols="30" rows="3"></textarea>
                                             </div>
                                             <div class="d-flex">
                                                 <div class="flex-grow-1"></div>
-                                                <button class="btn btn-icon btn-rounded btn-primary mr-2">
-                                                    <i class="i-Paper-Plane"></i>
-                                                </button>
+                                                @if($chats->superadmin == Auth::user()->id)
+                                                    <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                                                @elseif($chats->direktur_utama == Auth::user()->id)
+                                                    <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                                                @elseif($chats->direktur_teknik == Auth::user()->id)
+                                                    <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                                                @elseif($chats->admin_teknik == Auth::user()->id)
+                                                    <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                                                @elseif($chats->pm == Auth::user()->id)
+                                                    <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                                                @elseif($chats->marketing == Auth::user()->id)
+                                                    <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                                                @elseif($chats->gm == Auth::user()->id)
+                                                    <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                                                @elseif($chats->co_gm == Auth::user()->id)
+                                                    <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                                                @elseif($chats->supervisor == Auth::user()->id)
+                                                    <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                                                @elseif($chats->owner == Auth::user()->id)
+                                                    <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                                                @else
+                                                @endif
                                             </div>
                                         </form>
                                     </div>

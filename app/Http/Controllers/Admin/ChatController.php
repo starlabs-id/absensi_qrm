@@ -21,6 +21,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
 
 class ChatController extends Controller
 {
@@ -31,7 +32,7 @@ class ChatController extends Controller
      */
     public function index()
     {
-        $chats = Chat::select('chats.id', 'A.name as superadmin', 'B.name as direktur_utama', 'C.name as owner', 'D.name as direktur_teknik', 'E.name as admin_teknik', 'F.name as pm', 'G.name as marketing', 'H.name as gm', 'I.name as co_gm', 'J.name as supervisor', 'projeks.nama_projek')
+        $chats = Chat::select('chats.id', 'chats.slug', 'A.name as superadmin', 'B.name as direktur_utama', 'C.name as owner', 'D.name as direktur_teknik', 'E.name as admin_teknik', 'F.name as pm', 'G.name as marketing', 'H.name as gm', 'I.name as co_gm', 'J.name as supervisor', 'projeks.nama_projek')
                             ->leftjoin('projeks', 'projeks.id', '=', 'chats.projek_id')
                             ->leftjoin('users AS A', 'A.id', '=', 'chats.superadmin')
                             ->leftjoin('users AS B', 'B.id', '=', 'chats.direktur_utama')
@@ -120,8 +121,12 @@ class ChatController extends Controller
             'admin_teknik'  => 'required',
             'pm'  => 'required',
         ]); 
+
+        $projeks = Projek::where('id', '=', $request->projek_id)->first();
+
         $chat = Chat::create([
             'projek_id'   => $request->projek_id,
+            'slug'           => bcrypt($projeks->nama_projek),
             'direktur_utama'   => $request->direktur_utama,
             'superadmin'   => $request->superadmin,
             'owner'   => $request->owner,
@@ -138,8 +143,89 @@ class ChatController extends Controller
         toastr()->success('Data berhasil disimpan!');
         return redirect()->back();
     }
+
+    public function edit($id)
+    {
+        $chats = Chat::select('chats.*', 'A.name as superadmin', 'B.name as direktur_utama', 'C.name as owner', 'D.name as direktur_teknik', 'E.name as admin_teknik', 'F.name as pm', 'G.name as marketing', 'H.name as gm', 'I.name as co_gm', 'J.name as supervisor', 'projeks.nama_projek')
+                            ->leftjoin('projeks', 'projeks.id', '=', 'chats.projek_id')
+                            ->leftjoin('users AS A', 'A.id', '=', 'chats.superadmin')
+                            ->leftjoin('users AS B', 'B.id', '=', 'chats.direktur_utama')
+                            ->leftjoin('users AS C', 'C.id', '=', 'chats.owner')
+                            ->leftjoin('users AS D', 'D.id', '=', 'chats.direktur_teknik')
+                            ->leftjoin('users AS E', 'E.id', '=', 'chats.admin_teknik')
+                            ->leftjoin('users AS F', 'F.id', '=', 'chats.pm')
+                            ->leftjoin('users AS G', 'G.id', '=', 'chats.marketing')
+                            ->leftjoin('users AS H', 'H.id', '=', 'chats.gm')
+                            ->leftjoin('users AS I', 'I.id', '=', 'chats.co_gm')
+                            ->leftjoin('users AS J', 'J.id', '=', 'chats.supervisor')
+                            ->orderBy('chats.id', 'desc')
+                            ->first();
+
+        $projeks = Projek::get();
+        $marketing = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Marketing")
+                    ->get();
+
+        $pm = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "PM")
+                    ->get();
+
+        $supervisor = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Supervisor")
+                    ->get();
+
+        $owner = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Owner")
+                    ->get();
+
+        $superadmin = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Superadmin")
+                    ->get();
+
+        $direktur_utama = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Direktur Utama")
+                    ->get();
+
+        $direktur_teknik = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Direktur Teknik")
+                    ->get();
+
+        $admin_teknik = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Admin Teknik")
+                    ->get();
+
+        $gm = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "GM")
+                    ->get();
+
+        $co_gm = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "Co GM")
+                    ->get();
+
+        return view('admin.chat.edit', compact('chats', 'projeks', 'marketing', 'pm', 'supervisor', 'owner', 'superadmin', 'direktur_utama', 'direktur_teknik', 'admin_teknik', 'gm', 'co_gm'));
+    }
     
-    public function update(Request $request, Chat $chat)
+    public function update(Request $request)
     {
         $this->validate($request, [
             'projek_id'  => 'required',
@@ -150,7 +236,7 @@ class ChatController extends Controller
             'pm'  => 'required',
         ]); 
 
-        $chat = Chat::findOrFail($chat->id);
+        $chat = Chat::findOrFail($request->id);
         $chat->update([
             'projek_id'   => $request->projek_id,
             'direktur_utama'   => $request->direktur_utama,
@@ -167,7 +253,7 @@ class ChatController extends Controller
         ]);
 
         toastr()->success('Data berhasil disimpan!');
-        return redirect()->back();
+        return redirect()->route('chat.index');
     }
 
     
@@ -180,12 +266,25 @@ class ChatController extends Controller
         }
     }
 
-    public function show(Request $request)
+    public function show($slug)
     {
-        return view('admin.chat.detail');
+        $chatdetails = ChatDetail::select('chat_details.*', 'users.name', 'users.foto')
+                            ->leftjoin('chats', 'chats.slug', '=', 'chat_details.chat_id')
+                            ->leftjoin('users', 'users.id', '=', 'chat_details.pengirim')
+                            ->where('chat_id', '=', $slug)
+                            ->get();
+
+        $chats = Chat::where('slug', '=', $slug)->first();
+
+        $projeks = Chat::select('chats.slug', 'projeks.nama_projek')
+                    ->where('chats.slug', '=', $slug)
+                    ->leftjoin('projeks', 'projeks.id', '=', 'chats.projek_id')
+                    ->first();
+
+        return view('admin.chat.show', compact('chatdetails', 'projeks', 'chats'));
     }
 
-    public function store_chat_detail(Request $request)
+    public function chat_detail_add(Request $request)
     {
         $this->validate($request, [
             'komentar'  => 'required',
@@ -195,13 +294,8 @@ class ChatController extends Controller
             'chat_id'   => $request->chat_id,
             'pengirim'   => $request->user_id,
         ]);
- 
-        if($chatdetail){
-             //redirect dengan pesan sukses
-             return redirect()->route('admin.chat.index')->with(['success' => 'Data Berhasil Disimpan!']);
-         }else{
-             //redirect dengan pesan error
-             return redirect()->route('admin.chat.index')->with(['error' => 'Data Gagal Disimpan!']);
-         }
+
+        toastr()->success('Chat berhasil terkirim!');
+        return redirect()->back();
     }
 }

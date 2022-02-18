@@ -79,18 +79,22 @@ Route::prefix('admin')->group(function () {
         Route::post('shift_add', [ShiftController::class, 'add'])->name('shift.add');
         Route::post('shift_update', [ShiftController::class, 'update'])->name('shift.update');
         Route::get('shift_destroy', [ShiftController::class, 'destroy'])->name('shift.destroy');
-
+        
         Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
+        Route::get('chat_show/{slug}', [ChatController::class, 'show'])->name('chat.show');
         Route::post('chat_add', [ChatController::class, 'add'])->name('chat.add');
+        Route::get('chat_edit/{id}', [ChatController::class, 'edit'])->name('chat.edit');
         Route::post('chat_update', [ChatController::class, 'update'])->name('chat.update');
         Route::get('chat_destroy', [ChatController::class, 'destroy'])->name('chat.destroy');
+        Route::post('chat_detail_add', [ChatController::class, 'chat_detail_add'])->name('chat_detail.add');
+        
+        Route::get('tukang', [TukangController::class, 'index'])->name('tukang.index');
+        Route::post('tukang_add', [TukangController::class, 'add'])->name('tukang.add');
+        Route::get('tukang_destroy', [TukangController::class, 'destroy'])->name('tukang.destroy');
         
         Route::resource('/absen', AbsenController::class, ['as' => 'admin']);
 
         Route::resource('/absenlembur', AbsenLemburController::class, ['as' => 'admin']);
-
-        Route::resource('/tukang', TukangController::class, ['as' => 'admin']);
-        Route::get('tukang_edit', [TukangController::class, 'edit'])->name('tukang.edit');
 
     });
 });

@@ -9,56 +9,86 @@
                 <h4 class="card-title mb-3">
                     Data Tukang
 
-                      <span class="pull-right">
-                          <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
-                          <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
-                          <a href="{{ route('admin.tukang.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
-                      </span>
+                    <span class="pull-right">
+                        <a class="btn btn-primary btn-sm pull-right" role="button" data-toggle="collapse" href="#collapse-tambah" aria-expanded="false" aria-controls="collapse-tambah">Tambah</a>
+                    </span>
                 </h4>
                 <br>
                 
+                <div class="collapse" id="collapse-tambah">
+                    <div class="well">
+                        <form method="post" id="frm-tambah" action="{{ route('tukang.add') }}" enctype="multipart/form-data" class="row needs-validation" novalidate>
+                        {{ csrf_field() }}
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="picker1">Pilih Projek</label>
+                                    <select name="projek_id" class="form-control">
+                                        @foreach($projeks as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->nama_projek }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="picker1">Pilih Projek</label>
+                                    <select name="tukang_id" class="form-control">
+                                        @foreach($karyawan as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->namea }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="biaya_harian">Biaya Harian</label>
+                                    <input type="text" class="form-control" id="biaya_harian" name="biaya_harian" value="125000" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="biaya_lembur">Biaya Lembur</label>
+                                    <input type="text" class="form-control" id="biaya_lembur" name="biaya_lembur" value="15000" required>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <button type="submit" class="btn btn-flat btn-success btn-block">Simpan</button>
+                            </div>
+
+                            <br><br>  
+                        
+                        </form>
+                    </div>
+                </div>
+                <br>
+                
                 <div class="table-responsive">
-                    <table id="" class="table table-bordered">
+                    <table id="datatable" class="display table table-striped" style="width:100%">
                         <thead>
                             <tr>
-                                <th scope="col" style="text-align: center;width: 6%">No.</th>
-                                <th scope="col">Proyek</th>
-                                <th scope="col">Tukang</th>
-                                <th scope="col">Biaya Harian</th>
-                                <th scope="col">Biaya Lembur</th>
-                                <th scope="col" style="width: 15%;text-align: center">Aksi</th>
+                                <th>No.</th>
+                                <th>Nama Proyek</th>
+                                <th>Karyawan</th>
+                                <th>Biaya Harian</th>
+                                <th>Biaya Lembur</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($tukangs as $no => $tukang)
+                            <?php $no = 1; ?>
+                            @foreach($tukangs as $row)
                             <tr>
-                                <td>{{ ++$no + ($tukangs->currentPage()-1) * $tukangs->perPage() }}</td>
-                                <td>{{ $tukang->proyek_id }}</td>
-                                <td>{{ $tukang->user_id }}</td>
-                                <td>{{ $tukang->biaya_harian }}</td>
-                                <td>{{ $tukang->biaya_lembur }}</td>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $row->nama_projek }}</td>
+                                <td>{{ $row->name }}</td>
+                                <td>Rp. {{ number_format($row->biaya_harian, 2, ',', '.') }}</td>
+                                <td>Rp. {{ number_format($row->biaya_lembur, 2, ',', '.') }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-sm">Detail</a>
-                                    <a href="{{ route('admin.tukang.edit', $tukang>id) }}"
-                                        class="btn btn-sm btn-primary">
-                                    </a>
-
-                                    <button onClick="Delete(this.id)" class="btn btn-sm btn-danger"
-                                        id="{{ $tukang->id }}">
-                                    </button>
+                                    <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row->id }}">Hapus</a>
                                 </td>
                             </tr>
-                            @empty
-                                <div class="alert alert-danger">
-                                    Data Belum Tersedia!
-                                </div>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
-
-                    <div style="text-align: center">
-                        {{ $tukangs->links("vendor.pagination.bootstrap-4") }}
-                    </div>
                 </div>
 
             </div>
@@ -67,66 +97,54 @@
     <!-- end of col -->
 
 </div>
+@endsection
 
-<script>
-    //ajax delete
-    function Delete(id) {
-        var id = id;
-        var token = $("meta[name='csrf-token']").attr("content");
+@section('customJs')
+<script type="text/javascript">
+    $(document).ready(function() {
+      $('#datatable').on('click', '.btn-edit', function() {
+        var id = $(this).data('id');
+        var projek_id = $(this).data('projek_id');
+        var biaya_harian = $(this).data('biaya_harian');
+        var biaya_lembur = $(this).data('biaya_lembur');
+        
+        $('#id').val(id);
+        $('#projek_idx').val(projek_id);
+        $('#biaya_harianx').val(biaya_harian);
+        $('#biaya_lemburx').val(biaya_lembur);
+      });
 
-        swal({
-            title: "APAKAH KAMU YAKIN ?",
-            text: "INGIN MENGHAPUS DATA INI!",
-            icon: "warning",
-            buttons: [
-                'TIDAK',
-                'YA'
-            ],
-            dangerMode: true,
-        }).then(function (isConfirm) {
-            if (isConfirm) {
+      $('#frm-edit').on('submit', function(e) {
 
-                //ajax delete
-                jQuery.ajax({
-                    url: "{{ route("admin.tukang.index") }}/" + id,
-                    data: {
-                        "id": id,
-                        "_token": token
-                    },
-                    type: 'DELETE',
-                    success: function (response) {
-                        if (response.status == "success") {
-                            swal({
-                                title: 'BERHASIL!',
-                                text: 'DATA BERHASIL DIHAPUS!',
-                                icon: 'success',
-                                timer: 1000,
-                                showConfirmButton: false,
-                                showCancelButton: false,
-                                buttons: false,
-                            }).then(function () {
-                                location.reload();
-                            });
-                        } else {
-                            swal({
-                                title: 'GAGAL!',
-                                text: 'DATA GAGAL DIHAPUS!',
-                                icon: 'error',
-                                timer: 1000,
-                                showConfirmButton: false,
-                                showCancelButton: false,
-                                buttons: false,
-                            }).then(function () {
-                                location.reload();
-                            });
-                        }
-                    }
-                });
+      });
+      
+      $('#frm-tambah').on('submit', function(e) {
 
-            } else {
-                return true;
+      });
+
+      $('#datatable').on('click','.btn-hapus', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.confirm({
+            icon: 'i-Information',
+            title: 'Alert !',
+            content: 'Apakah anda ingin menghapus data ini ?',
+            type: 'red',
+            typeAnimated: true,
+            buttons: {
+                confirm: function () {
+                    $.get("{{ route('tukang.destroy') }}", {id:id}, function(data) {
+                        toastr.success('Data berhasil dihapus');
+                        location.reload();
+                    });
+                },
+                cancel: function () {
+                    $.alert('Batal!');
+                },
             }
-        })
-    }
+        });
+      });
+
+    });
 </script>
 @endsection

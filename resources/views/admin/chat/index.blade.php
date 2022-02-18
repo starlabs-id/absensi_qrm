@@ -193,8 +193,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="" class="btn btn-success btn-sm">Detail</a>
-                                        <a href="#modal-edit" data-toggle="modal" class="btn btn-warning btn-sm btn-edit"
+                                        <!-- <a href="#modal-edit" data-toggle="modal" class="btn btn-warning btn-sm btn-edit"
                                             data-id="{{ $row->id }}"
                                             data-projek_id="{{ $row->projek_id }}"
                                             data-superadmin="{{ $row->superadmin }}"
@@ -207,7 +206,9 @@
                                             data-supervisor="{{ $row->supervisor }}"
                                             data-marketing="{{ $row->marketing }}"
                                             data-owner="{{ $row->owner }}">Edit
-                                        </a>
+                                        </a> -->
+                                        <a href="{{ route('chat.show', $row->slug) }}" class="btn btn-success btn-sm">Detail</a>
+                                        <a href="{{ route('chat.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                         <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row->id }}">Hapus</a>
                                     </td>
                                 </tr>
