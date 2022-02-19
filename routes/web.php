@@ -66,6 +66,7 @@ Route::prefix('admin')->group(function () {
         Route::get('projek_edit/{id}', [ProjekController::class, 'edit'])->name('projek.edit');
         Route::post('projek_update', [ProjekController::class, 'update'])->name('projek.update');
         Route::get('projek_destroy', [ProjekController::class, 'destroy'])->name('projek.destroy');
+        Route::post('pojek_chat_detail_add', [ProjekController::class, 'chat_detail_add'])->name('projek_chat.add');
 
         Route::get('projekdetail', [DetailProjekController::class, 'index'])->name('projekdetail.index');
         Route::get('projekdetail_show/{id}', [DetailProjekController::class, 'show'])->name('projekdetail.show');

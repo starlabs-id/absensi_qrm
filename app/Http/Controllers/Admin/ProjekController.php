@@ -56,10 +56,15 @@ class ProjekController extends Controller
                             ->leftjoin('projeks', 'projeks.id', '=', 'chats.projek_id')
                             ->where('chats.projek_id', '=', $id)
                             ->get();
+        
+        $detailprojeks = DetailProjek::select('detail_projeks.id', 'detail_projeks.uraian_pekerjaan', 'detail_projeks.volume_kontrak', 'detail_projeks.harga_satuan', 'projeks.id as pid', 'projeks.nama_projek')
+                                    ->leftjoin('projeks', 'projeks.id', '=', 'detail_projeks.projek_id')
+                                    ->orderBy('detail_projeks.id', 'DESC')
+                                    ->get();
 
         $chats = Chat::where('projek_id', '=', $id)->first();
 
-        return view('admin.projek.show', compact('projeks', 'tukangs', 'chatdetails', 'chats'));
+        return view('admin.projek.show', compact('projeks', 'tukangs', 'chatdetails', 'chats', 'detailprojeks'));
     }
 
     public function create()
@@ -136,14 +141,10 @@ class ProjekController extends Controller
             'total_pekerja'   => $request->total_pekerja,
             'edit_by'   => Auth::user()->id,
         ]);
- 
-        if($projek){
-             //redirect dengan pesan sukses
-             return redirect()->route('projek.index')->with(['success' => 'Data Berhasil Disimpan!']);
-         }else{
-             //redirect dengan pesan error
-             return redirect()->route('projek.index')->with(['error' => 'Data Gagal Disimpan!']);
-         }
+
+        toastr()->success('Data berhasil disimpan!');
+        // return redirect()->route('projek.index', [ $request->idjadwal, '#team']);
+        return redirect()->route('projek.index');
     }
 
     public function edit($id)
@@ -227,7 +228,6 @@ class ProjekController extends Controller
         ]);
 
         toastr()->success('Data berhasil disimpan!');
-        // return redirect()->route('projek.index', [ $request->idjadwal, '#team']);
         return redirect()->route('projek.index');
     }
 
@@ -261,5 +261,21 @@ class ProjekController extends Controller
             toastr()->success('Data berhasil dihapus!');
             return response()->json($projek);
         }
+    }
+
+    public function chat_detail_add(Request $request)
+    {
+        $this->validate($request, [
+            'komentar'  => 'required',
+        ]); 
+        $chatdetail = ChatDetail::create([
+            'komentar'   => $request->komentar,
+            'chat_id'   => $request->chat_id,
+            'pengirim'   => $request->user_id,
+        ]);
+
+        toastr()->success('Chat berhasil terkirim!');
+        // return redirect()->route('projek.show', [$request->projek_id, '#chat']);
+        return redirect()->route('projek.show', [$request->projek_id])->withFragment('chat');
     }
 }

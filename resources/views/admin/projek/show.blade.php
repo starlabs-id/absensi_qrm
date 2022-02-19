@@ -149,32 +149,27 @@
                                     <thead>
                                         <tr>
                                             <th>No.</th>
-                                            <th>Tanggal</th>
+                                            <th>Nama Projek</th>
                                             <th>Uraian Pekerjaan</th>
                                             <th>Volume Kontrak</th>
                                             <th>Harga Satuan</th>
-                                            <th>Volume Pekerjaan Hari Ini</th>
-                                            <th>Volume Dikerjakan</th>
-                                            <th>Prestasi Keuangan Hari Ini</th>
-                                            <th>Prestasi Fisik Hari Ini</th>
-                                            <th>Keterangan</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $no = 1; ?>
+                                        @foreach($detailprojeks as $row)
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $row->nama_projek }}</td>
+                                            <td>{{ $row->uraian_pekerjaan }}</td>
+                                            <td>{{ $row->volume_kontrak }}</td>
+                                            <td>{{ $row->harga_satuan }}</td>
+                                            <td>
+                                                <a href="{{ route('projekdetail.show', $row->id) }}" class="btn btn-success btn-sm">Detail</a>
+                                            </td>
                                         </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -189,8 +184,8 @@
                                         <tr>
                                             <th>No.</th>
                                             <th>Karyawan</th>
-                                            <th>Biaya Harian</th>
-                                            <th>Biaya Lembur</th>
+                                            <!-- <th>Biaya Harian</th>
+                                            <th>Biaya Lembur</th> -->
                                         </tr>
                                     </thead>
                                     <?php $no = 1; ?>
@@ -198,8 +193,8 @@
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $row->name }}</td>
-                                        <td>Rp. {{ number_format($row->biaya_harian, 2, ',', '.') }}</td>
-                                        <td>Rp. {{ number_format($row->biaya_lembur, 2, ',', '.') }}</td>
+                                        <!-- <td>Rp. {{ number_format($row->biaya_harian, 2, ',', '.') }}</td>
+                                        <td>Rp. {{ number_format($row->biaya_lembur, 2, ',', '.') }}</td> -->
                                     </tr>
                                     @endforeach
                                 </table>
@@ -210,6 +205,9 @@
                             <h4>Chat Room</h4>
                             <br>
                             
+                            @if($chats == null)
+                                <p class="mb-1 text-danger text-16 flex-grow-1">Silahkan membuat Chat Room dahulu <a href="{{ route('chat.index') }}" class="btn btn-success btn-sm">Create</a></p>
+                            @else
                             <div data-sidebar-container="chat" class="card chat-sidebar-container">
                                 
                                 <div data-sidebar-content="chat" class="chat-content-wrap">
@@ -230,9 +228,10 @@
                                     </div>
 
                                     <div class="pl-3 pr-3 pt-3 pb-3 box-shadow-1 chat-input-area" >
-                                        <form class="inputForm" action="{{ route('chat_detail.add') }}" method="POST" enctype="multipart/form-data">
+                                        <form class="inputForm" action="{{ route('projek_chat.add') }}" method="POST" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                             <div class="form-group">
+                                                <input type="hidden" name="projek_id" value="{{ $projeks['id'] }}" class="form-control" readonly>
                                                 <input type="hidden" name="chat_id" value="{{ $chats['slug'] }}" class="form-control" readonly>
                                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" class="form-control" readonly>
                                                 <textarea class="form-control form-control-rounded" placeholder="Type your message" name="komentar" id="komentar" cols="30" rows="3"></textarea>
@@ -266,7 +265,8 @@
                                     </div>
 
                                 </div>
-                            </div>   
+                            </div>
+                            @endif
                         </div>
                         
                     </div>

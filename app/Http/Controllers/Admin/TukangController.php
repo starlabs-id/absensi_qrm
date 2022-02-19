@@ -55,16 +55,28 @@ class TukangController extends Controller
             'tukang_id'  => 'required',
             'biaya_harian'  => 'required',
             'biaya_lembur'  => 'required',
-        ]); 
-        $tukang = Tukang::create([
-            'projek_id'   => $request->projek_id,
-            'user_id'   => $request->tukang_id,
-            'biaya_harian'   => $request->biaya_harian,
-            'biaya_lembur'   => $request->biaya_lembur,
-            'edit_by'   => Auth::user()->id,
         ]);
 
-        toastr()->success('Data berhasil disimpan!');
+        $projek = $request->projek_id;
+        $ada = Tukang::select('user_id')
+                    ->where('projek_id', '=', $projek)
+                    ->get();
+
+        if(count($ada) == 0)
+        {
+            $tukang = Tukang::create([
+                'projek_id'   => $request->projek_id,
+                'user_id'   => $request->tukang_id,
+                'biaya_harian'   => $request->biaya_harian,
+                'biaya_lembur'   => $request->biaya_lembur,
+                'edit_by'   => Auth::user()->id,
+            ]);
+
+            toastr()->success('Data berhasil disimpan!');
+            return redirect()->back();
+        }
+
+        toastr()->error('Karyawan sudah ada!');
         return redirect()->back();
     }
 

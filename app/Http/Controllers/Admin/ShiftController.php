@@ -72,7 +72,6 @@ class ShiftController extends Controller
         toastr()->success('Data berhasil disimpan!');
         return redirect()->back();
     }
-
     
     public function destroy(Request $request)
     {

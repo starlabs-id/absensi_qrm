@@ -5,12 +5,13 @@
     <div class="card mb-4">
         <div class="card-body">
             <div class="card-title mb-3">Create Detail Proyek</div>
-            <form >
+            <form action="{{ route('projekdetail.add') }}" method="POST" enctype="multipart/form-data">
+                @csrf
                 <div class="row">
                     <div class="col-md-6 form-group mb-3">
                         <label for="picker1">Pilih Projek</label>
                         <select name="projek_id" class="form-control">
-                            @foreach($projek as $row)
+                            @foreach($projeks as $row)
                                 <option value="{{ $row->id }}"> {{ $row->nama_projek }}</option>
                             @endforeach
                         </select>
@@ -25,31 +26,31 @@
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="harga_satuan">Harga Satuan</label>
-                        <input type="text" class="form-control" id="harga_satuan" name="harga_satuan" required value="{{ old('harga_satuan') }}">
+                        <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" required value="{{ old('harga_satuan') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="volume_pekerjaan_hari_ini">Volume Pekerjaan Hari Ini</label>
-                        <input type="text" class="form-control" id="volume_pekerjaan_hari_ini" name="volume_pekerjaan_hari_ini" required value="{{ old('volume_pekerjaan_hari_ini') }}">
+                        <input type="number" class="form-control" id="volume_pekerjaan_hari_ini" name="volume_pekerjaan_hari_ini" required value="{{ old('volume_pekerjaan_hari_ini') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="volume_dikerjakan">Volume Dikerjakan</label>
-                        <input type="text" class="form-control" id="volume_dikerjakan" name="volume_dikerjakan" required value="{{ old('volume_dikerjakan') }}">
+                        <input type="number" class="form-control" id="volume_dikerjakan" name="volume_dikerjakan" required value="{{ old('volume_dikerjakan') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="prestasi_keuangan_hari_ini">Prestasi Keuangan Hari ini</label>
-                        <input type="text" class="form-control" id="prestasi_keuangan_hari_ini" name="prestasi_keuangan_hari_ini" required value="{{ old('uraian_pekerjaan') }}">
+                        <input type="number" class="form-control" id="prestasi_keuangan_hari_ini" name="prestasi_keuangan_hari_ini" required value="{{ old('prestasi_keuangan_hari_ini') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="prestasi_fisik_hari_ini">Prestasi Fisik Hari Ini</label>
-                        <input type="text" class="form-control" id="prestasi_fisik_hari_ini" name="prestasi_fisik_hari_ini" required value="{{ old('uraian_pekerjaan') }}">
+                        <input type="number" class="form-control" id="prestasi_fisik_hari_ini" name="prestasi_fisik_hari_ini" required value="{{ old('prestasi_fisik_hari_ini') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="tanggal">Tanggal</label>
-                        <input type="date" class="form-control" id="tanggal" name="tanggal" required value="{{ old('uraian_pekerjaan') }}">
+                        <input type="date" class="form-control" id="tanggal" name="tanggal" required value="{{ old('tanggal') }}">
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="keterangan">Keterangan</label>
-                        <textarea class="form-control" aria-label="With textarea" name="keterangan"></textarea>
+                        <textarea class="form-control" aria-label="With textarea" name="keterangan" value="{{ old('keterangan') }}"></textarea>
                     </div>
                     <div class="col-md-6 form-group mb-3">
                         <label for="foto_1">Foto 1</label>
@@ -93,7 +94,7 @@
                     </div>
 
                     <div class="col-md-12">
-                            <button class="btn btn-primary">Submit</button>
+                        <button class="btn btn-primary">Submit</button>
                     </div>
                 </div>
             </form>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 17 Feb 2022 pada 09.54
+-- Waktu pembuatan: 18 Feb 2022 pada 10.18
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 7.4.27
 
@@ -109,6 +109,7 @@ CREATE TABLE `absen_lemburs` (
 
 CREATE TABLE `chats` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `slug` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `projek_id` bigint(20) UNSIGNED DEFAULT NULL,
   `direktur_utama` int(11) DEFAULT NULL,
   `superadmin` int(11) DEFAULT NULL,
@@ -128,8 +129,8 @@ CREATE TABLE `chats` (
 -- Dumping data untuk tabel `chats`
 --
 
-INSERT INTO `chats` (`id`, `projek_id`, `direktur_utama`, `superadmin`, `owner`, `direktur_teknik`, `admin_teknik`, `pm`, `marketing`, `gm`, `co_gm`, `supervisor`, `created_at`, `updated_at`) VALUES
-(1, 4, 4, 1, 13, NULL, 9, 11, 6, 10, NULL, 8, '2022-02-17 07:36:30', '2022-02-17 07:36:30');
+INSERT INTO `chats` (`id`, `slug`, `projek_id`, `direktur_utama`, `superadmin`, `owner`, `direktur_teknik`, `admin_teknik`, `pm`, `marketing`, `gm`, `co_gm`, `supervisor`, `created_at`, `updated_at`) VALUES
+(2, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 3, 4, 1, 13, NULL, 9, 11, 6, 10, NULL, 8, '2022-02-18 02:39:53', '2022-02-18 02:39:53');
 
 -- --------------------------------------------------------
 
@@ -139,12 +140,20 @@ INSERT INTO `chats` (`id`, `projek_id`, `direktur_utama`, `superadmin`, `owner`,
 
 CREATE TABLE `chat_details` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `chat_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `chat_id` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `komentar` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pengirim` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `chat_details`
+--
+
+INSERT INTO `chat_details` (`id`, `chat_id`, `komentar`, `pengirim`, `created_at`, `updated_at`) VALUES
+(3, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'git commit -m', 1, '2022-02-18 02:46:36', '2022-02-18 02:46:36'),
+(5, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'git push origin', 1, '2022-02-18 04:03:16', '2022-02-18 04:03:16');
 
 -- --------------------------------------------------------
 
@@ -265,7 +274,8 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (6, 'App\\Models\\User', 9),
 (7, 'App\\Models\\User', 10),
 (9, 'App\\Models\\User', 11),
-(10, 'App\\Models\\User', 8);
+(10, 'App\\Models\\User', 8),
+(11, 'App\\Models\\User', 14);
 
 -- --------------------------------------------------------
 
@@ -694,6 +704,13 @@ CREATE TABLE `tukangs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data untuk tabel `tukangs`
+--
+
+INSERT INTO `tukangs` (`id`, `biaya_harian`, `projek_id`, `biaya_lembur`, `user_id`, `edit_by`, `created_at`, `updated_at`) VALUES
+(2, 125000, 3, 15000, 14, 1, '2022-02-18 03:49:47', '2022-02-18 03:49:47');
+
 -- --------------------------------------------------------
 
 --
@@ -730,7 +747,8 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `tw
 (9, 'Lintang', 'garbhadana@gmail.com', NULL, '$2y$10$8t6Qyj8yW2u4xmlxvEA1x.e0AiUALoKj75l0k2R9FGtNG1GYD4viy', NULL, NULL, NULL, '085847184272', NULL, NULL, '2022-02-16 06:08:17', '2022-02-16 06:08:17'),
 (10, 'Rima', 'rimasilvia22@gmail.com', NULL, '$2y$10$isONkxEzVVfUAgbdHQAQVutrOIWaEyxhJGPVFuAud1YteNaR0/y5C', NULL, NULL, NULL, '08113934003', NULL, NULL, '2022-02-16 06:08:52', '2022-02-16 06:08:52'),
 (11, 'Sukma', 'sukma.naindya0209@gmail.com', NULL, '$2y$10$FgJ5GRHfKZmsMkQG9HackOLDVCR7d64Q4gCj6s0cNIf2BX.GtdufW', NULL, NULL, NULL, '087863200314', NULL, NULL, '2022-02-16 06:14:41', '2022-02-16 06:14:41'),
-(13, 'Luhut', 'opungluhut@gmail.com', NULL, '$2y$10$WfrWrXU..FVCviRY4/rqQ.PVDQYmgnM255liDt05/Jtdb9H6dqdeW', NULL, NULL, NULL, '081111111', NULL, NULL, '2022-02-16 06:32:16', '2022-02-16 06:32:16');
+(13, 'Luhut', 'opungluhut@gmail.com', NULL, '$2y$10$WfrWrXU..FVCviRY4/rqQ.PVDQYmgnM255liDt05/Jtdb9H6dqdeW', NULL, NULL, NULL, '081111111', NULL, NULL, '2022-02-16 06:32:16', '2022-02-16 06:32:16'),
+(14, 'Karyawan', 'karyawan@gmail.com', NULL, '$2y$10$fvOMf6mI/mdWrsVjt4cltuyalfCFxnp6SZcHZdIpTL618KHhq0rs.', NULL, NULL, NULL, '081223', NULL, NULL, '2022-02-18 03:45:56', '2022-02-18 03:45:56');
 
 --
 -- Indexes for dumped tables
@@ -873,13 +891,13 @@ ALTER TABLE `absen_lemburs`
 -- AUTO_INCREMENT untuk tabel `chats`
 --
 ALTER TABLE `chats`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `chat_details`
 --
 ALTER TABLE `chat_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_projeks`
@@ -933,13 +951,13 @@ ALTER TABLE `shifts`
 -- AUTO_INCREMENT untuk tabel `tukangs`
 --
 ALTER TABLE `tukangs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
