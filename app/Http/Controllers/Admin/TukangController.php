@@ -17,6 +17,7 @@ use App\Models\Projek;
 use App\Models\Tukang;
 use App\Models\RolePermission;
 use App\Models\Roles;
+use App\Models\Shift;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -31,9 +32,10 @@ class TukangController extends Controller
      */
     public function index()
     {
-        $tukangs = Tukang::select('tukangs.*', 'projeks.nama_projek', 'users.name')
+        $tukangs = Tukang::select('tukangs.*', 'projeks.nama_projek', 'users.name', 'shifts.nama_shift')
                             ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
                             ->leftjoin('users', 'users.id', '=', 'tukangs.user_id')
+                            ->leftjoin('shifts', 'shifts.id', '=', 'tukangs.shift_id')
                             ->orderBy('tukangs.id', 'desc')
                             ->get();
 
@@ -44,8 +46,9 @@ class TukangController extends Controller
                     ->get();
 
         $projeks = Projek::get();
+        $shifts = Shift::get();
 
-        return view('admin.tukang.index', compact('tukangs', 'karyawan', 'projeks'));
+        return view('admin.tukang.index', compact('tukangs', 'karyawan', 'projeks', 'shifts'));
     }
 
     public function add(Request $request)
@@ -53,6 +56,7 @@ class TukangController extends Controller
         $this->validate($request, [
             'projek_id'  => 'required',
             'tukang_id'  => 'required',
+            'shift_id'  => 'required',
             'biaya_harian'  => 'required',
             'biaya_lembur'  => 'required',
         ]);
@@ -67,6 +71,7 @@ class TukangController extends Controller
             $tukang = Tukang::create([
                 'projek_id'   => $request->projek_id,
                 'user_id'   => $request->tukang_id,
+                'shift_id'   => $request->shift_id,
                 'biaya_harian'   => $request->biaya_harian,
                 'biaya_lembur'   => $request->biaya_lembur,
                 'edit_by'   => Auth::user()->id,

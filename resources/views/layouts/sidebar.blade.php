@@ -26,7 +26,7 @@
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="{{ route('admin.absen.index') }}">
+                <a class="nav-item-hold" href="{{ route('absen.index') }}">
                     <i class="nav-icon i-Library"></i>
                     <span class="nav-text">Absen</span>
                 </a>

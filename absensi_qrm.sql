@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 18 Feb 2022 pada 10.18
+-- Waktu pembuatan: 21 Feb 2022 pada 10.47
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 7.4.27
 
@@ -59,6 +59,15 @@ CREATE TABLE `absens` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `absens`
+--
+
+INSERT INTO `absens` (`id`, `lokasi_datang`, `latitude_datang`, `longitude_datang`, `ttd`, `jam_datang`, `tanggal_datang`, `hari_datang`, `bulan_datang`, `tahun_datang`, `lokasi_pulang`, `latitude_pulang`, `longitude_pulang`, `jam_pulang`, `tanggal_pulang`, `hari_pulang`, `bulan_pulang`, `tahun_pulang`, `keterangan`, `foto`, `validasi`, `jam_validasi`, `validasi_by`, `status`, `projek_id`, `user_id`, `tukang_id`, `edit_by`, `created_at`, `updated_at`) VALUES
+(4, '-8.716288,115.2155648', NULL, NULL, 'D:\\Website\\absensi\\public\\ttd62135b357e5e0.png', '17:25:36', '21-02-2022', 'Senin', 'Februari', '2022', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ZUoQytAQkoqmUdiRf9FxA1NjJD5QHNz02TpCYhEU.jpg', NULL, NULL, NULL, NULL, 4, 14, 10, 1, '2022-02-21 09:28:21', '2022-02-21 09:28:21'),
+(5, '-8.716288,115.2155648', NULL, NULL, '62135cf379582.png', '17:31:51', '21-02-2022', 'Senin', 'Februari', '2022', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'jMDaUUbPqMCXBmSjCCDQkbiN3PU7DQU6p8Wy5AiQ.jpg', NULL, NULL, NULL, NULL, 4, 14, 10, 1, '2022-02-21 09:35:47', '2022-02-21 09:35:47'),
+(6, '-8.716288,115.2155648', NULL, NULL, '62135e281cf19.png', '17:36:32', '21-02-2022', 'Senin', 'Februari', '2022', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '63JBAP5D4c1aGBKmfPWzCpERCWTBtkYiqQ82QTsP.jpg', NULL, NULL, NULL, NULL, 4, 14, 10, 1, '2022-02-21 09:40:56', '2022-02-21 09:40:56');
 
 -- --------------------------------------------------------
 
@@ -153,7 +162,13 @@ CREATE TABLE `chat_details` (
 
 INSERT INTO `chat_details` (`id`, `chat_id`, `komentar`, `pengirim`, `created_at`, `updated_at`) VALUES
 (3, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'git commit -m', 1, '2022-02-18 02:46:36', '2022-02-18 02:46:36'),
-(5, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'git push origin', 1, '2022-02-18 04:03:16', '2022-02-18 04:03:16');
+(5, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'git push origin', 1, '2022-02-18 04:03:16', '2022-02-18 04:03:16'),
+(6, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'git add .', 1, '2022-02-19 01:28:47', '2022-02-19 01:28:47'),
+(7, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'test route', 1, '2022-02-19 01:29:40', '2022-02-19 01:29:40'),
+(8, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'a', 1, '2022-02-19 01:36:43', '2022-02-19 01:36:43'),
+(9, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'tets route', 1, '2022-02-19 01:39:43', '2022-02-19 01:39:43'),
+(10, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', '#route new', 1, '2022-02-19 01:45:36', '2022-02-19 01:45:36'),
+(11, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'route tester', 1, '2022-02-19 01:47:06', '2022-02-19 01:47:06');
 
 -- --------------------------------------------------------
 
@@ -187,6 +202,14 @@ CREATE TABLE `detail_projeks` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `detail_projeks`
+--
+
+INSERT INTO `detail_projeks` (`id`, `projek_id`, `uraian_pekerjaan`, `volume_kontrak`, `harga_satuan`, `volume_pekerjaan_hari_ini`, `volume_dikerjakan`, `prestasi_keuangan_hari_ini`, `prestasi_fisik_hari_ini`, `tanggal`, `foto_1`, `foto_2`, `foto_3`, `foto_4`, `foto_5`, `foto_6`, `foto_7`, `foto_8`, `foto_9`, `foto_10`, `keterangan`, `edit_by`, `created_at`, `updated_at`) VALUES
+(1, 4, 'Waterproofing', '20', 50000, 30, 30, 30, 50, '2022-02-20', 'AIR7jWI98ryBSRHbVwBJ2iSKXQm4x8LlYQhAtTha.jpg', 'tUY1vUY6IQPBxrC5uNnBWMC20AUowk9LIuZYYN4Q.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Test Waterproofing', 1, '2022-02-19 05:13:57', '2022-02-19 07:06:40'),
+(2, 3, 'a', '1', 1, 1, 1, 1, 1, '2022-02-18', '9NqMB6H0nuijP92d04C4wyran9HG6ov3C9fWceKC.jpg', 'ON8m1Sxm1Bj5t5FX6fugn2WVAftI1Eg7u4VBsE6P.jpg', 'p7CQH2ZesdBVdWxuFvw0qCuoShoHaCZjuRKW4aPJ.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1111', 1, '2022-02-19 07:14:32', '2022-02-19 07:14:32');
 
 -- --------------------------------------------------------
 
@@ -414,8 +437,8 @@ CREATE TABLE `projeks` (
 --
 
 INSERT INTO `projeks` (`id`, `nama_projek`, `kode_projek`, `area_projek`, `nomor_kontrak`, `tanggal_kontrak`, `judul_kontrak`, `nilai_kontrak`, `durasi_kontrak`, `durasi_projek`, `lokasi`, `pemberi_kerja`, `pm`, `marketing`, `supervisor`, `rencana_kerja`, `owner`, `tanggal_mulai`, `tanggal_selesai`, `total_volume_kontrak`, `total_harga_satuan`, `total_volume_pekerjaan_sebelumnya`, `total_volume_pekerjaan_hari_ini`, `total_prestasi_keuangan`, `total_prestasi_fisik`, `status`, `total_pekerja`, `edit_by`, `created_at`, `updated_at`) VALUES
-(3, 'Tol Bali Mandara', 'A', 'Bali', 'A', '2022-02-01', 'A', 'A', 'A', NULL, 'A', 'A', 11, 6, 8, 'A', '13', '2022-02-01', NULL, 10, 10, 10, 10, 10, 10, 'process', '15', 1, '2022-02-17 03:20:06', '2022-02-17 03:20:06'),
-(4, 'Brantas', '002', 'Surabaya', 'B', '2022-02-17', 'B', 'B', 'B', NULL, 'B', 'B', 11, 5, 8, 'B', '13', '2022-02-17', NULL, 12, 12, 12, 12, 112, 12, 'process', '12', 1, '2022-02-17 05:45:50', '2022-02-17 05:45:50');
+(3, 'Tol Bali Mandara', 'A', 'Bali', 'A', '2022-02-01', 'A', 'A', 'A', NULL, 'A', 'A', 11, 6, 8, 'A', '13', '2022-02-01', NULL, 10, 10, 51, 1, 51, 51, 'process', '15', 1, '2022-02-17 03:20:06', '2022-02-19 07:14:32'),
+(4, 'Brantas', '002', 'Surabaya', 'B', '2022-02-17', 'B', 'B', 'B', NULL, 'B', 'B', 11, 5, 8, 'B', '13', '2022-02-17', NULL, 12, 12, 642, 30, 742, 1062, 'process', '12', 1, '2022-02-17 05:45:50', '2022-02-19 07:06:40');
 
 -- --------------------------------------------------------
 
@@ -697,6 +720,7 @@ CREATE TABLE `tukangs` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `biaya_harian` int(11) DEFAULT NULL,
   `projek_id` int(11) DEFAULT NULL,
+  `shift_id` int(11) DEFAULT NULL,
   `biaya_lembur` int(11) DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `edit_by` bigint(20) UNSIGNED NOT NULL,
@@ -708,8 +732,9 @@ CREATE TABLE `tukangs` (
 -- Dumping data untuk tabel `tukangs`
 --
 
-INSERT INTO `tukangs` (`id`, `biaya_harian`, `projek_id`, `biaya_lembur`, `user_id`, `edit_by`, `created_at`, `updated_at`) VALUES
-(2, 125000, 3, 15000, 14, 1, '2022-02-18 03:49:47', '2022-02-18 03:49:47');
+INSERT INTO `tukangs` (`id`, `biaya_harian`, `projek_id`, `shift_id`, `biaya_lembur`, `user_id`, `edit_by`, `created_at`, `updated_at`) VALUES
+(9, 125000, 3, 2, 15000, 14, 1, '2022-02-21 01:30:55', '2022-02-21 01:30:55'),
+(10, 125000, 4, 3, 15000, 14, 1, '2022-02-21 01:31:02', '2022-02-21 01:31:02');
 
 -- --------------------------------------------------------
 
@@ -879,7 +904,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `absens`
 --
 ALTER TABLE `absens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `absen_lemburs`
@@ -897,13 +922,13 @@ ALTER TABLE `chats`
 -- AUTO_INCREMENT untuk tabel `chat_details`
 --
 ALTER TABLE `chat_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_projeks`
 --
 ALTER TABLE `detail_projeks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -933,7 +958,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT untuk tabel `projeks`
 --
 ALTER TABLE `projeks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `roles`
@@ -951,7 +976,7 @@ ALTER TABLE `shifts`
 -- AUTO_INCREMENT untuk tabel `tukangs`
 --
 ALTER TABLE `tukangs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`

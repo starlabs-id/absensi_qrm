@@ -15,7 +15,7 @@ class Tukang extends Model
      * @var array
      */
     protected $fillable = [
-        'projek_id', 'biaya_lembur', 'biaya_harian', 'user_id', 'edit_by'
+        'projek_id', 'biaya_lembur', 'biaya_harian', 'shift_id', 'user_id', 'edit_by'
     ];
             
     /**

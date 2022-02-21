@@ -43,9 +43,10 @@ class ProjekController extends Controller
     {
         $projeks = Projek::where('id', '=', $id)->first();
         
-        $tukangs = Tukang::select('tukangs.*', 'projeks.nama_projek', 'users.name')
+        $tukangs = Tukang::select('tukangs.*', 'projeks.nama_projek', 'users.name', 'shifts.nama_shift')
                             ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
                             ->leftjoin('users', 'users.id', '=', 'tukangs.user_id')
+                            ->leftjoin('shifts', 'shifts.id', '=', 'tukangs.shift_id')
                             ->orderBy('tukangs.id', 'desc')
                             ->where('projeks.id', '=', $id)
                             ->get();

@@ -92,8 +92,15 @@ Route::prefix('admin')->group(function () {
         Route::get('tukang', [TukangController::class, 'index'])->name('tukang.index');
         Route::post('tukang_add', [TukangController::class, 'add'])->name('tukang.add');
         Route::get('tukang_destroy', [TukangController::class, 'destroy'])->name('tukang.destroy');
-        
-        Route::resource('/absen', AbsenController::class, ['as' => 'admin']);
+
+        Route::get('absen', [AbsenController::class, 'index'])->name('absen.index');
+        Route::get('absen_show/{id}', [AbsenController::class, 'show'])->name('absen.show');
+        Route::post('absen_detail', [AbsenController::class, 'detail'])->name('absen.detail');
+        Route::post('absen_create', [AbsenController::class, 'create'])->name('absen.create');
+        Route::post('absen_add', [AbsenController::class, 'add'])->name('absen.add');
+        // Route::get('absen_edit/{id}', [AbsenController::class, 'edit'])->name('absen.edit');
+        Route::post('absen_update', [AbsenController::class, 'update'])->name('absen.update');
+        Route::get('absen_destroy', [AbsenController::class, 'destroy'])->name('absen.destroy');
 
         Route::resource('/absenlembur', AbsenLemburController::class, ['as' => 'admin']);
 

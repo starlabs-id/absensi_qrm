@@ -37,6 +37,14 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label for="picker1">Pilih Shift</label>
+                                    <select name="shift_id" class="form-control">
+                                        @foreach($shifts as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->nama_shift }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -68,6 +76,7 @@
                                 <th>No.</th>
                                 <th>Nama Proyek</th>
                                 <th>Karyawan</th>
+                                <th>Shift</th>
                                 <th>Biaya Harian</th>
                                 <th>Biaya Lembur</th>
                                 <th>Aksi</th>
@@ -80,6 +89,7 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $row->nama_projek }}</td>
                                 <td>{{ $row->name }}</td>
+                                <td>{{ $row->nama_shift }}</td>
                                 <td>Rp. {{ number_format($row->biaya_harian, 2, ',', '.') }}</td>
                                 <td>Rp. {{ number_format($row->biaya_lembur, 2, ',', '.') }}</td>
                                 <td>

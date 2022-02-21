@@ -184,6 +184,7 @@
                                         <tr>
                                             <th>No.</th>
                                             <th>Karyawan</th>
+                                            <th>Shift</th>
                                             <!-- <th>Biaya Harian</th>
                                             <th>Biaya Lembur</th> -->
                                         </tr>
@@ -193,6 +194,7 @@
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $row->name }}</td>
+                                        <td>{{ $row->nama_shift }}</td>
                                         <!-- <td>Rp. {{ number_format($row->biaya_harian, 2, ',', '.') }}</td>
                                         <td>Rp. {{ number_format($row->biaya_lembur, 2, ',', '.') }}</td> -->
                                     </tr>
