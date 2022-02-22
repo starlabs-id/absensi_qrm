@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Feb 2022 pada 10.47
+-- Waktu pembuatan: 22 Feb 2022 pada 09.52
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 7.4.27
 
@@ -33,6 +33,7 @@ CREATE TABLE `absens` (
   `latitude_datang` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `longitude_datang` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ttd` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `foto` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `jam_datang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tanggal_datang` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `hari_datang` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -47,7 +48,6 @@ CREATE TABLE `absens` (
   `bulan_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tahun_pulang` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `keterangan` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `foto` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `validasi` enum('yes','no') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `jam_validasi` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `validasi_by` int(11) DEFAULT NULL,
@@ -64,10 +64,8 @@ CREATE TABLE `absens` (
 -- Dumping data untuk tabel `absens`
 --
 
-INSERT INTO `absens` (`id`, `lokasi_datang`, `latitude_datang`, `longitude_datang`, `ttd`, `jam_datang`, `tanggal_datang`, `hari_datang`, `bulan_datang`, `tahun_datang`, `lokasi_pulang`, `latitude_pulang`, `longitude_pulang`, `jam_pulang`, `tanggal_pulang`, `hari_pulang`, `bulan_pulang`, `tahun_pulang`, `keterangan`, `foto`, `validasi`, `jam_validasi`, `validasi_by`, `status`, `projek_id`, `user_id`, `tukang_id`, `edit_by`, `created_at`, `updated_at`) VALUES
-(4, '-8.716288,115.2155648', NULL, NULL, 'D:\\Website\\absensi\\public\\ttd62135b357e5e0.png', '17:25:36', '21-02-2022', 'Senin', 'Februari', '2022', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ZUoQytAQkoqmUdiRf9FxA1NjJD5QHNz02TpCYhEU.jpg', NULL, NULL, NULL, NULL, 4, 14, 10, 1, '2022-02-21 09:28:21', '2022-02-21 09:28:21'),
-(5, '-8.716288,115.2155648', NULL, NULL, '62135cf379582.png', '17:31:51', '21-02-2022', 'Senin', 'Februari', '2022', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'jMDaUUbPqMCXBmSjCCDQkbiN3PU7DQU6p8Wy5AiQ.jpg', NULL, NULL, NULL, NULL, 4, 14, 10, 1, '2022-02-21 09:35:47', '2022-02-21 09:35:47'),
-(6, '-8.716288,115.2155648', NULL, NULL, '62135e281cf19.png', '17:36:32', '21-02-2022', 'Senin', 'Februari', '2022', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '63JBAP5D4c1aGBKmfPWzCpERCWTBtkYiqQ82QTsP.jpg', NULL, NULL, NULL, NULL, 4, 14, 10, 1, '2022-02-21 09:40:56', '2022-02-21 09:40:56');
+INSERT INTO `absens` (`id`, `lokasi_datang`, `latitude_datang`, `longitude_datang`, `ttd`, `foto`, `jam_datang`, `tanggal_datang`, `hari_datang`, `bulan_datang`, `tahun_datang`, `lokasi_pulang`, `latitude_pulang`, `longitude_pulang`, `jam_pulang`, `tanggal_pulang`, `hari_pulang`, `bulan_pulang`, `tahun_pulang`, `keterangan`, `validasi`, `jam_validasi`, `validasi_by`, `status`, `projek_id`, `user_id`, `tukang_id`, `edit_by`, `created_at`, `updated_at`) VALUES
+(26, '-8.7953431,115.1652008', NULL, NULL, '', '', '16:09:32', '22-02-2022', 'Selasa', 'Februari', '2022', NULL, NULL, NULL, '16:09:42', '22-02-2022', 'Selasa', 'Februari', '2022', 'Hadir', NULL, '22-02-2022 04:09:56', 1, 'Hadir', 4, 14, 10, 1, '2022-02-22 08:09:40', '2022-02-22 08:09:56');
 
 -- --------------------------------------------------------
 
@@ -102,13 +100,20 @@ CREATE TABLE `absen_lemburs` (
   `total_biaya_lembur` int(11) DEFAULT NULL,
   `status` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `projek_id` bigint(20) UNSIGNED NOT NULL,
-  `absen_id` bigint(20) UNSIGNED NOT NULL,
+  `absen_id` bigint(20) UNSIGNED DEFAULT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `tukang_id` bigint(20) UNSIGNED NOT NULL,
   `edit_by` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `absen_lemburs`
+--
+
+INSERT INTO `absen_lemburs` (`id`, `lokasi_datang`, `longitude_datang`, `latitude_datang`, `ttd`, `jam_datang`, `tanggal_datang`, `hari_datang`, `bulan_datang`, `tahun_datang`, `lokasi_pulang`, `longitude_pulang`, `latitude_pulang`, `jam_pulang`, `tanggal_pulang`, `hari_pulang`, `bulan_pulang`, `tahun_pulang`, `keterangan`, `foto`, `validasi`, `jam_validasi`, `validasi_by`, `total_biaya_lembur`, `status`, `projek_id`, `absen_id`, `user_id`, `tukang_id`, `edit_by`, `created_at`, `updated_at`) VALUES
+(2, '-8.7953431,115.1652008', NULL, NULL, '', '17:30:00', '22-02-2022', 'Selasa', 'Februari', '2022', NULL, NULL, NULL, '19:30:00', '22-02-2022', 'Selasa', 'Februari', '2022', 'aaa', '', NULL, '22-02-2022 04:48:59', 1, 30000, 'Hadir', 4, NULL, 14, 10, 1, '2022-02-22 08:34:38', '2022-02-22 08:48:59');
 
 -- --------------------------------------------------------
 
@@ -707,8 +712,7 @@ CREATE TABLE `shifts` (
 
 INSERT INTO `shifts` (`id`, `nama_shift`, `jam_masuk`, `jam_pulang`, `edit_by`, `created_at`, `updated_at`) VALUES
 (2, 'Pagi', '08.00', '17.00', 1, '2022-02-17 06:55:23', '2022-02-17 06:55:23'),
-(3, 'Siang', '13.00', '21.00', 1, '2022-02-17 06:55:46', '2022-02-17 06:55:46'),
-(4, 'Malam', '00.00', '08.00', 1, '2022-02-17 06:56:33', '2022-02-17 06:56:33');
+(3, 'Siang', '13.00', '21.00', 1, '2022-02-17 06:55:46', '2022-02-17 06:55:46');
 
 -- --------------------------------------------------------
 
@@ -904,13 +908,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `absens`
 --
 ALTER TABLE `absens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT untuk tabel `absen_lemburs`
 --
 ALTER TABLE `absen_lemburs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `chats`

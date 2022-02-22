@@ -17,6 +17,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\File;
 
 class AbsenController extends Controller
 {
@@ -76,55 +78,79 @@ class AbsenController extends Controller
 
     public function add(Request $request)
     {
-        $this->validate($request, [
-            'lokasi_datang' => 'required',
-            'ttd'  => 'required',
-            'foto'  => 'required|image|mimes:jpeg,jpg,png|max:2000',
-        ]); 
+        // $this->validate($request, [
+        //     'lokasi_datang' => 'required',
+        //     'ttd'  => 'required',
+        //     'foto'  => 'required|image|mimes:jpeg,jpg,png|max:2000',
+        // ]);
 
-        //upload foto
-        $foto = $request->file('foto');
-        $foto->storeAs('public/absen', $foto->hashName());
-        $foto = $foto->hashName();
+        if($request->lokasi_datang && $request->ttd && $request->foto != null)
+        {
+            $projek = $request->projek_id;
+            $ada = Absen::select('user_id')
+                        ->where([
+                            ['projek_id', '=', $projek],
+                            ['tanggal_datang', '=', date('d-m-Y')],
+                        ])
+                        ->get(); 
 
-        // $ttd = $request->file('ttd');
-        // $ttd->storeAs('public/ttd', $ttd->hashName());
-        // $ttd = $ttd->hashName();
+            if(count($ada) == 0)
+            {
+                //upload foto
+                $foto = $request->file('foto');
+                $foto->storeAs('public/absen', $foto->hashName());
+                $foto = $foto->hashName();
+
+                // $ttd = $request->file('ttd');
+                // $ttd->storeAs('public/ttd', $ttd->hashName());
+                // $ttd = $ttd->hashName();
+                
+                $folderPath = public_path('ttd/');
+                // dd($folderPath);
+                
+                $image_parts = explode(";base64,", $request->ttd);
+                    
+                $image_type_aux = explode("image/", $image_parts[0]);
+                
+                $image_type = $image_type_aux[1];
+                
+                $image_base64 = base64_decode($image_parts[1]);
+
+                $filename = uniqid() . '.'.$image_type;
+                
+                $file = $folderPath . $filename;
+           
+                file_put_contents($file, $image_base64);
+                // dd($file, $image_base64, $image_type, $image_type_aux, $image_parts, $folderPath);
+
+                $absen = Absen::create([
+                    'lokasi_datang'   => $request->lokasi_datang,
+                    'jam_datang'   => $request->jam_datang,
+                    'tanggal_datang'   => $request->tanggal_datang,
+                    'hari_datang'   => $request->hari_datang,
+                    'bulan_datang'   => $request->bulan_datang,
+                    'tahun_datang'   => $request->tahun_datang,
+                    'foto'   => $foto,
+                    'ttd'   => $filename,
+                    'user_id'   => $request->user_id,
+                    'projek_id'   => $request->projek_id,
+                    'tukang_id'   => $request->tukang_id,
+                    'edit_by'   => Auth::user()->id,
+                ]);
         
-        $folderPath = public_path('storage/ttd/');
-        
-        $image_parts = explode(";base64,", $request->ttd);
+            
+                toastr()->success('Data berhasil disimpan!');
+                // return redirect()->route('absen.show', [$request->tukang_id]);
+                return redirect()->route('absen.index');
+            }
+            else{
+                toastr()->error('Anda sudah absen hari ini!');
+                return redirect()->route('absen.index');   
+            }
+        }
 
-        $image_type_aux = explode("image/", $image_parts[0]);
-
-        $image_type = $image_type_aux[1];
-
-        $image_base64 = base64_decode($image_parts[1]);
-
-        $filename = uniqid() . '.'.$image_type;
-        $file = $folderPath . uniqid() . '.'.$image_type;
-        file_put_contents($file, $image_base64);
-        // dd($file, $image_base64, $image_type, $image_type_aux, $image_parts, $folderPath);
-
-        $absen = Absen::create([
-            'lokasi_datang'   => $request->lokasi_datang,
-            'jam_datang'   => $request->jam_datang,
-            'tanggal_datang'   => $request->tanggal_datang,
-            'hari_datang'   => $request->hari_datang,
-            'bulan_datang'   => $request->bulan_datang,
-            'tahun_datang'   => $request->tahun_datang,
-            'foto'   => $foto,
-            'ttd'   => $filename,
-            'user_id'   => $request->user_id,
-            'projek_id'   => $request->projek_id,
-            'tukang_id'   => $request->tukang_id,
-            'edit_by'   => Auth::user()->id,
-        ]);
- 
-       
-        toastr()->success('Data berhasil disimpan!');
-        // return redirect()->route('absen.show', [$request->tukang_id]);
-        return redirect()->route('absen.index');
+        toastr()->error('Data harus dilengkapi!');
+        return redirect()->route('absen.index');        
     }
 
     public function edit()
@@ -134,13 +160,8 @@ class AbsenController extends Controller
     
     public function update(Request $request)
     {
-        $this->validate($request, [
-            'lokasi_pulang' => 'required',
-        ]); 
-
         $absen = Absen::findOrFail($request->id);
         $absen->update([
-            'lokasi_pulang'   => $request->lokasi_pulang,
             'jam_pulang'   => $request->jam_pulang,
             'tanggal_pulang'   => $request->tanggal_pulang,
             'hari_pulang'   => $request->hari_pulang,
@@ -148,36 +169,44 @@ class AbsenController extends Controller
             'tahun_pulang'   => $request->tahun_pulang,
             'edit_by'   => Auth::user()->id,
         ]);
-
+ 
         toastr()->success('Data berhasil disimpan!');
-        return redirect()->back();
+        // return redirect()->route('absen.show', [$request->tukang_id]);
+        return redirect()->route('absen.index');
     }
     
     public function validasi(Request $request)
     {
         $absen = Absen::findOrFail($request->id);
+
+        $data = Storage::disk('local')->delete('public/absen/'.$absen->foto);
+        $image_path = "ttd/". $absen->ttd;
+        File::delete($image_path);
+        
         $absen->update([
             // 'validasi'   => $request->validasi,
             'jam_validasi'   => date('d-m-Y h:i:s'),
             'status' => $request->status,
             'keterangan' => $request->keterangan,
+            'foto' => "",
+            'ttd' => "",
             'validasi_by'   => $request->validasi_by,
         ]);
-
-        $absen = Storage::disk('local')->delete('public/absen/'.$absen->foto);
-
-        $ttd = Absen::findOrFail($request->id);
-        $ttd = Storage::disk('local')->delete('public/ttd/'.$ttd->ttd);
-
-
+ 
         toastr()->success('Data berhasil disimpan!');
-        return redirect()->back();
+        // return redirect()->route('absen.show', [$request->tukang_id]);
+        return redirect()->route('absen.index');
     }
     
     public function destroy(Request $request)
     {
         if ($request->ajax()) {
-            $data = Absen::find($request->id)->delete();
+            $data = Absen::find($request->id);
+                $image = Storage::disk('local')->delete('public/absen/'.$data->foto);
+                $image_path = "ttd/". $data->ttd;
+                File::delete($image_path);
+
+            $data->delete();
 
             return response()->json($data);
         }

@@ -7,42 +7,37 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h4 class="card-title mb-3">
-                    Data Absen Lembur
+                    Data Absen Lembur (Proyek)
+                    <span class="pull-right">
+                        <button onclick="goBack()" style="margin-right: 5px;" class="btn btn-warning btn-sm pull-right">
+                            Kembali
+                        </button>
+                    </span>
                 </h4>
                 <br>
                 
                 <div class="table-responsive">
-                    <table id="" class="table table-bordered">
+                    <table id="datatable" class="display table table-striped" style="width:100%">
                         <thead>
                             <tr>
-                                <th scope="col" style="text-align: center;width: 6%">No.</th>
-                                <th scope="col">Nama Proyek</th>
-                                <th scope="col" style="width: 15%;text-align: center">Aksi</th>
+                                <th>No.</th>
+                                <th>Nama Projek</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($absenlemburs as $no => $absen)
+                            <?php $no = 1; ?>
+                            @foreach($absenlemburs as $row)
                             <tr>
-                                <td>{{ ++$no + ($absenlemburs->currentPage()-1) * $absenlemburs->perPage() }}</td>
-                                <td>{{ $absen->nama_proyek }}</td>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $row->nama_projek }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-sm">Detail</a>
-                                    <a href="{{ route('admin.absenlembur.edit', $absen->id) }}"
-                                        class="btn btn-sm btn-primary">
-                                    </a>
+                                    <a href="{{ route('absenlembur.show', $row->id) }}" class="btn btn-primary btn-sm">Daftar Tukang</a>
                                 </td>
                             </tr>
-                            @empty
-                                <div class="alert alert-danger">
-                                    Data Belum Tersedia!
-                                </div>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
-
-                    <div style="text-align: center">
-                        {{ $absenlemburs->links("vendor.pagination.bootstrap-4") }}
-                    </div>
                 </div>
 
             </div>

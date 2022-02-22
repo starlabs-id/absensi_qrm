@@ -51,12 +51,12 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h4 class="card-title mb-3">
-                    Daftar Absen <small>{{ $absen->name }}</small>
+                    Daftar Absen Lembur <small>{{ $absen->name }}</small>
 
                     <span class="pull-right">
                         <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
                         <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
-                        <form method="post" id="frm-nota" action="{{ route('absen.create') }}" enctype="multipart/form-data" class="pull-right">
+                        <form method="post" id="frm-nota" action="{{ route('absenlembur.create') }}" enctype="multipart/form-data" class="pull-right">
                             {{ csrf_field() }}
                             <input type="text" hidden class="form-control" name="tukang_id" value="{{ $tukangs['id'] }}">
                             <button type="submit" class="btn btn-sm btn-danger">Absen</button>
@@ -79,6 +79,7 @@
                                 <th>Jam Pulang</th>
                                 <th>Status</th>
                                 <th>Keterangan</th>
+                                <th>Total Lembur</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -89,8 +90,8 @@
                                 <td>{{ $no++ }}</td>
                                 <td>
                                     @if($row->foto != '')
-                                        <img src="{{ asset('storage/absen/' . $row->foto) }}" style="width:40%">
-                                        <img src="{{ asset('ttd/' . $row->ttd) }}" style="width:40%">
+                                        <img src="{{ asset('storage/absenlembur/' . $row->foto) }}" style="width:40%">
+                                        <img src="{{ asset('ttd_lembur/' . $row->ttd) }}" style="width:40%">
                                     @else
                                     @endif
                                 </td>
@@ -99,6 +100,7 @@
                                 <td>{{ $row->jam_pulang }}</td>
                                 <td>{{ $row->status }}</td>
                                 <td>{{ $row->keterangan }}</td>
+                                <td>Rp. {{ number_format($row->total_biaya_lembur, 2, ',', '.') }}</td>
                                 <td>
                                     <a href="#!" class="btn btn-danger btn-xs btn-hapus pull-right" style="margin-left:5px;" data-id="{{ $row->id }}">Hapus</a>
                                     @if($row->validasi_by == '')
@@ -108,7 +110,7 @@
                                         </a>
                                     @else
                                     @endif
-                                    <form method="post" action="{{ route('absen.update') }}" enctype="multipart/form-data">
+                                    <form method="post" action="{{ route('absenlembur.update') }}" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <input type="text" hidden class="form-control" name="id" value="{{ $row['id'] }}">
                                         <input type="text" hidden class="form-control" id="tanggal_pulang" name="tanggal_pulang" value="{{ date('d-m-Y') }}">
@@ -138,7 +140,7 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             </div>
                             <div class="modal-body">
-                                <form action="{{ route('absen.validasi') }}" method="post" id="frm-edit" class="row needs-validation" novalidate>
+                                <form action="{{ route('absenlembur.validasi') }}" method="post" id="frm-edit" class="row needs-validation" novalidate>
                                 {{ csrf_field() }}
 
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -210,7 +212,7 @@
             typeAnimated: true,
             buttons: {
                 confirm: function () {
-                    $.get("{{ route('absen.destroy') }}", {id:id}, function(data) {
+                    $.get("{{ route('absenlembur.destroy') }}", {id:id}, function(data) {
                         toastr.success('Data berhasil dihapus');
                         location.reload();
                     });

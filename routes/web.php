@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ShiftController;
 use App\Http\Controllers\Admin\TukangController;
 use App\Http\Controllers\Admin\UsersController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,11 +99,17 @@ Route::prefix('admin')->group(function () {
         Route::post('absen_detail', [AbsenController::class, 'detail'])->name('absen.detail');
         Route::post('absen_create', [AbsenController::class, 'create'])->name('absen.create');
         Route::post('absen_add', [AbsenController::class, 'add'])->name('absen.add');
-        // Route::get('absen_edit/{id}', [AbsenController::class, 'edit'])->name('absen.edit');
         Route::post('absen_update', [AbsenController::class, 'update'])->name('absen.update');
+        Route::post('absen_validasi', [AbsenController::class, 'validasi'])->name('absen.validasi');
         Route::get('absen_destroy', [AbsenController::class, 'destroy'])->name('absen.destroy');
 
-        Route::resource('/absenlembur', AbsenLemburController::class, ['as' => 'admin']);
-
+        Route::get('absenlembur', [AbsenLemburController::class, 'index'])->name('absenlembur.index');
+        Route::get('absenlembur_show/{id}', [AbsenLemburController::class, 'show'])->name('absenlembur.show');
+        Route::post('absenlembur_detail', [AbsenLemburController::class, 'detail'])->name('absenlembur.detail');
+        Route::post('absenlembur_create', [AbsenLemburController::class, 'create'])->name('absenlembur.create');
+        Route::post('absenlembur_add', [AbsenLemburController::class, 'add'])->name('absenlembur.add');
+        Route::post('absenlembur_update', [AbsenLemburController::class, 'update'])->name('absenlembur.update');
+        Route::post('absenlembur_validasi', [AbsenLemburController::class, 'validasi'])->name('absenlembur.validasi');
+        Route::get('absenlembur_destroy', [AbsenLemburController::class, 'destroy'])->name('absenlembur.destroy');
     });
 });

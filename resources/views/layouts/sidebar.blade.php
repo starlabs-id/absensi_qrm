@@ -32,7 +32,7 @@
                 </a>
             </li>
             <li class="nav-item " data-item="">
-                <a class="nav-item-hold" href="{{ route('admin.absenlembur.index') }}">
+                <a class="nav-item-hold" href="{{ route('absenlembur.index') }}">
                     <i class="nav-icon i-Over-Time"></i>
                     <span class="nav-text">Lembur</span>
                 </a>

@@ -123,7 +123,7 @@
                         </div>
                         <div class="form-group">
                             <label for="lokasi_datang">Lokasi Datang</label>
-                            <textarea type="text" readonly class="form-control" id="lokasi_datang" name="lokasi_datang"></textarea>
+                            <textarea type="text" readonly class="form-control" id="lokasi_datang" name="lokasi_datang" required></textarea>
                         </div>
                     </div>
                     <div class="col-md-6 form-group mb-3">
@@ -136,11 +136,11 @@
                             <div id="sig"></div>
                             <br/>
                             <button id="clear" class="btn btn-danger btn-xs">Hapus</button>
-                            <textarea id="signature64" name="ttd" style="display: none"></textarea>
+                            <textarea id="signature64" name="ttd" style="display: none" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="foto">Foto</label>
-                            <input type="file" class="form-control" id="foto" name="foto" accept="image/png, image/jpg, image/jpeg" >
+                            <input type="file" class="form-control" id="foto" name="foto" accept="image/png, image/jpg, image/jpeg" required>
                         </div>
 
                         <div class="form-group">
