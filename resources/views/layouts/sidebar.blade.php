@@ -7,48 +7,63 @@
                     <span class="nav-text">Dashboard</span>
                 </a>
             </li>
+            @can('projek-list')
             <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('projek.index') }}">
                     <i class="nav-icon i-Suitcase"></i>
                     <span class="nav-text">Projects</span>
                 </a>
             </li>
+            @endcan
+            @can('projekdetail-list')
             <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('projekdetail.index') }}">
                     <i class="nav-icon i-File-Horizontal-Text"></i>
                     <span class="nav-text">Projects Detail</span>
                 </a>
             </li>
+            @endcan
+            @can('tukang-list')
             <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('tukang.index') }}">
                     <i class="nav-icon i-Business-Man"></i>
                     <span class="nav-text">Tukang</span>
                 </a>
             </li>
+            @endcan
+            @can('absenlembur-list')
             <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('absen.index') }}">
                     <i class="nav-icon i-Library"></i>
                     <span class="nav-text">Absen</span>
                 </a>
             </li>
+            @endcan
+            @can('absenlembur-list')
             <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('absenlembur.index') }}">
                     <i class="nav-icon i-Over-Time"></i>
                     <span class="nav-text">Lembur</span>
                 </a>
             </li>
+            @endcan
+            @can('chat-list')
             <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('chat.index') }}">
                     <i class="nav-icon i-Speach-Bubble-Dialog"></i>
                     <span class="nav-text">Chat</span>
                 </a>
             </li>
+            @endcan
+            @can('shift-list')
             <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('shift.index') }}">
                     <i class="nav-icon i-Clock"></i>
                     <span class="nav-text">Shift</span>
                 </a>
             </li>
+            @endcan
+            @can('user-list')
             <li class="nav-item" data-item="users">
                 <a class="nav-item-hold" href="#">
                     <i class="nav-icon i-Network"></i>
@@ -56,6 +71,7 @@
                 </a>
                 <div class="triangle"></div>
             </li>
+            @endcan
         </ul>
     </div>
 

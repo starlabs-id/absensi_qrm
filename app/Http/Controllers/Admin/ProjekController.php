@@ -30,6 +30,16 @@ class ProjekController extends Controller
      *
      * @return void
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('permission:projek-list', ['only' => ['projek']]);
+        $this->middleware('permission:projek-add', ['only' => ['projek_add']]);
+        $this->middleware('permission:projek-update', ['only' => ['projek_update']]);
+        $this->middleware('permission:projek-destroy', ['only' => ['projek_destroy']]);
+    }
+
     public function index()
     {
         $projeks = Projek::latest()->when(request()->q, function($projeks) {
@@ -41,7 +51,10 @@ class ProjekController extends Controller
 
     public function show($id)
     {
-        $projeks = Projek::where('id', '=', $id)->first();
+        $projeks = Projek::select('projeks.*', 'users.name')
+                        ->leftjoin('users', 'users.id', '=', 'projeks.marketing')
+                        ->where('projeks.id', '=', $id)
+                        ->first();
         
         $tukangs = Tukang::select('tukangs.*', 'projeks.nama_projek', 'users.name', 'shifts.nama_shift')
                             ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')

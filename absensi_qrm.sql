@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 22 Feb 2022 pada 09.52
+-- Waktu pembuatan: 24 Feb 2022 pada 09.27
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 7.4.27
 
@@ -60,13 +60,6 @@ CREATE TABLE `absens` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data untuk tabel `absens`
---
-
-INSERT INTO `absens` (`id`, `lokasi_datang`, `latitude_datang`, `longitude_datang`, `ttd`, `foto`, `jam_datang`, `tanggal_datang`, `hari_datang`, `bulan_datang`, `tahun_datang`, `lokasi_pulang`, `latitude_pulang`, `longitude_pulang`, `jam_pulang`, `tanggal_pulang`, `hari_pulang`, `bulan_pulang`, `tahun_pulang`, `keterangan`, `validasi`, `jam_validasi`, `validasi_by`, `status`, `projek_id`, `user_id`, `tukang_id`, `edit_by`, `created_at`, `updated_at`) VALUES
-(26, '-8.7953431,115.1652008', NULL, NULL, '', '', '16:09:32', '22-02-2022', 'Selasa', 'Februari', '2022', NULL, NULL, NULL, '16:09:42', '22-02-2022', 'Selasa', 'Februari', '2022', 'Hadir', NULL, '22-02-2022 04:09:56', 1, 'Hadir', 4, 14, 10, 1, '2022-02-22 08:09:40', '2022-02-22 08:09:56');
-
 -- --------------------------------------------------------
 
 --
@@ -113,7 +106,7 @@ CREATE TABLE `absen_lemburs` (
 --
 
 INSERT INTO `absen_lemburs` (`id`, `lokasi_datang`, `longitude_datang`, `latitude_datang`, `ttd`, `jam_datang`, `tanggal_datang`, `hari_datang`, `bulan_datang`, `tahun_datang`, `lokasi_pulang`, `longitude_pulang`, `latitude_pulang`, `jam_pulang`, `tanggal_pulang`, `hari_pulang`, `bulan_pulang`, `tahun_pulang`, `keterangan`, `foto`, `validasi`, `jam_validasi`, `validasi_by`, `total_biaya_lembur`, `status`, `projek_id`, `absen_id`, `user_id`, `tukang_id`, `edit_by`, `created_at`, `updated_at`) VALUES
-(2, '-8.7953431,115.1652008', NULL, NULL, '', '17:30:00', '22-02-2022', 'Selasa', 'Februari', '2022', NULL, NULL, NULL, '19:30:00', '22-02-2022', 'Selasa', 'Februari', '2022', 'aaa', '', NULL, '22-02-2022 04:48:59', 1, 30000, 'Hadir', 4, NULL, 14, 10, 1, '2022-02-22 08:34:38', '2022-02-22 08:48:59');
+(5, '-8.6933504,115.228672', NULL, NULL, '', '11:49:17', '24-02-2022', 'Kamis', 'Februari', '2022', NULL, NULL, NULL, '13:49:25', '24-02-2022', 'Kamis', 'Februari', '2022', 'lembur', '', NULL, '24-02-2022 11:50:02', 1, 30000, 'Hadir', 4, NULL, 14, 10, 1, '2022-02-24 03:49:25', '2022-02-24 03:50:02');
 
 -- --------------------------------------------------------
 
@@ -339,45 +332,45 @@ INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at
 (6, 'user-list', 'web', '2022-02-11 00:07:32', '2022-02-11 17:28:45'),
 (7, 'user-add', 'web', '2022-02-11 17:28:52', '2022-02-11 17:28:52'),
 (8, 'user-update', 'web', '2022-02-11 17:28:57', '2022-02-11 17:28:57'),
-(9, 'user-delete', 'web', '2022-02-11 17:29:02', '2022-02-11 17:29:02'),
+(9, 'user-destroy', 'web', '2022-02-11 17:29:02', '2022-02-11 17:29:02'),
 (10, 'projek-list', 'web', '2022-02-16 05:23:38', '2022-02-16 05:23:38'),
 (11, 'projek-add', 'web', '2022-02-16 05:23:44', '2022-02-16 05:23:44'),
 (12, 'projek-update', 'web', '2022-02-16 05:23:51', '2022-02-16 05:23:51'),
-(13, 'projek-delete', 'web', '2022-02-16 05:23:58', '2022-02-16 05:23:58'),
+(13, 'projek-destroy', 'web', '2022-02-16 05:23:58', '2022-02-16 05:23:58'),
 (14, 'projekdetail-list', 'web', '2022-02-16 05:24:18', '2022-02-16 05:24:18'),
 (15, 'projekdetail-add', 'web', '2022-02-16 05:24:23', '2022-02-16 05:24:23'),
 (16, 'projekdetail-update', 'web', '2022-02-16 05:24:30', '2022-02-16 05:24:30'),
-(17, 'projekdetail-delete', 'web', '2022-02-16 05:24:35', '2022-02-16 05:24:35'),
+(17, 'projekdetail-destroy', 'web', '2022-02-16 05:24:35', '2022-02-16 05:24:35'),
 (18, 'tukang-list', 'web', '2022-02-16 05:24:49', '2022-02-16 05:24:49'),
 (19, 'tukang-add', 'web', '2022-02-16 05:24:55', '2022-02-16 05:24:55'),
 (20, 'tukang-update', 'web', '2022-02-16 05:25:07', '2022-02-16 05:25:07'),
-(21, 'tukang-delete', 'web', '2022-02-16 05:25:15', '2022-02-16 05:25:15'),
+(21, 'tukang-destroy', 'web', '2022-02-16 05:25:15', '2022-02-16 05:25:15'),
 (22, 'absen-list', 'web', '2022-02-16 05:25:29', '2022-02-16 05:25:29'),
 (23, 'absen-add', 'web', '2022-02-16 05:25:32', '2022-02-16 05:25:32'),
 (24, 'absen-update', 'web', '2022-02-16 05:25:36', '2022-02-16 05:25:36'),
-(25, 'absen-delete', 'web', '2022-02-16 05:25:40', '2022-02-16 05:25:40'),
+(25, 'absen-destroy', 'web', '2022-02-16 05:25:40', '2022-02-16 05:25:40'),
 (26, 'absenlembur-list', 'web', '2022-02-16 05:25:54', '2022-02-16 05:25:54'),
 (27, 'absenlembur-add', 'web', '2022-02-16 05:26:06', '2022-02-16 05:26:06'),
 (28, 'absenlembur-update', 'web', '2022-02-16 05:26:10', '2022-02-16 05:26:10'),
-(29, 'absenlembur-delete', 'web', '2022-02-16 05:26:15', '2022-02-16 05:26:15'),
+(29, 'absenlembur-destroy', 'web', '2022-02-16 05:26:15', '2022-02-16 05:26:15'),
 (30, 'chat-list', 'web', '2022-02-16 05:26:40', '2022-02-16 05:26:40'),
 (31, 'chat-add', 'web', '2022-02-16 05:26:46', '2022-02-16 05:26:46'),
 (32, 'chat-update', 'web', '2022-02-16 05:26:55', '2022-02-16 05:26:55'),
-(33, 'chat-delete', 'web', '2022-02-16 05:27:02', '2022-02-16 05:27:02'),
+(33, 'chat-destroy', 'web', '2022-02-16 05:27:02', '2022-02-16 05:27:02'),
 (34, 'chatdetail-list', 'web', '2022-02-16 05:27:23', '2022-02-16 05:27:23'),
 (35, 'chatdetail-add', 'web', '2022-02-16 05:27:28', '2022-02-16 05:27:28'),
 (36, 'shift-list', 'web', '2022-02-16 05:27:43', '2022-02-16 05:27:43'),
 (37, 'shift-add', 'web', '2022-02-16 05:27:47', '2022-02-16 05:27:47'),
 (38, 'shift-update', 'web', '2022-02-16 05:27:51', '2022-02-16 05:27:51'),
-(39, 'shift-delete', 'web', '2022-02-16 05:27:56', '2022-02-16 05:27:56'),
+(39, 'shift-destroy', 'web', '2022-02-16 05:27:56', '2022-02-16 05:27:56'),
 (41, 'role-list', 'web', '2022-02-16 05:32:52', '2022-02-16 05:33:01'),
 (42, 'role-add', 'web', '2022-02-16 05:33:05', '2022-02-16 05:33:05'),
 (43, 'role-update', 'web', '2022-02-16 05:33:19', '2022-02-16 05:33:19'),
-(44, 'role-delete', 'web', '2022-02-16 05:33:24', '2022-02-16 05:33:24'),
+(44, 'role-destroy', 'web', '2022-02-16 05:33:24', '2022-02-16 05:33:24'),
 (45, 'permission-list', 'web', '2022-02-16 05:33:36', '2022-02-16 05:33:36'),
 (46, 'permission-add', 'web', '2022-02-16 05:33:39', '2022-02-16 05:33:39'),
 (47, 'permission-update', 'web', '2022-02-16 05:33:49', '2022-02-16 05:33:49'),
-(48, 'permission-delete', 'web', '2022-02-16 05:33:56', '2022-02-16 05:33:56'),
+(48, 'permission-destroy', 'web', '2022-02-16 05:33:56', '2022-02-16 05:33:56'),
 (49, 'validasi-update', 'web', '2022-02-16 05:46:23', '2022-02-16 05:46:23');
 
 -- --------------------------------------------------------
@@ -506,7 +499,6 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (10, 8),
 (10, 9),
 (10, 10),
-(10, 11),
 (11, 1),
 (11, 2),
 (11, 3),
@@ -537,7 +529,6 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (14, 8),
 (14, 9),
 (14, 10),
-(14, 11),
 (15, 1),
 (15, 2),
 (15, 3),
@@ -908,13 +899,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `absens`
 --
 ALTER TABLE `absens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT untuk tabel `absen_lemburs`
 --
 ALTER TABLE `absen_lemburs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `chats`

@@ -96,8 +96,8 @@ Route::prefix('admin')->group(function () {
 
         Route::get('absen', [AbsenController::class, 'index'])->name('absen.index');
         Route::get('absen_show/{id}', [AbsenController::class, 'show'])->name('absen.show');
-        Route::post('absen_detail', [AbsenController::class, 'detail'])->name('absen.detail');
-        Route::post('absen_create', [AbsenController::class, 'create'])->name('absen.create');
+        Route::get('absen_detail/{id}/{user_id}', [AbsenController::class, 'detail'])->name('absen.detail');
+        Route::get('absen_create/{id}', [AbsenController::class, 'create'])->name('absen.create');
         Route::post('absen_add', [AbsenController::class, 'add'])->name('absen.add');
         Route::post('absen_update', [AbsenController::class, 'update'])->name('absen.update');
         Route::post('absen_validasi', [AbsenController::class, 'validasi'])->name('absen.validasi');
@@ -105,8 +105,8 @@ Route::prefix('admin')->group(function () {
 
         Route::get('absenlembur', [AbsenLemburController::class, 'index'])->name('absenlembur.index');
         Route::get('absenlembur_show/{id}', [AbsenLemburController::class, 'show'])->name('absenlembur.show');
-        Route::post('absenlembur_detail', [AbsenLemburController::class, 'detail'])->name('absenlembur.detail');
-        Route::post('absenlembur_create', [AbsenLemburController::class, 'create'])->name('absenlembur.create');
+        Route::get('absenlembur_detail/{id}/{user_id}', [AbsenLemburController::class, 'detail'])->name('absenlembur.detail');
+        Route::get('absenlembur_create/{id}', [AbsenLemburController::class, 'create'])->name('absenlembur.create');
         Route::post('absenlembur_add', [AbsenLemburController::class, 'add'])->name('absenlembur.add');
         Route::post('absenlembur_update', [AbsenLemburController::class, 'update'])->name('absenlembur.update');
         Route::post('absenlembur_validasi', [AbsenLemburController::class, 'validasi'])->name('absenlembur.validasi');

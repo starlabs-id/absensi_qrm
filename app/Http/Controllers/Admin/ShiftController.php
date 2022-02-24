@@ -28,6 +28,16 @@ class ShiftController extends Controller
      *
      * @return void
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('permission:shift-list', ['only' => ['shift']]);
+        $this->middleware('permission:shift-add', ['only' => ['shift_add']]);
+        $this->middleware('permission:shift-update', ['only' => ['shift_update']]);
+        $this->middleware('permission:shift-destroy', ['only' => ['shift_destroy']]);
+    }
+
     public function index()
     {
         $shifts = Shift::get();

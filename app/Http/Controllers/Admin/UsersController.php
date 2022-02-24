@@ -30,15 +30,20 @@ class UsersController extends Controller
     {
         $this->middleware('auth');
 
-        // $this->middleware('permission:role-list', ['only' => ['role']]);
-        // $this->middleware('permission:role-add', ['only' => ['role_add']]);
-        // $this->middleware('permission:role-update', ['only' => ['role_update']]);
-        // $this->middleware('permission:role-destroy', ['only' => ['role_destroy']]);
+        $this->middleware('permission:role-list', ['only' => ['role']]);
+        $this->middleware('permission:role-add', ['only' => ['role_add']]);
+        $this->middleware('permission:role-update', ['only' => ['role_update']]);
+        $this->middleware('permission:role-destroy', ['only' => ['role_destroy']]);
 
-        // $this->middleware('permission:user-list', ['only' => ['user']]);
-        // $this->middleware('permission:user-add', ['only' => ['user_add']]);
-        // $this->middleware('permission:user-update', ['only' => ['user_update']]);
-        // $this->middleware('permission:user-destroy', ['only' => ['user_destroy']]);
+        $this->middleware('permission:permission-list', ['only' => ['permission']]);
+        $this->middleware('permission:permission-add', ['only' => ['permission_add']]);
+        $this->middleware('permission:permission-update', ['only' => ['permission_update']]);
+        $this->middleware('permission:permission-destroy', ['only' => ['permission_destroy']]);
+
+        $this->middleware('permission:user-list', ['only' => ['user']]);
+        $this->middleware('permission:user-add', ['only' => ['user_add']]);
+        $this->middleware('permission:user-update', ['only' => ['user_update']]);
+        $this->middleware('permission:user-destroy', ['only' => ['user_destroy']]);
     }
 
     public function index(Request $request)

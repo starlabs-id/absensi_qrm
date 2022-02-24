@@ -6,7 +6,7 @@
 
             <div class="card-body">
             <h4 class="card-title mb-3">
-                    Detail Projek
+                    Detail Proyek
                     <span class="pull-right">
                         <button class="btn btn-warning btn-sm pull-right">
                             <a href="{{ route('projek.index') }}">Kembali</a>
@@ -57,15 +57,15 @@
                                         <p class="text-primary mb-1">Tanggal Selesai</p>
                                         <span>
                                             @if($projeks->tanggal_selesai == null)
-                                                {{ $projeks->status }}
+                                                <span class="badge badge-success m-2">{{ $projeks->status }}</span>
                                             @else
-                                                {{ date('d/m/Y', strtotime($projeks['tanggal_selesai'])) }}
+                                                <span class="badge badge-danger m-2">{{ $projeks->tanggal_selesai }}</span>
                                             @endif
                                         </span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Total Prestasi Fisik</p>
-                                        <span>{{ $projeks->total_prestasi_fisik }}</span>
+                                        <span>Rp. {{ number_format($projeks->total_prestasi_fisik, 2, ',', '.') }}</span>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
@@ -83,15 +83,15 @@
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Durasi Proyek</p>
-                                        <span>{{ $projeks->durasi_proyek }}</span>
+                                        <span>{{ $projeks->durasi_proyek }} Hari</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Total Volume Pekerjaan Sebelumnya</p>
-                                        <span>{{ $projeks->total_volume_pekerjaan_sebelumnya }}</span>
+                                        <span>{{ $projeks->total_volume_pekerjaan_sebelumnya }} ㎡</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Total Pekerja</p>
-                                        <span>{{ $projeks->total_pekerja }}</span>
+                                        <span>{{ $projeks->total_pekerja }} Orang</span>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
@@ -109,11 +109,11 @@
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Marketing</p>
-                                        <span>{{ $projeks->marketing }}</span>
+                                        <span>{{ $projeks->name }}</span>
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Total Volume Pekerjaan Hari Ini</p>
-                                        <span>{{ $projeks->total_volume_pekerjaan_hari_ini }}</span>
+                                        <span>{{ $projeks->total_volume_pekerjaan_hari_ini }} ㎡</span>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-6">
@@ -135,7 +135,7 @@
                                     </div>
                                     <div class="mb-4">
                                         <p class="text-primary mb-1">Total Prestasi Keuangan</p>
-                                        <span>{{ $projeks->total_prestasi_keuangan }}</span>
+                                        <span>Rp. {{ number_format($projeks->total_prestasi_keuangan, 2, ',', '.') }}</span>
                                     </div>
                                 </div>
                             </div>

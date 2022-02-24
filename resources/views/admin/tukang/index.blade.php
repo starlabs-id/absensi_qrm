@@ -9,9 +9,11 @@
                 <h4 class="card-title mb-3">
                     Data Tukang
 
-                    <span class="pull-right">
-                        <a class="btn btn-primary btn-sm pull-right" role="button" data-toggle="collapse" href="#collapse-tambah" aria-expanded="false" aria-controls="collapse-tambah">Tambah</a>
-                    </span>
+                    @can('tukang-add')
+                        <span class="pull-right">
+                            <a class="btn btn-primary btn-sm pull-right" role="button" data-toggle="collapse" href="#collapse-tambah" aria-expanded="false" aria-controls="collapse-tambah">Tambah</a>
+                        </span>
+                    @endcan
                 </h4>
                 <br>
                 
@@ -93,7 +95,9 @@
                                 <td>Rp. {{ number_format($row->biaya_harian, 2, ',', '.') }}</td>
                                 <td>Rp. {{ number_format($row->biaya_lembur, 2, ',', '.') }}</td>
                                 <td>
-                                    <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row->id }}">Hapus</a>
+                                    @can('tukang-destroy')
+                                        <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row->id }}">Hapus</a>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

@@ -8,12 +8,13 @@
             <div class="card-body">
                 <h4 class="card-title mb-3">
                     Data Users
-
+                      @can('user-add')
                       <span class="pull-right">
                           <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
                           <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
                           <a class="btn btn-primary btn-sm pull-right" role="button" data-toggle="collapse" href="#collapse-tambah" aria-expanded="false" aria-controls="collapse-tambah">Tambah User</a>
                       </span>
+                      @endcan
                 </h4>
                 <br>
                 
@@ -107,7 +108,7 @@
                               @endif
                             </td>
                             <td>
-                              
+                              @can('user-update')
                                 <a href="#modal-edit" data-toggle="modal" class="btn btn-warning btn-sm btn-edit"
                                   data-id="{{ $row['id'] }}"
                                   data-hidden_id="{{ $row['id'] }}"
@@ -115,9 +116,10 @@
                                   data-namea="{{ $row['namea'] }}"
                                   data-ris="{{ $row['ris'] }}"><i class="nav-icon i-Pen-5"></i> Edit
                                 </a>
-                              
+                              @endcan
+                              @can('user-destroy')
                                 <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row['id'] }}"><i class="nav-icon i-Remove"></i> Hapus</a>
-                             
+                              @endcan
                             </td>
                           </tr>
                           @endforeach

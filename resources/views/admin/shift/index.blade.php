@@ -10,7 +10,9 @@
                     Data Shift
 
                     <span class="pull-right">
-                        <a class="btn btn-primary btn-sm pull-right" role="button" data-toggle="collapse" href="#collapse-tambah" aria-expanded="false" aria-controls="collapse-tambah">Tambah</a>
+                        @can('shift-add')
+                            <a class="btn btn-primary btn-sm pull-right" role="button" data-toggle="collapse" href="#collapse-tambah" aria-expanded="false" aria-controls="collapse-tambah">Tambah</a>
+                        @endcan
                     </span>
                 </h4>
                 <br>
@@ -69,13 +71,17 @@
                                     <td>{{ $row->jam_masuk }}</td>
                                     <td>{{ $row->jam_pulang }}</td>
                                     <td>
-                                        <a href="#modal-edit" data-toggle="modal" class="btn btn-warning btn-sm btn-edit"
-                                        data-id="{{ $row->id }}"
-                                        data-nama_shift="{{ $row->nama_shift }}"
-                                        data-jam_masuk="{{ $row->jam_masuk }}"
-                                        data-jam_pulang="{{ $row->jam_pulang }}">Edit
-                                        </a>
-                                        <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row->id }}">Hapus</a>
+                                        @can('shift-update')
+                                            <a href="#modal-edit" data-toggle="modal" class="btn btn-warning btn-sm btn-edit"
+                                            data-id="{{ $row->id }}"
+                                            data-nama_shift="{{ $row->nama_shift }}"
+                                            data-jam_masuk="{{ $row->jam_masuk }}"
+                                            data-jam_pulang="{{ $row->jam_pulang }}">Edit
+                                            </a>
+                                        @endcan
+                                        @can('shift-destroy')
+                                            <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row->id }}">Hapus</a>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

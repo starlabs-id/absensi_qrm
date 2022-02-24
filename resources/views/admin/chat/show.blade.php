@@ -31,39 +31,41 @@
             <div class="ps_rail-x" style="left: 0px; bottom: 0px;"><div class="psthumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="psrail-y" style="top: 0px; height: 396px; right: 0px;"><div class="ps_thumb-y" tabindex="0" style="top: 0px; height: 348px;"></div></div></div>
 
             <div class="pl-3 pr-3 pt-3 pb-3 box-shadow-1 chat-input-area">
-                <form class="inputForm" action="{{ route('chat_detail.add') }}" method="POST" enctype="multipart/form-data">
-                {{ csrf_field() }}
-                    <div class="form-group">
-                        <input type="hidden" name="chat_id" value="{{ $projeks['slug'] }}" class="form-control" readonly>
-                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" class="form-control" readonly>
-                        <textarea class="form-control form-control-rounded" placeholder="Type your message" name="komentar" id="komentar" cols="30" rows="3"></textarea>
-                    </div>
-                    <div class="d-flex">
-                        <div class="flex-grow-1"></div>
-                        @if($chats->superadmin == Auth::user()->id)
-                            <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
-                        @elseif($chats->direktur_utama == Auth::user()->id)
-                            <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
-                        @elseif($chats->direktur_teknik == Auth::user()->id)
-                            <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
-                        @elseif($chats->admin_teknik == Auth::user()->id)
-                            <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
-                        @elseif($chats->pm == Auth::user()->id)
-                            <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
-                        @elseif($chats->marketing == Auth::user()->id)
-                            <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
-                        @elseif($chats->gm == Auth::user()->id)
-                            <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
-                        @elseif($chats->co_gm == Auth::user()->id)
-                            <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
-                        @elseif($chats->supervisor == Auth::user()->id)
-                            <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
-                        @elseif($chats->owner == Auth::user()->id)
-                            <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
-                        @else
-                        @endif
-                    </div>
-                </form>
+                @can('chatdetail-add')
+                    <form class="inputForm" action="{{ route('chat_detail.add') }}" method="POST" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                        <div class="form-group">
+                            <input type="hidden" name="chat_id" value="{{ $projeks['slug'] }}" class="form-control" readonly>
+                            <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" class="form-control" readonly>
+                            <textarea class="form-control form-control-rounded" placeholder="Type your message" name="komentar" id="komentar" cols="30" rows="3"></textarea>
+                        </div>
+                        <div class="d-flex">
+                            <div class="flex-grow-1"></div>
+                            @if($chats->superadmin == Auth::user()->id)
+                                <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                            @elseif($chats->direktur_utama == Auth::user()->id)
+                                <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                            @elseif($chats->direktur_teknik == Auth::user()->id)
+                                <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                            @elseif($chats->admin_teknik == Auth::user()->id)
+                                <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                            @elseif($chats->pm == Auth::user()->id)
+                                <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                            @elseif($chats->marketing == Auth::user()->id)
+                                <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                            @elseif($chats->gm == Auth::user()->id)
+                                <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                            @elseif($chats->co_gm == Auth::user()->id)
+                                <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                            @elseif($chats->supervisor == Auth::user()->id)
+                                <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                            @elseif($chats->owner == Auth::user()->id)
+                                <button class="btn btn-icon btn-rounded btn-success mr-2"><i class="i-Paper-Plane"></i></button>
+                            @else
+                            @endif
+                        </div>
+                    </form>
+                @endcan
             </div>
 
         </div>

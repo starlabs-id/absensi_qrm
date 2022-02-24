@@ -30,6 +30,19 @@ class ChatController extends Controller
      *
      * @return void
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('permission:chat-list', ['only' => ['chat']]);
+        $this->middleware('permission:chat-add', ['only' => ['chat_add']]);
+        $this->middleware('permission:chat-update', ['only' => ['chat_update']]);
+        $this->middleware('permission:chat-destroy', ['only' => ['chat_destroy']]);
+
+        $this->middleware('permission:chatdetail-list', ['only' => ['chatdetail']]);
+        $this->middleware('permission:chatdetail-add', ['only' => ['chatdetail_add']]);
+    }
+
     public function index()
     {
         $chats = Chat::select('chats.id', 'chats.slug', 'A.name as superadmin', 'B.name as direktur_utama', 'C.name as owner', 'D.name as direktur_teknik', 'E.name as admin_teknik', 'F.name as pm', 'G.name as marketing', 'H.name as gm', 'I.name as co_gm', 'J.name as supervisor', 'projeks.nama_projek')

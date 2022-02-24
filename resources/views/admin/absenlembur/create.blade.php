@@ -143,9 +143,11 @@
                             <input type="file" class="form-control" id="foto" name="foto" accept="image/png, image/jpg, image/jpeg" required>
                         </div>
 
-                        <div class="form-group">
-                            <button class="btn btn-primary">Submit</button>
-                        </div>
+                        @can('absen-add')
+                            <div class="form-group">
+                                <button class="btn btn-primary">Submit</button>
+                            </div>
+                        @endcan
                     </div>
                 </div>
             </form>

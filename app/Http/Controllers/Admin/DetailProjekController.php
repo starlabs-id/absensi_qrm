@@ -30,6 +30,16 @@ class DetailProjekController extends Controller
      *
      * @return void
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('permission:projekdetail-list', ['only' => ['projekdetail']]);
+        $this->middleware('permission:projekdetail-add', ['only' => ['projekdetail_add']]);
+        $this->middleware('permission:projekdetail-update', ['only' => ['projekdetail_update']]);
+        $this->middleware('permission:projekdetail-destroy', ['only' => ['projekdetail_destroy']]);
+    }
+
     public function index()
     {
         $detailprojeks = DetailProjek::select('detail_projeks.id', 'detail_projeks.uraian_pekerjaan', 'detail_projeks.volume_kontrak', 'detail_projeks.harga_satuan', 'projeks.id as pid', 'projeks.nama_projek')

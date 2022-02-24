@@ -32,12 +32,13 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $row->name }}</td>
                                 <td>
-                                    <form method="post" id="frm-nota" action="{{ route('absen.detail') }}" enctype="multipart/form-data">
+                                    <!-- <form method="post" id="frm-nota" action="" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <input type="text" hidden class="form-control" name="id" value="{{ $tukangs['id'] }}">
                                         <input type="text" hidden class="form-control" name="user_id" value="{{ $tukangs['user_id'] }}">
                                         <button type="submit" class="btn btn-sm btn-primary">Daftar Absen</button>
-                                    </form>
+                                    </form> -->
+                                    <a href="{{ route('absen.detail', ['id'=>$row->id,'user_id'=>$row->user_id]); }}" class="btn btn-primary btn-xs">Daftar Absen</a>
                                 </td>
                             </tr>
                             @endforeach

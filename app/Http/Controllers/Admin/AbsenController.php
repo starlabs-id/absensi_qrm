@@ -27,6 +27,18 @@ class AbsenController extends Controller
      *
      * @return void
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('permission:projek-list', ['only' => ['projek']]);
+        $this->middleware('permission:projek-add', ['only' => ['projek_add']]);
+        $this->middleware('permission:projek-update', ['only' => ['projek_update']]);
+        $this->middleware('permission:projek-destroy', ['only' => ['projek_destroy']]);
+
+        $this->middleware('permission:validasi-update', ['only' => ['validasi']]);
+    }
+
     public function index()
     {
         $absens = Tukang::select('tukangs.id', 'projeks.nama_projek')
@@ -53,109 +65,101 @@ class AbsenController extends Controller
         return view('admin.absen.show', compact('absens', 'tukangs'));
     }
 
-    public function detail(Request $request)
+    public function detail($id, $user_id)
     {
         $absens = Absen::select('absens.*', 'users.name')
                         ->leftjoin('projeks', 'projeks.id', '=', 'absens.projek_id')
                         ->leftjoin('users', 'users.id', '=', 'absens.user_id')
                         ->orderBy('projeks.id', 'DESC')
-                        ->where('absens.user_id', '=', $request->user_id)
+                        ->where('absens.user_id', '=', $user_id)
                         ->get();
 
-        $tukangs = Tukang::where('tukangs.id', '=', $request->id)->first();
+        $tukangs = Tukang::select('tukangs.*', 'shifts.nama_shift', 'shifts.jam_masuk', 'shifts.jam_pulang')
+                        ->where('tukangs.id', '=', $id)
+                        ->leftjoin('shifts', 'shifts.id', '=', 'tukangs.shift_id')
+                        ->first();
         
-        $absen = User::where('id', '=', $request->user_id)->first();
+        $absen = User::where('id', '=', $user_id)->first();
 
         return view('admin.absen.detail', compact('absens', 'absen', 'tukangs'));
     }
 
-    public function create(Request $request)
+    public function create($tukang_id)
     {
-        $tukangs = Tukang::where('id', '=', $request->tukang_id)->first();
+        $tukangs = Tukang::where('id', '=', $tukang_id)->first();
 
         return view('admin.absen.create', compact('tukangs'));
     }
 
     public function add(Request $request)
     {
-        // $this->validate($request, [
-        //     'lokasi_datang' => 'required',
-        //     'ttd'  => 'required',
-        //     'foto'  => 'required|image|mimes:jpeg,jpg,png|max:2000',
-        // ]);
+        $this->validate($request, [
+            'lokasi_datang' => 'required',
+            'ttd'  => 'required',
+            'foto'  => 'required|image|mimes:jpeg,jpg,png|max:2000',
+        ]);
 
-        if($request->lokasi_datang && $request->ttd && $request->foto != null)
+        $projek = $request->projek_id;
+        $ada = Absen::select('user_id')
+                    ->where([
+                        ['projek_id', '=', $projek],
+                        ['tanggal_datang', '=', date('d-m-Y')],
+                    ])
+                    ->get(); 
+
+        if(count($ada) == 0)
         {
-            $projek = $request->projek_id;
-            $ada = Absen::select('user_id')
-                        ->where([
-                            ['projek_id', '=', $projek],
-                            ['tanggal_datang', '=', date('d-m-Y')],
-                        ])
-                        ->get(); 
+            //upload foto
+            $foto = $request->file('foto');
+            $foto->storeAs('public/absen', $foto->hashName());
+            $foto = $foto->hashName();
 
-            if(count($ada) == 0)
-            {
-                //upload foto
-                $foto = $request->file('foto');
-                $foto->storeAs('public/absen', $foto->hashName());
-                $foto = $foto->hashName();
-
-                // $ttd = $request->file('ttd');
-                // $ttd->storeAs('public/ttd', $ttd->hashName());
-                // $ttd = $ttd->hashName();
-                
-                $folderPath = public_path('ttd/');
-                // dd($folderPath);
-                
-                $image_parts = explode(";base64,", $request->ttd);
-                    
-                $image_type_aux = explode("image/", $image_parts[0]);
-                
-                $image_type = $image_type_aux[1];
-                
-                $image_base64 = base64_decode($image_parts[1]);
-
-                $filename = uniqid() . '.'.$image_type;
-                
-                $file = $folderPath . $filename;
-           
-                file_put_contents($file, $image_base64);
-                // dd($file, $image_base64, $image_type, $image_type_aux, $image_parts, $folderPath);
-
-                $absen = Absen::create([
-                    'lokasi_datang'   => $request->lokasi_datang,
-                    'jam_datang'   => $request->jam_datang,
-                    'tanggal_datang'   => $request->tanggal_datang,
-                    'hari_datang'   => $request->hari_datang,
-                    'bulan_datang'   => $request->bulan_datang,
-                    'tahun_datang'   => $request->tahun_datang,
-                    'foto'   => $foto,
-                    'ttd'   => $filename,
-                    'user_id'   => $request->user_id,
-                    'projek_id'   => $request->projek_id,
-                    'tukang_id'   => $request->tukang_id,
-                    'edit_by'   => Auth::user()->id,
-                ]);
-        
+            // $ttd = $request->file('ttd');
+            // $ttd->storeAs('public/ttd', $ttd->hashName());
+            // $ttd = $ttd->hashName();
             
-                toastr()->success('Data berhasil disimpan!');
-                // return redirect()->route('absen.show', [$request->tukang_id]);
-                return redirect()->route('absen.index');
-            }
-            else{
-                toastr()->error('Anda sudah absen hari ini!');
-                return redirect()->route('absen.index');   
-            }
+            $folderPath = public_path('ttd/');
+            // dd($folderPath);
+            
+            $image_parts = explode(";base64,", $request->ttd);
+                
+            $image_type_aux = explode("image/", $image_parts[0]);
+            
+            $image_type = $image_type_aux[1];
+            
+            $image_base64 = base64_decode($image_parts[1]);
+
+            $filename = uniqid() . '.'.$image_type;
+            
+            $file = $folderPath . $filename;
+        
+            file_put_contents($file, $image_base64);
+            // dd($file, $image_base64, $image_type, $image_type_aux, $image_parts, $folderPath);
+
+            $absen = Absen::create([
+                'lokasi_datang'   => $request->lokasi_datang,
+                'jam_datang'   => $request->jam_datang,
+                'tanggal_datang'   => $request->tanggal_datang,
+                'hari_datang'   => $request->hari_datang,
+                'bulan_datang'   => $request->bulan_datang,
+                'tahun_datang'   => $request->tahun_datang,
+                'foto'   => $foto,
+                'ttd'   => $filename,
+                'user_id'   => $request->user_id,
+                'projek_id'   => $request->projek_id,
+                'tukang_id'   => $request->tukang_id,
+                'edit_by'   => Auth::user()->id,
+            ]);
+    
+        
+            toastr()->success('Data berhasil disimpan!');
+            // return redirect()->route('absen.show', [$request->tukang_id]);
+            return redirect()->route('absen.detail', ['id'=>$request->tukang_id,'user_id'=>$request->user_id]);
         }
-
-        toastr()->error('Data harus dilengkapi!');
-        return redirect()->route('absen.index');        
-    }
-
-    public function edit()
-    {
-        return view('admin.absen.edit');
+        else{
+            toastr()->error('Anda sudah absen hari ini!');
+            return redirect()->route('absen.detail', ['id'=>$request->tukang_id,'user_id'=>$request->user_id]);
+        }      
     }
     
     public function update(Request $request)
@@ -172,7 +176,7 @@ class AbsenController extends Controller
  
         toastr()->success('Data berhasil disimpan!');
         // return redirect()->route('absen.show', [$request->tukang_id]);
-        return redirect()->route('absen.index');
+        return redirect()->route('absen.detail', ['id'=>$request->tukang_id,'user_id'=>$request->user_id]);
     }
     
     public function validasi(Request $request)
@@ -194,8 +198,7 @@ class AbsenController extends Controller
         ]);
  
         toastr()->success('Data berhasil disimpan!');
-        // return redirect()->route('absen.show', [$request->tukang_id]);
-        return redirect()->route('absen.index');
+        return redirect()->route('absen.detail', ['id'=>$request->tukang_id,'user_id'=>$request->user_id]);
     }
     
     public function destroy(Request $request)

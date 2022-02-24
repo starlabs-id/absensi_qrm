@@ -10,7 +10,9 @@
                     Data Chat
 
                     <span class="pull-right">
-                        <a class="btn btn-primary btn-sm pull-right" role="button" data-toggle="collapse" href="#collapse-tambah" aria-expanded="false" aria-controls="collapse-tambah">Tambah</a>
+                        @can('chat-add')
+                            <a class="btn btn-primary btn-sm pull-right" role="button" data-toggle="collapse" href="#collapse-tambah" aria-expanded="false" aria-controls="collapse-tambah">Tambah</a>
+                        @endcan
                     </span>
                 </h4>
                 <br>
@@ -207,9 +209,15 @@
                                             data-marketing="{{ $row->marketing }}"
                                             data-owner="{{ $row->owner }}">Edit
                                         </a> -->
-                                        <a href="{{ route('chat.show', $row->slug) }}" class="btn btn-success btn-sm">Detail</a>
-                                        <a href="{{ route('chat.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                        <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row->id }}">Hapus</a>
+                                        @can('chat-add')
+                                            <a href="{{ route('chat.show', $row->slug) }}" class="btn btn-success btn-sm">Detail</a>
+                                        @endcan
+                                        @can('chat-update')
+                                            <a href="{{ route('chat.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                        @endcan
+                                        @can('chat-destroy')
+                                            <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row->id }}">Hapus</a>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

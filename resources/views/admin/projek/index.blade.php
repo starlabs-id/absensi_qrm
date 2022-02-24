@@ -7,12 +7,14 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h4 class="card-title mb-3">
-                    Data Project
+                    Data Proyek
 
                     <span class="pull-right">
                         <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
                         <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
-                        <a href="{{ route('projek.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
+                        @can('projek-add')
+                            <a href="{{ route('projek.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
+                        @endcan
                     </span>
                 </h4>
                 <br>
@@ -22,9 +24,9 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Nama Projek</th>
-                                <th>Pemberi Projek</th>
-                                <th>Rencana Projek</th>
+                                <th>Nama Proyek</th>
+                                <th>Pemberi Proyek</th>
+                                <th>Rencana Proyek</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -37,9 +39,15 @@
                                 <td>{{ $row->pemberi_kerja }}</td>
                                 <td>{{ $row->rencana_kerja }}</td>
                                 <td>
-                                    <a href="{{ route('projek.show', $row->id) }}" class="btn btn-success btn-sm">Detail</a>
-                                    <a href="{{ route('projek.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row['id'] }}">Hapus</a>
+                                    @can('projek-list')
+                                        <a href="{{ route('projek.show', $row->id) }}" class="btn btn-success btn-sm">Detail</a>
+                                    @endcan
+                                    @can('projek-update')
+                                        <a href="{{ route('projek.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    @endcan
+                                    @can('projek-destroy')
+                                        <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row['id'] }}">Hapus</a>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

@@ -6,7 +6,7 @@
 
             <div class="card-body">
                 <h4 class="card-title mb-3">
-                    Detail Projek
+                    Detail Proyek
                     <span class="pull-right">
                         <button onclick="goBack()" style="margin-right: 5px;" class="btn btn-warning btn-sm pull-right">
                             Kembali
@@ -90,17 +90,17 @@
                             </div>
                             <div class="mb-4">
                                 <p class="text-primary mb-1">Volume Kontrak</p>
-                                <span>{{ $detailprojeks->volume_kontrak }}</span>
+                                <span>{{ $detailprojeks->volume_kontrak }} ㎡</span>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
                             <div class="mb-4">
                                 <p class="text-primary mb-1">Volume Dikerjakan</p>
-                                <span>{{ $detailprojeks->volume_dikerjakan }}</span>
+                                <span>{{ $detailprojeks->volume_dikerjakan }} ㎡</span>
                             </div>
                             <div class="mb-4">
                                 <p class="text-primary mb-1">Prestasi Keuangan Hari ini</p>
-                                <span>{{ $detailprojeks->prestasi_fisik_hari_ini }}</span>
+                                <span>Rp. {{ number_format($detailprojeks->prestasi_fisik_hari_ini, 2, ',', '.') }}</span>
                             </div>
                             <div class="mb-4">
                                 <p class="text-primary mb-1">Keterangan</p>
@@ -110,17 +110,17 @@
                         <div class="col-md-3 col-6">
                             <div class="mb-4">
                                 <p class="text-primary mb-1">Harga Satuan</p>
-                                <span>{{ $detailprojeks->harga_satuan }}</span>
+                                <span>Rp. {{ number_format($detailprojeks->harga_satuan, 2, ',', '.') }}</span>
                             </div>
                             <div class="mb-4">
                                 <p class="text-primary mb-1">Volume Pekerjaan Hari Ini</p>
-                                <span>{{ $detailprojeks->volume_pekerjaan_hari_ini }}</span>
+                                <span>{{ $detailprojeks->volume_pekerjaan_hari_ini }} ㎡</span>
                             </div>
                         </div>
                         <div class="col-md-3 col-6">
                             <div class="mb-4">
                                 <p class="text-primary mb-1">Prestasi Fisik Hari Ini</p>
-                                <span>{{ $detailprojeks->prestasi_keuangan_hari_ini }}</span>
+                                <span>Rp. {{ number_format($detailprojeks->prestasi_keuangan_hari_ini, 2, ',', '.') }}</span>
                             </div>
                             <div class="mb-4">
                                 <p class="text-primary mb-1">Tanggal</p>

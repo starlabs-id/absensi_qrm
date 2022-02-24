@@ -111,7 +111,9 @@
                     </div>
 
                     <div class="col-md-12">
-                        <button class="btn btn-primary">Submit</button>
+                        @can('projek-update')
+                            <button class="btn btn-primary">Submit</button>
+                        @endcan
                     </div>
                 </div>
             </form>

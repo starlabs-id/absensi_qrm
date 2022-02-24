@@ -136,16 +136,18 @@
                             <div id="sig"></div>
                             <br/>
                             <button id="clear" class="btn btn-danger btn-xs">Hapus</button>
-                            <textarea id="signature64" name="ttd" style="display: none" required></textarea>
+                            <textarea id="signature64" name="ttd" style="display: none"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="foto">Foto</label>
                             <input type="file" class="form-control" id="foto" name="foto" accept="image/png, image/jpg, image/jpeg" required>
                         </div>
-
-                        <div class="form-group">
-                            <button class="btn btn-primary">Submit</button>
-                        </div>
+                        
+                        @can('absen-add')
+                            <div class="form-group">
+                                <button class="btn btn-primary">Submit</button>
+                            </div>
+                        @endcan
                     </div>
                 </div>
             </form>

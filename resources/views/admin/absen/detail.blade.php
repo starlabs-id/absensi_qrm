@@ -56,12 +56,10 @@
                     <span class="pull-right">
                         <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
                         <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
-                        <form method="post" id="frm-nota" action="{{ route('absen.create') }}" enctype="multipart/form-data" class="pull-right">
-                            {{ csrf_field() }}
-                            <input type="text" hidden class="form-control" name="tukang_id" value="{{ $tukangs['id'] }}">
-                            <button type="submit" class="btn btn-sm btn-danger">Absen</button>
-                        </form>
-                        <button onclick="goBack()" style="margin-right: 5px;" class="btn btn-warning btn-sm pull-right">
+                        @can('absen-add')
+                            <a href="{{ route('absen.create', $tukangs->id) }}" class="btn btn-danger btn-sm">Absen</a>
+                        @endcan
+                        <button onclick="goBack()" style="margin-right: 5px;" class="btn btn-warning btn-sm">
                             Kembali
                         </button>
                     </span>
@@ -74,6 +72,7 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Foto</th>
+                                <th>TTD</th>
                                 <th>Tanggal</th>
                                 <th>Jam Datang</th>
                                 <th>Jam Pulang</th>
@@ -89,7 +88,12 @@
                                 <td>{{ $no++ }}</td>
                                 <td>
                                     @if($row->foto != '')
-                                        <img src="{{ asset('storage/absen/' . $row->foto) }}" style="width:40%">
+                                        <img src="{{ asset('storage/absen/' . $row->foto) }}" style="width:30%">
+                                    @else
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($row->ttd != '')
                                         <img src="{{ asset('ttd/' . $row->ttd) }}" style="width:40%">
                                     @else
                                     @endif
@@ -97,30 +101,52 @@
                                 <td>{{ $row->hari_datang }}, {{ $row->tanggal_datang }}</td>
                                 <td>{{ $row->jam_datang }}</td>
                                 <td>{{ $row->jam_pulang }}</td>
-                                <td>{{ $row->status }}</td>
-                                <td>{{ $row->keterangan }}</td>
                                 <td>
-                                    <a href="#!" class="btn btn-danger btn-xs btn-hapus pull-right" style="margin-left:5px;" data-id="{{ $row->id }}">Hapus</a>
-                                    @if($row->validasi_by == '')
-                                        <a href="#modal-edit" data-toggle="modal" class="btn btn-success btn-xs btn-edit pull-right" style="margin-left:5px;"
-                                            data-id="{{ $row->id }}"
-                                            data-projek_id="{{ $row->projek_id }}">Validasi
-                                        </a>
+                                    @if($row->status == 'Hadir')
+                                        <span class="badge badge-success m-2">Hadir</span>
+                                    @elseif($row->status == 'Sakit')
+                                        <span class="badge badge-warning m-2">Sakit</span>
+                                    @elseif($row->status == 'Tidak Hadir')
+                                        <span class="badge badge-danger m-2">Tidak Hadir</span>
+                                    @elseif($row->status == 'Lembur')
+                                        <span class="badge badge-danger m-2">Lembur</span>
                                     @else
                                     @endif
-                                    <form method="post" action="{{ route('absen.update') }}" enctype="multipart/form-data">
-                                        {{ csrf_field() }}
-                                        <input type="text" hidden class="form-control" name="id" value="{{ $row['id'] }}">
-                                        <input type="text" hidden class="form-control" id="tanggal_pulang" name="tanggal_pulang" value="{{ date('d-m-Y') }}">
-                                        <input type="text" hidden class="form-control" id="hari_pulang" name="hari_pulang" value="{{ hari_ini() }}">
-                                        <input type="text" hidden class="form-control" id="bulan_pulang" name="bulan_pulang" value="{{ $hariIni->monthName }}">
-                                        <input type="text" hidden class="form-control" id="tahun_pulang" name="tahun_pulang" value="{{ date('Y') }}">
-                                        <input type="text" hidden class="form-control" id="jam_pulang" name="jam_pulang" value="{{ date('H:i:s') }}">
-                                        @if($row->jam_pulang == '')
-                                            <button type="submit" class="btn btn-xs btn-primary pull-right" style="margin-left:5px;">Absen Pulang</button>
+                                </td>
+                                <td>{{ $row->keterangan }}</td>
+                                <td>
+                                    @can('absen-destroy')
+                                        <a href="#!" class="btn btn-danger btn-xs btn-hapus pull-right" style="margin-left:5px;" data-id="{{ $row->id }}">Hapus</a>
+                                    @endcan
+                                    @can('validasi')
+                                        @if($row->validasi_by == '')
+                                            <a href="#modal-edit" data-toggle="modal" class="btn btn-success btn-xs btn-edit pull-right" style="margin-left:5px;"
+                                                data-id="{{ $row->id }}"
+                                                data-projek_id="{{ $row->projek_id }}"
+                                                data-tukang_id="{{ $row->tukang_id }}"
+                                                data-user_id="{{ $row->user_id }}">Validasi
+                                            </a>
                                         @else
-                                        @endif
-                                    </form>
+                                    @endcan
+                                    @endif
+                                    @if($row->tanggal_datang == date('d-m-Y'))
+                                        <form method="post" action="{{ route('absen.update') }}" enctype="multipart/form-data">
+                                            {{ csrf_field() }}
+                                            <input type="text" hidden class="form-control" name="id" value="{{ $row['id'] }}">
+                                            <input type="text" hidden class="form-control" name="tukang_id" value="{{ $row['tukang_id'] }}">
+                                            <input type="text" hidden class="form-control" name="user_id" value="{{ $row['user_id'] }}">
+                                            <input type="text" hidden class="form-control" id="tanggal_pulang" name="tanggal_pulang" value="{{ date('d-m-Y') }}">
+                                            <input type="text" hidden class="form-control" id="hari_pulang" name="hari_pulang" value="{{ hari_ini() }}">
+                                            <input type="text" hidden class="form-control" id="bulan_pulang" name="bulan_pulang" value="{{ $hariIni->monthName }}">
+                                            <input type="text" hidden class="form-control" id="tahun_pulang" name="tahun_pulang" value="{{ date('Y') }}">
+                                            <input type="text" hidden class="form-control" id="jam_pulang" name="jam_pulang" value="{{ date('H:i:s') }}">
+                                            @if($row->jam_pulang == '')
+                                                <button type="submit" class="btn btn-xs btn-primary pull-right" style="margin-left:5px;">Absen Pulang</button>
+                                            @else
+                                            @endif
+                                        </form>
+                                    @else
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -145,6 +171,8 @@
                                     <div class="form-group" hidden>
                                         <label>ID</label>
                                         <input type="text" readonly class="form-control" name="id" id="idx" class="form-control">
+                                        <input type="text" readonly class="form-control" name="tukang_id" id="tukang_idx" class="form-control">
+                                        <input type="text" readonly class="form-control" name="user_id" id="user_idx" class="form-control">
                                         <input type="text" readonly class="form-control" id="validasi_byx" name="validasi_by" value="{{ Auth::user()->id }}">
                                     </div>
                                     <div class="form-group">
@@ -186,9 +214,13 @@
       $('#datatable').on('click', '.btn-edit', function() {
         var id = $(this).data('id');
         var projek_id = $(this).data('projek_id');
+        var tukang_id = $(this).data('tukang_id');
+        var user_id = $(this).data('user_id');
         
         $('#idx').val(id);
         $('#projek_idx').val(projek_id);
+        $('#tukang_idx').val(tukang_id);
+        $('#user_idx').val(user_id);
       });
 
       $('#frm-edit').on('submit', function(e) {
@@ -214,6 +246,9 @@
                         toastr.success('Data berhasil dihapus');
                         location.reload();
                     });
+                },
+                cancel: function () {
+                    // $.alert('Batal!');
                 },
             }
         });

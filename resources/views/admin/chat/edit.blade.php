@@ -98,9 +98,11 @@
                         </select>
                     </div>
 
+                    @can('chat-update')
                     <div class="col-md-12">
                         <button class="btn btn-primary">Submit</button>
                     </div>
+                    @endcan
                 </div>
             </form>
         </div>

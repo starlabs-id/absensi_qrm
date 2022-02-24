@@ -54,109 +54,98 @@ class AbsenLemburController extends Controller
         return view('admin.absenlembur.show', compact('absens', 'tukangs'));
     }
 
-    public function detail(Request $request)
+    public function detail($id, $user_id)
     {
         $absens = AbsenLembur::select('absen_lemburs.*', 'users.name')
                         ->leftjoin('projeks', 'projeks.id', '=', 'absen_lemburs.projek_id')
                         ->leftjoin('users', 'users.id', '=', 'absen_lemburs.user_id')
                         ->orderBy('projeks.id', 'DESC')
-                        ->where('absen_lemburs.user_id', '=', $request->user_id)
+                        ->where('absen_lemburs.user_id', '=', $user_id)
                         ->get();
 
-        $tukangs = Tukang::where('tukangs.id', '=', $request->id)->first();
+        $tukangs = Tukang::where('tukangs.id', '=', $id)->first();
         
-        $absen = User::where('id', '=', $request->user_id)->first();
+        $absen = User::where('id', '=', $user_id)->first();
 
         return view('admin.absenlembur.detail', compact('absens', 'absen', 'tukangs'));
     }
 
-    public function create(Request $request)
+    public function create($tukang_id)
     {
-        $tukangs = Tukang::where('id', '=', $request->tukang_id)->first();
+        $tukangs = Tukang::where('id', '=', $tukang_id)->first();
 
         return view('admin.absenlembur.create', compact('tukangs'));
     }
 
     public function add(Request $request)
     {
-        // $this->validate($request, [
-        //     'lokasi_datang' => 'required',
-        //     'ttd'  => 'required',
-        //     'foto'  => 'required|image|mimes:jpeg,jpg,png|max:2000',
-        // ]);
+        $this->validate($request, [
+            'lokasi_datang' => 'required',
+            'ttd'  => 'required',
+            'foto'  => 'required|image|mimes:jpeg,jpg,png|max:2000',
+        ]);
 
-        if($request->lokasi_datang && $request->ttd && $request->foto != null)
+        $projek = $request->projek_id;
+        $ada = AbsenLembur::select('user_id')
+                    ->where([
+                        ['projek_id', '=', $projek],
+                        ['tanggal_datang', '=', date('d-m-Y')],
+                    ])
+                    ->get(); 
+
+        if(count($ada) == 0)
         {
-            $projek = $request->projek_id;
-            $ada = AbsenLembur::select('user_id')
-                        ->where([
-                            ['projek_id', '=', $projek],
-                            ['tanggal_datang', '=', date('d-m-Y')],
-                        ])
-                        ->get(); 
+            //upload foto
+            $foto = $request->file('foto');
+            $foto->storeAs('public/absenlembur', $foto->hashName());
+            $foto = $foto->hashName();
 
-            if(count($ada) == 0)
-            {
-                //upload foto
-                $foto = $request->file('foto');
-                $foto->storeAs('public/absenlembur', $foto->hashName());
-                $foto = $foto->hashName();
-
-                // $ttd = $request->file('ttd');
-                // $ttd->storeAs('public/ttd', $ttd->hashName());
-                // $ttd = $ttd->hashName();
-                
-                $folderPath = public_path('ttd_lembur/');
-                // dd($folderPath);
-                
-                $image_parts = explode(";base64,", $request->ttd);
-                    
-                $image_type_aux = explode("image/", $image_parts[0]);
-                
-                $image_type = $image_type_aux[1];
-                
-                $image_base64 = base64_decode($image_parts[1]);
-
-                $filename = uniqid() . '.'.$image_type;
-                
-                $file = $folderPath . $filename;
-           
-                file_put_contents($file, $image_base64);
-                // dd($file, $image_base64, $image_type, $image_type_aux, $image_parts, $folderPath);
-
-                $absen = AbsenLembur::create([
-                    'lokasi_datang'   => $request->lokasi_datang,
-                    'jam_datang'   => $request->jam_datang,
-                    'tanggal_datang'   => $request->tanggal_datang,
-                    'hari_datang'   => $request->hari_datang,
-                    'bulan_datang'   => $request->bulan_datang,
-                    'tahun_datang'   => $request->tahun_datang,
-                    'foto'   => $foto,
-                    'ttd'   => $filename,
-                    'user_id'   => $request->user_id,
-                    'projek_id'   => $request->projek_id,
-                    'tukang_id'   => $request->tukang_id,
-                    'edit_by'   => Auth::user()->id,
-                ]);
-        
+            // $ttd = $request->file('ttd');
+            // $ttd->storeAs('public/ttd', $ttd->hashName());
+            // $ttd = $ttd->hashName();
             
-                toastr()->success('Data berhasil disimpan!');
-                // return redirect()->route('absenlembur.show', [$request->tukang_id]);
-                return redirect()->route('absenlembur.index');
-            }
-            else{
-                toastr()->error('Anda sudah absen hari ini!');
-                return redirect()->route('absenlembur.index');   
-            }
+            $folderPath = public_path('ttd_lembur/');
+            // dd($folderPath);
+            
+            $image_parts = explode(";base64,", $request->ttd);
+                
+            $image_type_aux = explode("image/", $image_parts[0]);
+            
+            $image_type = $image_type_aux[1];
+            
+            $image_base64 = base64_decode($image_parts[1]);
+
+            $filename = uniqid() . '.'.$image_type;
+            
+            $file = $folderPath . $filename;
+        
+            file_put_contents($file, $image_base64);
+            // dd($file, $image_base64, $image_type, $image_type_aux, $image_parts, $folderPath);
+
+            $absen = AbsenLembur::create([
+                'lokasi_datang'   => $request->lokasi_datang,
+                'jam_datang'   => $request->jam_datang,
+                'tanggal_datang'   => $request->tanggal_datang,
+                'hari_datang'   => $request->hari_datang,
+                'bulan_datang'   => $request->bulan_datang,
+                'tahun_datang'   => $request->tahun_datang,
+                'foto'   => $foto,
+                'ttd'   => $filename,
+                'user_id'   => $request->user_id,
+                'projek_id'   => $request->projek_id,
+                'tukang_id'   => $request->tukang_id,
+                'edit_by'   => Auth::user()->id,
+            ]);
+    
+        
+            toastr()->success('Data berhasil disimpan!');
+            // return redirect()->route('absenlembur.show', [$request->tukang_id]);
+            return redirect()->route('absenlembur.detail', ['id'=>$request->tukang_id,'user_id'=>$request->user_id]);
         }
-
-        toastr()->error('Data harus dilengkapi!');
-        return redirect()->route('absenlembur.index');        
-    }
-
-    public function edit()
-    {
-        return view('admin.absenlembur.edit');
+        else{
+            toastr()->error('Anda sudah absen hari ini!');
+            return redirect()->route('absenlembur.detail', ['id'=>$request->tukang_id,'user_id'=>$request->user_id]);
+        }       
     }
     
     public function update(Request $request)
@@ -174,7 +163,7 @@ class AbsenLemburController extends Controller
  
         toastr()->success('Data berhasil disimpan!');
         // return redirect()->route('absenlembur.show', [$request->tukang_id]);
-        return redirect()->route('absenlembur.index');
+        return redirect()->route('absenlembur.detail', ['id'=>$request->tukang_id,'user_id'=>$request->user_id]);
     }
     
     public function validasi(Request $request)
@@ -206,7 +195,7 @@ class AbsenLemburController extends Controller
  
         toastr()->success('Data berhasil disimpan!');
         // return redirect()->route('absenlembur.show', [$request->tukang_id]);
-        return redirect()->route('absenlembur.index');
+        return redirect()->route('absenlembur.detail', ['id'=>$request->tukang_id,'user_id'=>$request->user_id]);
     }
     
     public function destroy(Request $request)

@@ -6,7 +6,7 @@
 
             <div class="card-body">
                 <h4 class="card-title mb-3">
-                    Detail Projek
+                    Detail Proyek
                     <span class="pull-right">
                         <button class="btn btn-warning btn-sm pull-right">
                             <a href="{{ route('admin.detailprojek.index') }}">Kembali</a>

@@ -30,6 +30,16 @@ class TukangController extends Controller
      *
      * @return void
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('permission:tukang-list', ['only' => ['tukang']]);
+        $this->middleware('permission:tukang-add', ['only' => ['tukang_add']]);
+        $this->middleware('permission:tukang-update', ['only' => ['tukang_update']]);
+        $this->middleware('permission:tukang-destroy', ['only' => ['tukang_destroy']]);
+    }
+
     public function index()
     {
         $tukangs = Tukang::select('tukangs.*', 'projeks.nama_projek', 'users.name', 'shifts.nama_shift')
