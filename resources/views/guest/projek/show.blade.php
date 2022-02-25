@@ -5,11 +5,11 @@
         <div class="card text-left">
 
             <div class="card-body">
-            <h4 class="card-title mb-3">
+                <h4 class="card-title mb-3">
                     Detail Proyek
                     <span class="pull-right">
                         <button class="btn btn-warning btn-sm pull-right">
-                            <a href="{{ route('projek.index') }}">Kembali</a>
+                            <a href="{{ route('proyek.index') }}">Kembali</a>
                         </button>
                     </span>
                 </h4>
@@ -21,9 +21,6 @@
                         </li>
                         <li>
                             <a href="#detail_harian">Detail Harian</a>
-                        </li>
-                        <li>
-                            <a href="#tukang">Daftar Tukang</a>
                         </li>
                         <li>
                             <a href="#chat">Chat</a>
@@ -164,39 +161,11 @@
                                             <td>{{ $row->volume_kontrak }}</td>
                                             <td>{{ $row->harga_satuan }}</td>
                                             <td>
-                                                <a href="{{ route('projekdetail.show', $row->id) }}" class="btn btn-success btn-sm">Detail</a>
+                                                <a href="{{ route('proyekdetail.show', $row->id) }}" class="btn btn-success btn-sm">Detail</a>
                                             </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div id="tukang">
-                            <h4>Daftar Tukang</h4>
-                            <br>
-                            <div class="table-responsive">
-                                <table id="" class="display table table-striped" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Karyawan</th>
-                                            <th>Shift</th>
-                                            <!-- <th>Biaya Harian</th>
-                                            <th>Biaya Lembur</th> -->
-                                        </tr>
-                                    </thead>
-                                    <?php $no = 1; ?>
-                                    @foreach($tukangs as $row)
-                                    <tr>
-                                        <td>{{ $no++ }}</td>
-                                        <td>{{ $row->name }}</td>
-                                        <td>{{ $row->nama_shift }}</td>
-                                        <!-- <td>Rp. {{ number_format($row->biaya_harian, 2, ',', '.') }}</td>
-                                        <td>Rp. {{ number_format($row->biaya_lembur, 2, ',', '.') }}</td> -->
-                                    </tr>
-                                    @endforeach
                                 </table>
                             </div>
                         </div>

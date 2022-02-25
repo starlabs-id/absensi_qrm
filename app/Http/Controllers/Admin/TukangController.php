@@ -42,6 +42,18 @@ class TukangController extends Controller
 
     public function index()
     {
+        $level = ModelHasRoles::select('model_has_roles.*', 'roles.name')
+                        ->leftjoin('users', 'users.id', '=', 'model_has_roles.model_id')
+                        ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->where('model_has_roles.model_id', Auth::user()->id)
+                        ->first();
+        
+        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        {
+            toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
+            return redirect()->to('/');
+        }
+
         $tukangs = Tukang::select('tukangs.*', 'projeks.nama_projek', 'users.name', 'shifts.nama_shift')
                             ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
                             ->leftjoin('users', 'users.id', '=', 'tukangs.user_id')
@@ -58,7 +70,7 @@ class TukangController extends Controller
         $projeks = Projek::get();
         $shifts = Shift::get();
 
-        return view('admin.tukang.index', compact('tukangs', 'karyawan', 'projeks', 'shifts'));
+        return view('admin.tukang.index', compact('tukangs', 'karyawan', 'projeks', 'shifts', 'level'));
     }
 
     public function add(Request $request)

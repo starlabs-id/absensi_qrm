@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\ProjekController;
 use App\Http\Controllers\Admin\ShiftController;
 use App\Http\Controllers\Admin\TukangController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\GuestController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -67,7 +69,8 @@ Route::prefix('admin')->group(function () {
         Route::get('projek_edit/{id}', [ProjekController::class, 'edit'])->name('projek.edit');
         Route::post('projek_update', [ProjekController::class, 'update'])->name('projek.update');
         Route::get('projek_destroy', [ProjekController::class, 'destroy'])->name('projek.destroy');
-        Route::post('pojek_chat_detail_add', [ProjekController::class, 'chat_detail_add'])->name('projek_chat.add');
+        Route::post('projek_chat_detail_add', [ProjekController::class, 'chat_detail_add'])->name('projek_chat.add');
+        Route::get('projek_delete/{id}', [ProjekController::class, 'delete'])->name('projek.delete');
 
         Route::get('projekdetail', [DetailProjekController::class, 'index'])->name('projekdetail.index');
         Route::get('projekdetail_show/{id}', [DetailProjekController::class, 'show'])->name('projekdetail.show');
@@ -111,5 +114,37 @@ Route::prefix('admin')->group(function () {
         Route::post('absenlembur_update', [AbsenLemburController::class, 'update'])->name('absenlembur.update');
         Route::post('absenlembur_validasi', [AbsenLemburController::class, 'validasi'])->name('absenlembur.validasi');
         Route::get('absenlembur_destroy', [AbsenLemburController::class, 'destroy'])->name('absenlembur.destroy');
+    });
+});
+
+Route::prefix('guest')->group(function () {
+
+    //group route with middleware "auth"
+    Route::group(['middleware' => 'auth'], function() {
+
+        Route::get('proyek', [GuestController::class, 'index'])->name('proyek.index');
+        Route::get('proyek_show/{id}', [GuestController::class, 'show'])->name('proyek.show');
+        Route::post('proyek_chat_detail_add', [GuestController::class, 'chat_detail_add'])->name('proyek_chat.add');
+
+        Route::get('proyekdetail_show/{id}', [GuestController::class, 'detail_show'])->name('proyekdetail.show');
+    });
+});
+
+Route::prefix('karyawan')->group(function () {
+
+    //group route with middleware "auth"
+    Route::group(['middleware' => 'auth'], function() {
+
+        Route::get('absensi', [KaryawanController::class, 'index'])->name('absensi.index');
+        Route::get('absensi_detail/{id}/{user_id}', [KaryawanController::class, 'detail'])->name('absensi.detail');
+        Route::get('absensi_create/{id}', [KaryawanController::class, 'create'])->name('absensi.create');
+        Route::post('absensi_add', [KaryawanController::class, 'add'])->name('absensi.add');
+        Route::post('absensi_update', [KaryawanController::class, 'update'])->name('absensi.update');
+
+        Route::get('absensilembur', [KaryawanController::class, 'absensilembur_index'])->name('absensilembur.index');
+        Route::get('absensilembur_detail/{id}/{user_id}', [KaryawanController::class, 'absensilembur_detail'])->name('absensilembur.detail');
+        Route::get('absensilembur_create/{id}', [KaryawanController::class, 'absensilembur_create'])->name('absensilembur.create');
+        Route::post('absensilembur_add', [KaryawanController::class, 'absensilembur_add'])->name('absensilembur.add');
+        Route::post('absensilembur_update', [KaryawanController::class, 'absensilembur_update'])->name('absensilembur.update');
     });
 });

@@ -31,26 +31,39 @@ class AbsenController extends Controller
     {
         $this->middleware('auth');
 
-        $this->middleware('permission:projek-list', ['only' => ['projek']]);
-        $this->middleware('permission:projek-add', ['only' => ['projek_add']]);
-        $this->middleware('permission:projek-update', ['only' => ['projek_update']]);
-        $this->middleware('permission:projek-destroy', ['only' => ['projek_destroy']]);
+        $this->middleware('permission:absen-list', ['only' => ['absen']]);
+        $this->middleware('permission:absen-add', ['only' => ['absen_add']]);
+        $this->middleware('permission:absen-update', ['only' => ['absen_update']]);
+        $this->middleware('permission:absen-destroy', ['only' => ['absen_destroy']]);
 
-        $this->middleware('permission:validasi-update', ['only' => ['validasi']]);
+        $this->middleware('permission:validasi-update', ['only' => ['validasi-update']]);
     }
 
     public function index()
     {
+        $level = ModelHasRoles::select('model_has_roles.*', 'roles.name')
+                        ->leftjoin('users', 'users.id', '=', 'model_has_roles.model_id')
+                        ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->where('model_has_roles.model_id', Auth::user()->id)
+                        ->first();
+        
+        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        {
+            toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
+            return redirect()->to('/');
+        }
+
         $absens = Tukang::select('tukangs.id', 'projeks.nama_projek')
                         ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
                         ->orderBy('projeks.id', 'DESC')
                         ->get();
 
-        return view('admin.absen.index', compact('absens'));
+        return view('admin.absen.index', compact('absens', 'level'));
     }
 
     public function show($id)
     {
+
         $absens = Tukang::select('tukangs.id', 'tukangs.user_id', 'users.name')
                         ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
                         ->leftjoin('users', 'users.id', '=', 'tukangs.user_id')
@@ -94,7 +107,7 @@ class AbsenController extends Controller
     public function add(Request $request)
     {
         $this->validate($request, [
-            'lokasi_datang' => 'required',
+            // 'lokasi_datang' => 'required',
             'ttd'  => 'required',
             'foto'  => 'required|image|mimes:jpeg,jpg,png|max:2000',
         ]);
@@ -137,7 +150,9 @@ class AbsenController extends Controller
             // dd($file, $image_base64, $image_type, $image_type_aux, $image_parts, $folderPath);
 
             $absen = Absen::create([
-                'lokasi_datang'   => $request->lokasi_datang,
+                'latitude_datang'   => $request->latitude_datang,
+                'longitude_datang'   => $request->longitude_datang,
+                'lokasi_datang'   => $request->latitude_datang. ',' .$request->longitude_datang,
                 'jam_datang'   => $request->jam_datang,
                 'tanggal_datang'   => $request->tanggal_datang,
                 'hari_datang'   => $request->hari_datang,
@@ -166,6 +181,9 @@ class AbsenController extends Controller
     {
         $absen = Absen::findOrFail($request->id);
         $absen->update([
+            'latitude_pulang'   => $request->latitude_pulang,
+            'longitude_pulang'   => $request->longitude_pulang,
+            'lokasi_pulang'   => $request->latitude_pulang. ',' .$request->longitude_pulang,
             'jam_pulang'   => $request->jam_pulang,
             'tanggal_pulang'   => $request->tanggal_pulang,
             'hari_pulang'   => $request->hari_pulang,

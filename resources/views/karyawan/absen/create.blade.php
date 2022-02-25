@@ -10,7 +10,6 @@
 <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet"> 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
-
 <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
 
 <style>
@@ -18,6 +17,16 @@
     #sig canvas{
         width: 100% !important;
         height: auto;
+    }
+    /* #map-canvas {
+        height: 400px;
+    } */
+    #mapa {
+        height: 100%;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+        top:0px;
     }
 </style>
 
@@ -94,7 +103,7 @@
             <!-- <button onclick="getLocation()" class="btn btn-success">Tentukan Lokasi</button> -->
             <br>
 
-            <form action="{{ route('absenlembur.add') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('absensi.add') }}" method="POST" enctype="multipart/form-data" id="mapCenterForm">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="col-md-6">
@@ -109,6 +118,10 @@
                             <label for="tanggal_datang">Tanggal Datang</label>
                             <input type="text" readonly class="form-control" id="tanggal_datang" name="tanggal_datang" value="{{ date('d-m-Y') }}">
                         </div>
+                        <!-- <div class="form-group">
+                            <label for="lokasi_datang">Lokasi Datang</label>
+                            <textarea type="text" readonly class="form-control" id="lokasi_datang" name="lokasi_datang" required></textarea>
+                        </div> -->
                         <div class="form-group">
                             <label for="hari_datang">Hari</label>
                             <input type="text" readonly class="form-control" id="hari_datang" name="hari_datang" value="{{ hari_ini() }}">
@@ -138,18 +151,18 @@
                             <div id="sig"></div>
                             <br/>
                             <button id="clear" class="btn btn-danger btn-xs">Hapus</button>
-                            <textarea id="signature64" name="ttd" style="display: none" required></textarea>
+                            <textarea id="signature64" name="ttd" style="display: none"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="foto">Foto</label>
                             <input type="file" class="form-control" id="foto" name="foto" accept="image/png, image/jpg, image/jpeg" required>
                         </div>
-
-                        @can('absen-add')
-                            <div class="form-group">
-                                <button class="btn btn-primary">Submit</button>
-                            </div>
-                        @endcan
+                        
+                        
+                        <div class="form-group">
+                            <button class="btn btn-primary">Submit</button>
+                        </div>
+                        
                     </div>
                 </div>
             </form>
@@ -188,4 +201,28 @@
     }
     getLocation()
 </script>
+
+<!-- <script type="text/javascript">
+    if (GBrowserIsCompatible()) 
+    {
+        map = new GMap2(document.getElementById("mapa"));
+        map.addControl(new GLargeMapControl());
+        map.addControl(new GMapTypeControl(3));    
+        map.setCenter( new GLatLng(-8.6966272,115.2253952), 11,0);
+        
+        GEvent.addListener(map,'mousemove',function(point)
+        {
+            document.getElementById('latspan').innerHTML = point.lat()
+            document.getElementById('lngspan').innerHTML = point.lng()
+            document.getElementById('latlong').innerHTML = point.lat() + ', ' + point.lng()                        
+        });
+        
+        GEvent.addListener(map,'click',function(overlay,point)
+        {
+            document.getElementById('latlongclicked').value = point.lat() + ', ' + point.lng()
+            document.getElementById('latitude').value = point.lat() 
+            document.getElementById('longitude').value = point.lng()
+        });
+    }
+</script> -->
 @endsection

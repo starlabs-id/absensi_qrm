@@ -94,7 +94,7 @@
             <!-- <button onclick="getLocation()" class="btn btn-success">Tentukan Lokasi</button> -->
             <br>
 
-            <form action="{{ route('absenlembur.add') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('absensilembur.add') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="col-md-6">
@@ -145,11 +145,9 @@
                             <input type="file" class="form-control" id="foto" name="foto" accept="image/png, image/jpg, image/jpeg" required>
                         </div>
 
-                        @can('absen-add')
-                            <div class="form-group">
-                                <button class="btn btn-primary">Submit</button>
-                            </div>
-                        @endcan
+                        <div class="form-group">
+                            <button class="btn btn-primary">Submit</button>
+                        </div>
                     </div>
                 </div>
             </form>

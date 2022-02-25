@@ -56,12 +56,10 @@
                     <span class="pull-right">
                         <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
                         <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
-                        @can('absen-add')
-                            <a href="{{ route('absen.create', $tukangs->id) }}" class="btn btn-danger btn-sm">Absen</a>
+                        @can('karyawan_absen_add')
+                            <a href="{{ route('absensi.create', $tukangs->id) }}" class="btn btn-danger btn-sm">Absen</a>
                         @endcan
-                        <button onclick="goBack()" style="margin-right: 5px;" class="btn btn-warning btn-sm">
-                            Kembali
-                        </button>
+                        <button class="btn btn-warning btn-sm"><a href="{{ route('absensi.index') }}">Kembali</a></button>
                     </span>
                 </h4>
                 <br>
@@ -119,23 +117,9 @@
                                 </td>
                                 <td>{{ $row->keterangan }}</td>
                                 <td>
-                                    @can('absen-destroy')
-                                        <a href="#!" class="btn btn-danger btn-xs btn-hapus pull-right" style="margin-left:5px;" data-id="{{ $row->id }}">Hapus</a>
-                                    @endcan
-                                    @can('validasi-update')
-                                        @if($row->validasi_by == '')
-                                            <a href="#modal-edit" data-toggle="modal" class="btn btn-success btn-xs btn-edit pull-right" style="margin-left:5px;"
-                                                data-id="{{ $row->id }}"
-                                                data-projek_id="{{ $row->projek_id }}"
-                                                data-tukang_id="{{ $row->tukang_id }}"
-                                                data-user_id="{{ $row->user_id }}">Validasi
-                                            </a>
-                                        @else
-                                    @endcan
-                                    @endif
-                                    @can('absen-update')
+                                    @can('karyawan-absen-update')
                                         @if($row->tanggal_datang == date('d-m-Y'))
-                                            <form method="post" action="{{ route('absen.update') }}" enctype="multipart/form-data">
+                                            <form method="post" action="{{ route('absensi.update') }}" enctype="multipart/form-data">
                                                 {{ csrf_field() }}
                                                 <input type="text" hidden class="form-control" name="id" value="{{ $row['id'] }}">
                                                 <input type="text" hidden class="form-control" name="tukang_id" value="{{ $row['tukang_id'] }}">
@@ -147,66 +131,19 @@
                                                 <input type="text" hidden class="form-control" id="jam_pulang" name="jam_pulang" value="{{ date('H:i:s') }}">
                                                 <input type="text" hidden class="form-control" name="latitude_pulang" id="latitude" required>
                                                 <input type="text" hidden class="form-control" name="longitude_pulang" id="longitude" required>
-                                                
-                                                    @if($row->jam_pulang == '')
-                                                        <button type="submit" class="btn btn-xs btn-primary pull-right" style="margin-left:5px;">Absen Pulang</button>
-                                                    @else
-                                                    @endif
+                                                @if($row->jam_pulang == '')
+                                                    <button type="submit" class="btn btn-xs btn-primary pull-right" style="margin-left:5px;">Absen Pulang</button>
+                                                @else
+                                                @endif
                                             </form>
                                         @else
+                                        @endif
                                     @endcan
-                                    @endif
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                
-
-                {{-- Modal Validasi --}}
-                <div class="modal fade" id="modal-edit">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">Validasi Data</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="{{ route('absen.validasi') }}" method="post" id="frm-edit" class="row needs-validation" novalidate>
-                                {{ csrf_field() }}
-
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="form-group" hidden>
-                                        <label>ID</label>
-                                        <input type="text" readonly class="form-control" name="id" id="idx" class="form-control">
-                                        <input type="text" readonly class="form-control" name="tukang_id" id="tukang_idx" class="form-control">
-                                        <input type="text" readonly class="form-control" name="user_id" id="user_idx" class="form-control">
-                                        <input type="text" readonly class="form-control" id="validasi_byx" name="validasi_by" value="{{ Auth::user()->id }}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="picker1">Status</label>
-                                        <select class="form-control" name="status">
-                                            <option value="Hadir">Hadir</option>
-                                            <option value="Sakit">Sakit</option>
-                                            <option value="Alpa">Alpa</option>
-                                            <option value="Ijin">Ijin</option>
-                                            <option value="Lembur">Lembur</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="keterangan">Keterangan</label>
-                                        <textarea type="text" class="form-control" id="keterangan" name="keterangan"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
             </div>
@@ -218,55 +155,6 @@
 @endsection
 
 @section('customJs')
-<script type="text/javascript">
-    $(document).ready(function() {
-      $('#datatable').on('click', '.btn-edit', function() {
-        var id = $(this).data('id');
-        var projek_id = $(this).data('projek_id');
-        var tukang_id = $(this).data('tukang_id');
-        var user_id = $(this).data('user_id');
-        
-        $('#idx').val(id);
-        $('#projek_idx').val(projek_id);
-        $('#tukang_idx').val(tukang_id);
-        $('#user_idx').val(user_id);
-      });
-
-      $('#frm-edit').on('submit', function(e) {
-
-      });
-      
-      $('#frm-tambah').on('submit', function(e) {
-
-      });
-
-      $('#datatable').on('click','.btn-hapus', function(e) {
-        e.preventDefault();
-        var id = $(this).data('id');
-        $.confirm({
-            icon: 'i-Information',
-            title: 'Alert !',
-            content: 'Apakah anda ingin menghapus data ini ?',
-            type: 'red',
-            typeAnimated: true,
-            buttons: {
-                confirm: function () {
-                    $.get("{{ route('absen.destroy') }}", {id:id}, function(data) {
-                        toastr.success('Data berhasil dihapus');
-                        location.reload();
-                    });
-                },
-                cancel: function () {
-                    // $.alert('Batal!');
-                },
-            }
-        });
-      });
-
-    });
-</script>
-
-
 <script>
     // var long=document.getElementsByClassName("long");
     function getLocation()

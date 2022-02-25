@@ -42,11 +42,23 @@ class ProjekController extends Controller
 
     public function index()
     {
+        $level = ModelHasRoles::select('model_has_roles.*', 'roles.name')
+                        ->leftjoin('users', 'users.id', '=', 'model_has_roles.model_id')
+                        ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->where('model_has_roles.model_id', Auth::user()->id)
+                        ->first();
+        
+        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        {
+            toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
+            return redirect()->to('/');
+        }
+
         $projeks = Projek::latest()->when(request()->q, function($projeks) {
             $projeks = $projeks->where('nama_projek', 'like', '%'. request()->q . '%');
         })->paginate(10);
 
-        return view('admin.projek.index', compact('projeks'));
+        return view('admin.projek.index', compact('projeks', 'level'));
     }
 
     public function show($id)
@@ -74,6 +86,7 @@ class ProjekController extends Controller
         $detailprojeks = DetailProjek::select('detail_projeks.id', 'detail_projeks.uraian_pekerjaan', 'detail_projeks.volume_kontrak', 'detail_projeks.harga_satuan', 'projeks.id as pid', 'projeks.nama_projek')
                                     ->leftjoin('projeks', 'projeks.id', '=', 'detail_projeks.projek_id')
                                     ->orderBy('detail_projeks.id', 'DESC')
+                                    ->where('projek_id', $id)
                                     ->get();
 
         $chats = Chat::where('projek_id', '=', $id)->first();
@@ -246,28 +259,67 @@ class ProjekController extends Controller
     }
 
     
+    public function delete($id)
+    {
+        $projek = Projek::find($id);
+
+            $chat = Chat::where('projek_id', '=', '4')->first();
+            if($chat != null) {
+                $chat_detail = ChatDetail::where('chat_id', '=', $chat->slug)->first();
+                if($chat_detail != null) {
+                    $chat_detail->delete();
+                }
+                $chat->delete();
+            }
+
+            $tukang = Tukang::where('projek_id', '=', $projek->id)->first();
+            if($tukang->projek_id != null) {
+                $tukang->delete();
+            }
+
+            $absen = Absen::where('projek_id', '=', $projek->id)->first();
+            if($absen->projek_id != null) {
+                $absen->delete();
+            }
+
+            $absen_lembur = AbsenLembur::where('projek_id', '=', $projek->id)->first();
+            if($absen_lembur->projek_id != null) {
+                $absen_lembur->delete();
+            }
+
+            $detail_projek = DetailProjek::where('projek_id', '=', $projek->id)->first();
+            if($detail_projek->projek_id != null) {
+                $detail_projek->delete();
+            }
+
+        $projek->delete();
+
+        toastr()->success('Data berhasil dihapus!');
+        return redirect()->route('projek.index');
+    }
+    
     public function destroy(Request $request)
     {
         if ($request->ajax()) {
             $projek = Projek::find($request->id);
 
-                $chat = Chat::where('projek_id', '=', $projek->id);
+                $chat = Chat::findOrFail('projek_id', '=', $projek->id);
 
-                    $chat_detail = ChatDetail::where('chat_id', '=', $chat->id);
+                    $chat_detail = ChatDetail::findOrFail('chat_id', '=', $chat->id);
                     $chat_detail->delete();
 
                 $chat->delete();
 
-                $tukang = Tukang::where('projek_id', '=', $projek->id);
+                $tukang = Tukang::findOrFail('projek_id', '=', $projek->id);
                 $tukang->delete();
 
-                $absen = Absen::where('projek_id', '=', $projek->id);
+                $absen = Absen::findOrFail('projek_id', '=', $projek->id);
                 $absen->delete();
 
-                $absen_lembur = AbsenLembur::where('projek_id', '=', $projek->id);
+                $absen_lembur = AbsenLembur::findOrFail('projek_id', '=', $projek->id);
                 $absen_lembur->delete();
 
-                $detail_projek = DetailProjek::where('projek_id', '=', $projek->id);
+                $detail_projek = DetailProjek::findOrFail('projek_id', '=', $projek->id);
                 $detail_projek->delete();
 
             $projek->delete();

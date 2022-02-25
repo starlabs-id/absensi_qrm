@@ -10,7 +10,6 @@
 <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet"> 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
-
 <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
 
 <style>
@@ -18,6 +17,16 @@
     #sig canvas{
         width: 100% !important;
         height: auto;
+    }
+    /* #map-canvas {
+        height: 400px;
+    } */
+    #mapa {
+        height: 100%;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+        top:0px;
     }
 </style>
 
@@ -91,10 +100,10 @@
                     </button>
                 </span>
             </div>
-            <button onclick="getLocation()" class="btn btn-success">Tentukan Lokasi</button>
-            <br><br>
+            <!-- <button onclick="getLocation()" class="btn btn-success">Tentukan Lokasi</button> -->
+            <br>
 
-            <form action="{{ route('absen.add') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('absen.add') }}" method="POST" enctype="multipart/form-data" id="mapCenterForm">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="col-md-6">
@@ -109,6 +118,10 @@
                             <label for="tanggal_datang">Tanggal Datang</label>
                             <input type="text" readonly class="form-control" id="tanggal_datang" name="tanggal_datang" value="{{ date('d-m-Y') }}">
                         </div>
+                        <!-- <div class="form-group">
+                            <label for="lokasi_datang">Lokasi Datang</label>
+                            <textarea type="text" readonly class="form-control" id="lokasi_datang" name="lokasi_datang" required></textarea>
+                        </div> -->
                         <div class="form-group">
                             <label for="hari_datang">Hari</label>
                             <input type="text" readonly class="form-control" id="hari_datang" name="hari_datang" value="{{ hari_ini() }}">
@@ -122,8 +135,10 @@
                             <input type="text" readonly class="form-control" id="tahun_datang" name="tahun_datang" value="{{ date('Y') }}">
                         </div>
                         <div class="form-group">
-                            <label for="lokasi_datang">Lokasi Datang</label>
-                            <textarea type="text" readonly class="form-control" id="lokasi_datang" name="lokasi_datang" required></textarea>
+                            <label>Lokasi Datang</label>
+                            <input type="text" class="form-control" name="latitude_datang" id="latitude" required readonly>
+                            <input type="text" class="form-control" name="longitude_datang" id="longitude" required readonly>
+                            <!-- <div id="mapa"></div> -->
                         </div>
                     </div>
                     <div class="col-md-6 form-group mb-3">
@@ -168,19 +183,46 @@
     });
 </script>
 
-<script type="text/javascript">
-    var latitude = document.getElementById("lokasi_datang");
-
-    function getLocation() {
-        if (navigator.geolocation) {
+<script>
+    // var long=document.getElementsByClassName("long");
+    function getLocation()
+    {
+        if(navigator.geolocation)
+        {
             navigator.geolocation.getCurrentPosition(showPosition);
-        } else { 
-            latitude.innerHTML = "Geolocation is not supported by this browser.";
+        } else{
+            long.innerHTML="Geolocation is not supported by this browser.";
+            }
         }
+    function showPosition(position)
+    {
+        document.getElementById("latitude").value = position.coords.latitude;
+        document.getElementById("longitude").value = position.coords.longitude;
     }
-
-    function showPosition(position) {
-        latitude.innerHTML = position.coords.latitude+','+position.coords.longitude;
-    }
+    getLocation()
 </script>
+
+<!-- <script type="text/javascript">
+    if (GBrowserIsCompatible()) 
+    {
+        map = new GMap2(document.getElementById("mapa"));
+        map.addControl(new GLargeMapControl());
+        map.addControl(new GMapTypeControl(3));    
+        map.setCenter( new GLatLng(-8.6966272,115.2253952), 11,0);
+        
+        GEvent.addListener(map,'mousemove',function(point)
+        {
+            document.getElementById('latspan').innerHTML = point.lat()
+            document.getElementById('lngspan').innerHTML = point.lng()
+            document.getElementById('latlong').innerHTML = point.lat() + ', ' + point.lng()                        
+        });
+        
+        GEvent.addListener(map,'click',function(overlay,point)
+        {
+            document.getElementById('latlongclicked').value = point.lat() + ', ' + point.lng()
+            document.getElementById('latitude').value = point.lat() 
+            document.getElementById('longitude').value = point.lng()
+        });
+    }
+</script> -->
 @endsection

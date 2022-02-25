@@ -28,14 +28,38 @@ class AbsenLemburController extends Controller
      *
      * @return void
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('permission:absenlembur-list', ['only' => ['absenlembur']]);
+        $this->middleware('permission:absenlembur-add', ['only' => ['absenlembur_add']]);
+        $this->middleware('permission:absenlembur-update', ['only' => ['absenlembur_update']]);
+        $this->middleware('permission:absenlembur-destroy', ['only' => ['absenlembur_destroy']]);
+
+        $this->middleware('permission:validasi-update', ['only' => ['validasi-update']]);
+    }
+    
     public function index()
     {
+        $level = ModelHasRoles::select('model_has_roles.*', 'roles.name')
+                        ->leftjoin('users', 'users.id', '=', 'model_has_roles.model_id')
+                        ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->where('model_has_roles.model_id', Auth::user()->id)
+                        ->first();
+        
+        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        {
+            toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
+            return redirect()->to('/');
+        }
+
         $absenlemburs = Tukang::select('tukangs.id', 'projeks.nama_projek')
                         ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
                         ->orderBy('projeks.id', 'DESC')
                         ->get();
 
-        return view('admin.absenlembur.index', compact('absenlemburs'));
+        return view('admin.absenlembur.index', compact('absenlemburs', 'level'));
     }
 
     public function show($id)
@@ -80,7 +104,6 @@ class AbsenLemburController extends Controller
     public function add(Request $request)
     {
         $this->validate($request, [
-            'lokasi_datang' => 'required',
             'ttd'  => 'required',
             'foto'  => 'required|image|mimes:jpeg,jpg,png|max:2000',
         ]);
@@ -123,7 +146,9 @@ class AbsenLemburController extends Controller
             // dd($file, $image_base64, $image_type, $image_type_aux, $image_parts, $folderPath);
 
             $absen = AbsenLembur::create([
-                'lokasi_datang'   => $request->lokasi_datang,
+                'latitude_datang'   => $request->latitude_datang,
+                'longitude_datang'   => $request->longitude_datang,
+                'lokasi_datang'   => $request->latitude_datang. ',' .$request->longitude_datang,
                 'jam_datang'   => $request->jam_datang,
                 'tanggal_datang'   => $request->tanggal_datang,
                 'hari_datang'   => $request->hari_datang,
@@ -153,6 +178,9 @@ class AbsenLemburController extends Controller
         $absen = AbsenLembur::findOrFail($request->id);
 
         $absen->update([
+            'latitude_pulang'   => $request->latitude_pulang,
+            'longitude_pulang'   => $request->longitude_pulang,
+            'lokasi_pulang'   => $request->latitude_pulang. ',' .$request->longitude_pulang,
             'jam_pulang'   => $request->jam_pulang,
             'tanggal_pulang'   => $request->tanggal_pulang,
             'hari_pulang'   => $request->hari_pulang,

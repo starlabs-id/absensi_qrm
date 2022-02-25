@@ -11,15 +11,15 @@
             <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('projek.index') }}">
                     <i class="nav-icon i-Suitcase"></i>
-                    <span class="nav-text">Projects</span>
+                    <span class="nav-text">Proyek</span>
                 </a>
             </li>
-            @endcan
+            @endcan     
             @can('projekdetail-list')
             <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('projekdetail.index') }}">
                     <i class="nav-icon i-File-Horizontal-Text"></i>
-                    <span class="nav-text">Projects Detail</span>
+                    <span class="nav-text">Proyek Detail</span>
                 </a>
             </li>
             @endcan
@@ -31,7 +31,7 @@
                 </a>
             </li>
             @endcan
-            @can('absenlembur-list')
+            @can('absen-list')
             <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('absen.index') }}">
                     <i class="nav-icon i-Library"></i>
@@ -70,6 +70,36 @@
                     <span class="nav-text">Users</span>
                 </a>
                 <div class="triangle"></div>
+            </li>
+            @endcan
+
+
+            
+            
+            
+            @can('guest-proyek-list')
+            <li class="nav-item " data-item="">
+                <a class="nav-item-hold" href="{{ route('proyek.index') }}">
+                    <i class="nav-icon i-University"></i>
+                    <span class="nav-text">Proyek </span>
+                </a>
+            </li>
+            @endcan
+                    
+            @can('karyawan-absen-list')
+            <li class="nav-item " data-item="">
+                <a class="nav-item-hold" href="{{ route('absensi.index') }}">
+                    <i class="nav-icon i-Finger-Print"></i>
+                    <span class="nav-text">Absen</span>
+                </a>
+            </li>
+            @endcan
+            @can('karyawan-absenlembur-list')
+            <li class="nav-item " data-item="">
+                <a class="nav-item-hold" href="{{ route('absensilembur.index') }}">
+                    <i class="nav-icon i-Over-Time-2"></i>
+                    <span class="nav-text">Lembur</span>
+                </a>
             </li>
             @endcan
         </ul>

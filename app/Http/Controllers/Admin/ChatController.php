@@ -45,6 +45,18 @@ class ChatController extends Controller
 
     public function index()
     {
+        $level = ModelHasRoles::select('model_has_roles.*', 'roles.name')
+                        ->leftjoin('users', 'users.id', '=', 'model_has_roles.model_id')
+                        ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->where('model_has_roles.model_id', Auth::user()->id)
+                        ->first();
+        
+        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        {
+            toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
+            return redirect()->to('/');
+        }
+
         $chats = Chat::select('chats.id', 'chats.slug', 'A.name as superadmin', 'B.name as direktur_utama', 'C.name as owner', 'D.name as direktur_teknik', 'E.name as admin_teknik', 'F.name as pm', 'G.name as marketing', 'H.name as gm', 'I.name as co_gm', 'J.name as supervisor', 'projeks.nama_projek')
                             ->leftjoin('projeks', 'projeks.id', '=', 'chats.projek_id')
                             ->leftjoin('users AS A', 'A.id', '=', 'chats.superadmin')
@@ -121,7 +133,7 @@ class ChatController extends Controller
                     ->where('roles.name', '=', "Co GM")
                     ->get();
 
-        return view('admin.chat.index', compact('chats', 'projeks', 'marketing', 'pm', 'supervisor', 'owner', 'superadmin', 'direktur_utama', 'direktur_teknik', 'admin_teknik', 'gm', 'co_gm'));
+        return view('admin.chat.index', compact('chats', 'projeks', 'marketing', 'pm', 'supervisor', 'owner', 'superadmin', 'direktur_utama', 'direktur_teknik', 'admin_teknik', 'gm', 'co_gm', 'level'));
     }
 
     public function add(Request $request)

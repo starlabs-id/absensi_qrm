@@ -46,7 +46,8 @@
                                         <a href="{{ route('projek.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                     @endcan
                                     @can('projek-destroy')
-                                        <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row['id'] }}">Hapus</a>
+                                        <!-- <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row['id'] }}">Hapus</a> -->
+                                        <a href="{{ route('projek.delete', $row->id) }}" class="btn btn-danger btn-sm">Hapus</a>
                                     @endcan
                                 </td>
                             </tr>

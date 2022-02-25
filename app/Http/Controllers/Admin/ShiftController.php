@@ -40,9 +40,21 @@ class ShiftController extends Controller
 
     public function index()
     {
+        $level = ModelHasRoles::select('model_has_roles.*', 'roles.name')
+                        ->leftjoin('users', 'users.id', '=', 'model_has_roles.model_id')
+                        ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->where('model_has_roles.model_id', Auth::user()->id)
+                        ->first();
+        
+        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        {
+            toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
+            return redirect()->to('/');
+        }
+
         $shifts = Shift::get();
 
-        return view('admin.shift.index', compact('shifts'));
+        return view('admin.shift.index', compact('shifts', 'level'));
     }
 
     public function add(Request $request)

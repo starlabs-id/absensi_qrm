@@ -75,7 +75,9 @@
                                 <th>TTD</th>
                                 <th>Tanggal</th>
                                 <th>Jam Datang</th>
+                                <th>Lokasi Datang</th>
                                 <th>Jam Pulang</th>
+                                <th>Lokasi Pulang</th>
                                 <th>Status</th>
                                 <th>Keterangan</th>
                                 <th>Total Lembur</th>
@@ -101,7 +103,9 @@
                                 </td>
                                 <td>{{ $row->hari_datang }}, {{ $row->tanggal_datang }}</td>
                                 <td>{{ $row->jam_datang }}</td>
+                                <td>{{ $row->lokasi_datang }}</td>
                                 <td>{{ $row->jam_pulang }}</td>
+                                <td>{{ $row->lokasi_pulang }}</td>
                                 <td>
                                     @if($row->status == 'Hadir')
                                         <span class="badge badge-success m-2">Hadir</span>
@@ -142,6 +146,8 @@
                                             <input type="text" hidden class="form-control" id="bulan_pulang" name="bulan_pulang" value="{{ $hariIni->monthName }}">
                                             <input type="text" hidden class="form-control" id="tahun_pulang" name="tahun_pulang" value="{{ date('Y') }}">
                                             <input type="text" hidden class="form-control" id="jam_pulang" name="jam_pulang" value="{{ date('H:i:s') }}">
+                                            <input type="text" hidden class="form-control" name="latitude_pulang" id="latitude" required>
+                                            <input type="text" hidden class="form-control" name="longitude_pulang" id="longitude" required>
                                             @if($row->jam_pulang == '')
                                                 <button type="submit" class="btn btn-xs btn-primary pull-right" style="margin-left:5px;">Absen Pulang</button>
                                             @else
@@ -257,5 +263,25 @@
       });
 
     });
+</script>
+
+
+<script>
+    // var long=document.getElementsByClassName("long");
+    function getLocation()
+    {
+        if(navigator.geolocation)
+        {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else{
+            long.innerHTML="Geolocation is not supported by this browser.";
+            }
+        }
+    function showPosition(position)
+    {
+        document.getElementById("latitude").value = position.coords.latitude;
+        document.getElementById("longitude").value = position.coords.longitude;
+    }
+    getLocation()
 </script>
 @endsection

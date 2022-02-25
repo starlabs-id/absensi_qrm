@@ -48,6 +48,18 @@ class UsersController extends Controller
 
     public function index(Request $request)
     {
+        $level = ModelHasRoles::select('model_has_roles.*', 'roles.name')
+                        ->leftjoin('users', 'users.id', '=', 'model_has_roles.model_id')
+                        ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->where('model_has_roles.model_id', Auth::user()->id)
+                        ->first();
+        
+        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        {
+            toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
+            return redirect()->to('/');
+        }
+
         $users = User::select('users.id', 'users.email', 'users.no_telp_hp', 'users.name as namea', 'roles.id as ris', 'roles.name')
                     ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
                     ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
@@ -59,7 +71,7 @@ class UsersController extends Controller
         $roles = Roles::leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'roles.id')
                         ->get();
 
-        return view('admin.users.index', compact('users', 'role', 'roles'));
+        return view('admin.users.index', compact('users', 'role', 'roles', 'level'));
     }
 
     public function user_add(Request $request)

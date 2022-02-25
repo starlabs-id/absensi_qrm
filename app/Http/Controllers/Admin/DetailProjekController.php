@@ -42,12 +42,24 @@ class DetailProjekController extends Controller
 
     public function index()
     {
+        $level = ModelHasRoles::select('model_has_roles.*', 'roles.name')
+                        ->leftjoin('users', 'users.id', '=', 'model_has_roles.model_id')
+                        ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->where('model_has_roles.model_id', Auth::user()->id)
+                        ->first();
+        
+        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        {
+            toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
+            return redirect()->to('/');
+        }
+
         $detailprojeks = DetailProjek::select('detail_projeks.id', 'detail_projeks.uraian_pekerjaan', 'detail_projeks.volume_kontrak', 'detail_projeks.harga_satuan', 'projeks.id as pid', 'projeks.nama_projek')
                                     ->leftjoin('projeks', 'projeks.id', '=', 'detail_projeks.projek_id')
                                     ->orderBy('detail_projeks.id', 'DESC')
                                     ->get();
 
-        return view('admin.detailprojek.index', compact('detailprojeks'));
+        return view('admin.detailprojek.index', compact('detailprojeks', 'level'));
     }
 
     public function show($id)
