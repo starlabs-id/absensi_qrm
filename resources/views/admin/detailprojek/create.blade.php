@@ -94,7 +94,7 @@
                     </div>
 
                     <div class="col-md-12">
-                        @can('detailprojek-add')
+                        @can('projekdetail-add')
                             <button class="btn btn-primary">Submit</button>
                         @endcan
                     </div>

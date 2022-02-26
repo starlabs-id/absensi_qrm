@@ -13,7 +13,7 @@
                           <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
                           <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
                           
-                          @can('detailprojek-add')
+                          @can('projekdetail-add')
                             <a href="{{ route('projekdetail.create') }}" class="btn btn-primary btn-sm pull-right">Tambah</a>
                           @endcan
                       </span>
@@ -42,13 +42,13 @@
                                 <td>{{ $row->volume_kontrak }} ㎡</td>
                                 <td>Rp. {{ number_format($row->harga_satuan, 2, ',', '.') }}</td>
                                 <td>
-                                    @can('detailprojek-list')
+                                    @can('projekdetail-list')
                                         <a href="{{ route('projekdetail.show', $row->id) }}" class="btn btn-success btn-sm">Detail</a>
                                     @endcan
-                                    @can('detailprojek-update')
+                                    @can('projekdetail-update')
                                         <a href="{{ route('projekdetail.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                     @endcan
-                                    @can('detailprojek-destroy')
+                                    @can('projekdetail-destroy')
                                         <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row['id'] }}">Hapus</a>
                                     @endcan
                                 </td>

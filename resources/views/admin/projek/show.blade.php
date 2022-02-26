@@ -222,7 +222,11 @@
                                                     </div>
                                                     <p class="m-0">{{ $row->komentar }}</p>
                                                 </div>
-                                                <img src="{{ asset('storage/user/' . $row->foto) }}" alt="" class="avatar-sm rounded-circle ml-3">
+                                                @if($row->foto != '')
+                                                    <img src="{{ asset('storage/user/' . $row->foto) }}" alt="" class="avatar-sm rounded-circle ml-3">
+                                                @else
+                                                    <img src=https://ui-avatars.com/api/?name={{$row->name}}&background=4e73df&color=ffffff&size=100" alt="" class="avatar-sm rounded-circle ml-3">
+                                                @endif
                                             </div>
                                         @endforeach
                                     </div>
