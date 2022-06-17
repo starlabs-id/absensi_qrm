@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DetailProjek extends Model
+class FotoKerusakan extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class DetailProjek extends Model
      * @var array
      */
     protected $fillable = [
-        'projek_id', 'nama_pekerjaan', 'status', 'keterangan', 'lokasi', 'shift', 'jam', 'foto_1', 'foto_2', 'edit_by'
+        'id_projeks', 'id_detail_projeks', 'foto', 'edit_by'
     ];
             
     /**
@@ -24,16 +24,6 @@ class DetailProjek extends Model
      * @param  mixed $image
      * @return void
      */
-
-    public function getImageAttribute($image)
-    {
-        return asset('storage/detail_projek/' . $image);
-    }
-
-    public function projek()
-    {
-        return $this->belongsTo(Projek::class);
-    }
 
     public function users()
     {

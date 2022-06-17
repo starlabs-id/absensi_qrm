@@ -25,10 +25,14 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Nama Proyek</th>
-                                <th>Uraian Pekerjaan</th>
-                                <th>Volume Kontrak</th>
-                                <th>Harga Satuan</th>
+                                <th>Tanggal</th>
+                                <th>Nama Pekerjaan</th>
+                                <th>Status</th>
+                                <th>Lokasi</th>
+                                <th>Shift</th>
+                                <th>Foto 1</th>
+                                <th>Foto 2</th>
+                                <th>Keterangan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -37,19 +41,43 @@
                             @foreach($detailprojeks as $row)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $row->nama_projek }}</td>
-                                <td>{{ $row->uraian_pekerjaan }}</td>
-                                <td>{{ $row->volume_kontrak }} ㎡</td>
-                                <td>Rp. {{ number_format($row->harga_satuan, 2, ',', '.') }}</td>
+                                <td>{{ date('d-m-Y', strtotime($row['tanggal'])) }} {{ $row->jam }}</td>
+                                <td>{{ $row->nama_pekerjaan }}</td>
+                                <td>
+                                    @if($row->status == 'baik')
+                                        <span class="badge badge-success m-2">Baik</span>
+                                    @elseif($row->status == 'penggantian')
+                                        <span class="badge badge-danger m-2">Penggantian</span>
+                                    @else
+                                        <span class="badge badge-danger m-2">Perbaikan Ringan</span>
+                                    @endif
+                                </td>
+                                <td>{{ $row->lokasi }}</td>
+                                <td>{{ $row->shift }}</td>
+                                <td>
+                                    @if($row->foto_1 != '')
+                                        <img class="d-block rounded" width="100%" src="{{ asset('storage/projekdetail/'. $row->foto_1) }}">
+                                    @else
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($row->foto_2 != '')
+                                        <img class="d-block rounded" width="100%" src="{{ asset('storage/projekdetail/'. $row->foto_2) }}">
+                                    @else
+                                    @endif
+                                </td>
+                                <td>{{ $row->keterangan }}</td>
                                 <td>
                                     @can('projekdetail-list')
-                                        <a href="{{ route('projekdetail.show', $row->id) }}" class="btn btn-success btn-sm">Detail</a>
+                                        <a href="{{ route('projekdetail.kerusakancreate', $row->id) }}" class="btn btn-primary btn-sm" style="margin: 2px;">Tambah Kerusakan</a>
+                                        <a href="{{ route('projekdetail.kerusakan', $row->id) }}" class="btn btn-success btn-sm" style="margin: 2px;">Detail Kerusakan</a>
                                     @endcan
                                     @can('projekdetail-update')
-                                        <a href="{{ route('projekdetail.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                        <!-- <a href="{{ route('projekdetail.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a> -->
                                     @endcan
                                     @can('projekdetail-destroy')
-                                        <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row['id'] }}">Hapus</a>
+                                        <!-- <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row['id'] }}">Hapus</a> -->
+                                        <a href="{{ route('projekdetail.delete', $row->id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Apakah anda ingin menghapus data ini ?')" style="margin: 2px;">Hapus</a>
                                     @endcan
                                 </td>
                             </tr>

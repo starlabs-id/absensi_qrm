@@ -47,36 +47,48 @@ class AbsenController extends Controller
                         ->where('model_has_roles.model_id', Auth::user()->id)
                         ->first();
         
-        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        if($level['name'] == 'Karyawan' || $level['name'] == 'APP' || $level['name'] == 'AP1')
         {
             toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
             return redirect()->to('/');
         }
 
-        $absens = Tukang::select('tukangs.id', 'projeks.nama_projek')
-                        ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
-                        ->orderBy('projeks.id', 'DESC')
-                        ->get();
-
-        return view('admin.absen.index', compact('absens', 'level'));
-    }
-
-    public function show($id)
-    {
-
+        // $absens = Tukang::select('tukangs.id', 'projeks.tanggal')
+        //                 ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
+        //                 ->orderBy('projeks.id', 'DESC')
+        //                 ->get();
         $absens = Tukang::select('tukangs.id', 'tukangs.user_id', 'users.name')
                         ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
                         ->leftjoin('users', 'users.id', '=', 'tukangs.user_id')
+                        ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                        ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
                         ->orderBy('projeks.id', 'DESC')
-                        ->where('tukangs.id', '=', $id)
+                        ->where('roles.name', '=', "Karyawan")
+                        // ->where('tukangs.id', '=', $id)
                         ->get();
 
         $tukangs = Tukang::select('tukangs.id', 'tukangs.user_id')
-                        ->where('tukangs.id', '=', $id)
+                        // ->where('tukangs.id', '=', $id)
                         ->first();
 
-        return view('admin.absen.show', compact('absens', 'tukangs'));
+        return view('admin.absen.index', compact('absens', 'level', 'tukangs'));
     }
+
+    // public function show($id)
+    // {
+    //     $absens = Tukang::select('tukangs.id', 'tukangs.user_id', 'users.name')
+    //                     ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
+    //                     ->leftjoin('users', 'users.id', '=', 'tukangs.user_id')
+    //                     ->orderBy('projeks.id', 'DESC')
+    //                     ->where('tukangs.id', '=', $id)
+    //                     ->get();
+
+    //     $tukangs = Tukang::select('tukangs.id', 'tukangs.user_id')
+    //                     ->where('tukangs.id', '=', $id)
+    //                     ->first();
+
+    //     return view('admin.absen.show', compact('absens', 'tukangs'));
+    // }
 
     public function detail($id, $user_id)
     {
@@ -124,42 +136,44 @@ class AbsenController extends Controller
         {
             //upload foto
             $foto = $request->file('foto');
-            $foto->storeAs('public/absen', $foto->hashName());
-            $foto = $foto->hashName();
+            
+            
+            // $foto->storeAs('public/absen', $foto->hashName());
+            // $foto = $foto->hashName();
 
             // $ttd = $request->file('ttd');
             // $ttd->storeAs('public/ttd', $ttd->hashName());
             // $ttd = $ttd->hashName();
             
-            $folderPath = public_path('ttd/');
+            // $folderPath = public_path('ttd/');
             // dd($folderPath);
             
-            $image_parts = explode(";base64,", $request->ttd);
+            // $image_parts = explode(";base64,", $request->ttd);
                 
-            $image_type_aux = explode("image/", $image_parts[0]);
+            // $image_type_aux = explode("image/", $image_parts[0]);
             
-            $image_type = $image_type_aux[1];
+            // $image_type = $image_type_aux[1];
             
-            $image_base64 = base64_decode($image_parts[1]);
+            // $image_base64 = base64_decode($image_parts[1]);
 
-            $filename = uniqid() . '.'.$image_type;
+            // $filename = uniqid() . '.'.$image_type;
             
-            $file = $folderPath . $filename;
+            // $file = $folderPath . $filename;
         
-            file_put_contents($file, $image_base64);
+            // file_put_contents($file, $image_base64);
             // dd($file, $image_base64, $image_type, $image_type_aux, $image_parts, $folderPath);
 
             $absen = Absen::create([
-                'latitude_datang'   => $request->latitude_datang,
-                'longitude_datang'   => $request->longitude_datang,
-                'lokasi_datang'   => $request->latitude_datang. ',' .$request->longitude_datang,
+                // 'latitude_datang'   => $request->latitude_datang,
+                // 'longitude_datang'   => $request->longitude_datang,
+                // 'lokasi_datang'   => $request->latitude_datang. ',' .$request->longitude_datang,
                 'jam_datang'   => $request->jam_datang,
                 'tanggal_datang'   => $request->tanggal_datang,
                 'hari_datang'   => $request->hari_datang,
                 'bulan_datang'   => $request->bulan_datang,
                 'tahun_datang'   => $request->tahun_datang,
                 'foto'   => $foto,
-                'ttd'   => $filename,
+                // 'ttd'   => $filename,
                 'user_id'   => $request->user_id,
                 'projek_id'   => $request->projek_id,
                 'tukang_id'   => $request->tukang_id,
@@ -181,8 +195,8 @@ class AbsenController extends Controller
     {
         $absen = Absen::findOrFail($request->id);
         $absen->update([
-            'latitude_pulang'   => $request->latitude_pulang,
-            'longitude_pulang'   => $request->longitude_pulang,
+            // 'latitude_pulang'   => $request->latitude_pulang,
+            // 'longitude_pulang'   => $request->longitude_pulang,
             'lokasi_pulang'   => $request->latitude_pulang. ',' .$request->longitude_pulang,
             'jam_pulang'   => $request->jam_pulang,
             'tanggal_pulang'   => $request->tanggal_pulang,
@@ -202,8 +216,8 @@ class AbsenController extends Controller
         $absen = Absen::findOrFail($request->id);
 
         $data = Storage::disk('local')->delete('public/absen/'.$absen->foto);
-        $image_path = "ttd/". $absen->ttd;
-        File::delete($image_path);
+        // $image_path = "ttd/". $absen->ttd;
+        // File::delete($image_path);
         
         $absen->update([
             // 'validasi'   => $request->validasi,
@@ -216,7 +230,9 @@ class AbsenController extends Controller
         ]);
  
         toastr()->success('Data berhasil disimpan!');
-        return redirect()->route('absen.detail', ['id'=>$request->tukang_id,'user_id'=>$request->user_id]);
+        // return redirect()->route('absen.detail', ['id'=>$request->tukang_id,'user_id'=>$request->user_id]);
+
+        return redirect()->route('absen.index');
     }
     
     public function destroy(Request $request)

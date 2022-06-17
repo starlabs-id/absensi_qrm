@@ -109,9 +109,9 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="jam_datang">Jam Datang</label>
-                            <input type="text" hidden class="form-control" id="projek_id" name="projek_id" value="{{ $tukangs->projek_id }}">
-                            <input type="text" hidden class="form-control" id="tukang_id" name="tukang_id" value="{{ $tukangs->id }}">
-                            <input type="text" hidden class="form-control" id="user_id" name="user_id" value="{{ $tukangs->user_id }}">
+                            <!-- <input type="text" hidden class="form-control" id="projek_id" name="projek_id" value=""> -->
+                            <!-- <input type="text" hidden class="form-control" id="tukang_id" name="tukang_id" value=""> -->
+                            <input type="text" hidden class="form-control" id="user_id" name="user_id" value="">
                             <input type="text" readonly class="form-control" id="jam_datang" name="jam_datang" value="{{ date('H:i:s') }}">
                         </div>
                         <div class="form-group">
@@ -134,25 +134,25 @@
                             <label for="tahun_datang">Tahun</label>
                             <input type="text" readonly class="form-control" id="tahun_datang" name="tahun_datang" value="{{ date('Y') }}">
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label>Lokasi Datang</label>
                             <input type="text" class="form-control" name="latitude_datang" id="latitude" required readonly>
-                            <input type="text" class="form-control" name="longitude_datang" id="longitude" required readonly>
+                            <input type="text" class="form-control" name="longitude_datang" id="longitude" required readonly> -->
                             <!-- <div id="mapa"></div> -->
-                        </div>
+                        <!-- </div> -->
                     </div>
                     <div class="col-md-6 form-group mb-3">
-                        <div class="form-group">
-                            <label for="ttd">Tanda Tangan</label>
+                        <!-- <div class="form-group">
+                            <label for="ttd">Tanda Tangan</label>-->
                             <!-- <br>
                             <canvas class="canvas" name="ttd"></canvas>
                             <div class="wrapperx"> -->
-                            <br/>
+                        <!--    <br/>
                             <div id="sig"></div>
                             <br/>
                             <button id="clear" class="btn btn-danger btn-xs">Hapus</button>
                             <textarea id="signature64" name="ttd" style="display: none"></textarea>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label for="foto">Foto</label>
                             <input type="file" class="form-control" id="foto" name="foto" accept="image/png, image/jpg, image/jpeg" required>

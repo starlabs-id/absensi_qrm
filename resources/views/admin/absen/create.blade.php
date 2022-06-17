@@ -142,17 +142,17 @@
                         </div>
                     </div>
                     <div class="col-md-6 form-group mb-3">
-                        <div class="form-group">
-                            <label for="ttd">Tanda Tangan</label>
+                        <!-- <div class="form-group">
+                            <label for="ttd">Tanda Tangan</label>-->
                             <!-- <br>
                             <canvas class="canvas" name="ttd"></canvas>
                             <div class="wrapperx"> -->
-                            <br/>
+                            <!--<br/>
                             <div id="sig"></div>
                             <br/>
                             <button id="clear" class="btn btn-danger btn-xs">Hapus</button>
                             <textarea id="signature64" name="ttd" style="display: none"></textarea>
-                        </div>
+                         </div> -->
                         <div class="form-group">
                             <label for="foto">Foto</label>
                             <input type="file" class="form-control" id="foto" name="foto" accept="image/png, image/jpg, image/jpeg" required>

@@ -15,7 +15,7 @@ class Projek extends Model
      * @var array
      */
     protected $fillable = [
-        'nama_projek', 'kode_projek', 'area_projek', 'nomor_kontrak', 'tanggal_kontrak', 'judul_kontrak', 'nilai_kontrak', 'durasi_kontrak', 'lokasi', 'pemberi_kerja', 'pm', 'marketing', 'supervisor', 'rencana_kerja', 'owner', 'tanggal_mulai', 'tanggal_selesai', 'total_volume_kontrak', 'total_harga_satuan', 'total_volume_pekerjaan_sebelumnya', 'total_volume_pekerjaan_hari_ini', 'total_prestasi_keuangan', 'total_prestasi_fisik', 'status', 'total_pekerja', 'edit_by'
+        'tanggal', 'uraian_pekerjaan', 'status_pekerjaan', 'approval_app', 'komen_app', 'tanggal_approval_app', 'approval_ap1', 'komen_ap1', 'tanggal_approval_ap1', 'approval_pm', 'tanggal_approval_pm', 'edit_by', 'approval_pm_id', 'approval_app_id', 'approval_ap1_id'
     ];
             
     /**

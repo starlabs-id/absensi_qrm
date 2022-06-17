@@ -48,13 +48,13 @@ class TukangController extends Controller
                         ->where('model_has_roles.model_id', Auth::user()->id)
                         ->first();
         
-        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        if($level['name'] == 'Karyawan' || $level['name'] == 'APP' || $level['name'] == 'AP1')
         {
             toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
             return redirect()->to('/');
         }
 
-        $tukangs = Tukang::select('tukangs.*', 'projeks.nama_projek', 'users.name', 'shifts.nama_shift')
+        $tukangs = Tukang::select('tukangs.*', 'projeks.uraian_pekerjaan', 'users.name', 'shifts.nama_shift')
                             ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
                             ->leftjoin('users', 'users.id', '=', 'tukangs.user_id')
                             ->leftjoin('shifts', 'shifts.id', '=', 'tukangs.shift_id')
@@ -84,26 +84,79 @@ class TukangController extends Controller
         ]);
 
         $projek = $request->projek_id;
-        $ada = Tukang::select('user_id')
-                    ->where('projek_id', '=', $projek)
-                    ->get();
+        $user = $request->user_id;
+        // $ada = Tukang::select('user_id')
+        //             ->where('projek_id', '=', $projek)
+        //             ->get();
 
-        if(count($ada) == 0)
-        {
-            $tukang = Tukang::create([
-                'projek_id'   => $request->projek_id,
-                'user_id'   => $request->tukang_id,
-                'shift_id'   => $request->shift_id,
-                'biaya_harian'   => $request->biaya_harian,
-                'biaya_lembur'   => $request->biaya_lembur,
-                'edit_by'   => Auth::user()->id,
-            ]);
+        // if(count($ada) == 0)
+        // {
+        //     $tukang = Tukang::select('user_id')
+        //                 ->where('projek_id', '=', $projek)
+        //                 ->first();
 
-            toastr()->success('Data berhasil disimpan!');
-            return redirect()->back();
-        }
+        //     $user = $request->user_id;
 
-        toastr()->error('Karyawan sudah ada!');
+        //     if($user != $tukang)
+        //     {
+        //         $tukang = Tukang::create([
+        //             'projek_id'   => $request->projek_id,
+        //             'user_id'   => $request->tukang_id,
+        //             'shift_id'   => $request->shift_id,
+        //             'biaya_harian'   => $request->biaya_harian,
+        //             'biaya_lembur'   => $request->biaya_lembur,
+        //             'edit_by'   => Auth::user()->id,
+        //         ]);
+    
+        //         toastr()->success('Data berhasil disimpan!');
+        //         return redirect()->back();
+        //     }
+        // }
+
+        // $tukang = Tukang::select('user_id')
+        //             ->where([
+        //                 ['projek_id', '=', $projek],
+        //                 ['user_id', '=', $user]
+        //             ])
+        //             ->first();
+
+        // if($tukang == null)
+        // {
+        //     toastr()->error('Tukang Null!');
+        //     return redirect()->back();
+        // }
+        // else{
+        //     $user = $request->user_id;
+        //     if($user == $tukang)
+        //     {
+        //         toastr()->error('Karyawan sudah ada!');
+        //         return redirect()->back();
+        //     }
+        //     else
+        //     {            
+        //         $tukang = Tukang::create([
+        //             'projek_id'   => $request->projek_id,
+        //             'user_id'   => $request->tukang_id,
+        //             'shift_id'   => $request->shift_id,
+        //             'biaya_harian'   => $request->biaya_harian,
+        //             'biaya_lembur'   => $request->biaya_lembur,
+        //             'edit_by'   => Auth::user()->id,
+        //         ]);
+
+        //         toastr()->success('Data berhasil disimpan!');
+        //         return redirect()->back();
+        //     }
+        // }
+        $tukang = Tukang::create([
+            'projek_id'   => $request->projek_id,
+            'user_id'   => $request->tukang_id,
+            'shift_id'   => $request->shift_id,
+            'biaya_harian'   => $request->biaya_harian,
+            'biaya_lembur'   => $request->biaya_lembur,
+            'edit_by'   => Auth::user()->id,
+        ]);
+
+        toastr()->success('Data berhasil disimpan!');
         return redirect()->back();
     }
 

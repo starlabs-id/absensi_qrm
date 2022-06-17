@@ -48,7 +48,7 @@ class AbsenLemburController extends Controller
                         ->where('model_has_roles.model_id', Auth::user()->id)
                         ->first();
         
-        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        if($level['name'] == 'Karyawan' || $level['name'] == 'APP' || $level['name'] == 'AP1')
         {
             toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
             return redirect()->to('/');
@@ -120,42 +120,42 @@ class AbsenLemburController extends Controller
         {
             //upload foto
             $foto = $request->file('foto');
-            $foto->storeAs('public/absenlembur', $foto->hashName());
-            $foto = $foto->hashName();
+            // $foto->storeAs('public/absenlembur', $foto->hashName());
+            // $foto = $foto->hashName();
 
             // $ttd = $request->file('ttd');
             // $ttd->storeAs('public/ttd', $ttd->hashName());
             // $ttd = $ttd->hashName();
             
-            $folderPath = public_path('ttd_lembur/');
+            // $folderPath = public_path('ttd_lembur/');
             // dd($folderPath);
             
-            $image_parts = explode(";base64,", $request->ttd);
+            // $image_parts = explode(";base64,", $request->ttd);
                 
-            $image_type_aux = explode("image/", $image_parts[0]);
+            // $image_type_aux = explode("image/", $image_parts[0]);
             
-            $image_type = $image_type_aux[1];
+            // $image_type = $image_type_aux[1];
             
-            $image_base64 = base64_decode($image_parts[1]);
+            // $image_base64 = base64_decode($image_parts[1]);
 
-            $filename = uniqid() . '.'.$image_type;
+            // $filename = uniqid() . '.'.$image_type;
             
-            $file = $folderPath . $filename;
+            // $file = $folderPath . $filename;
         
-            file_put_contents($file, $image_base64);
+            // file_put_contents($file, $image_base64);
             // dd($file, $image_base64, $image_type, $image_type_aux, $image_parts, $folderPath);
 
             $absen = AbsenLembur::create([
-                'latitude_datang'   => $request->latitude_datang,
-                'longitude_datang'   => $request->longitude_datang,
-                'lokasi_datang'   => $request->latitude_datang. ',' .$request->longitude_datang,
+                // 'latitude_datang'   => $request->latitude_datang,
+                // 'longitude_datang'   => $request->longitude_datang,
+                // 'lokasi_datang'   => $request->latitude_datang. ',' .$request->longitude_datang,
                 'jam_datang'   => $request->jam_datang,
                 'tanggal_datang'   => $request->tanggal_datang,
                 'hari_datang'   => $request->hari_datang,
                 'bulan_datang'   => $request->bulan_datang,
                 'tahun_datang'   => $request->tahun_datang,
                 'foto'   => $foto,
-                'ttd'   => $filename,
+                // 'ttd'   => $filename,
                 'user_id'   => $request->user_id,
                 'projek_id'   => $request->projek_id,
                 'tukang_id'   => $request->tukang_id,
@@ -178,9 +178,9 @@ class AbsenLemburController extends Controller
         $absen = AbsenLembur::findOrFail($request->id);
 
         $absen->update([
-            'latitude_pulang'   => $request->latitude_pulang,
-            'longitude_pulang'   => $request->longitude_pulang,
-            'lokasi_pulang'   => $request->latitude_pulang. ',' .$request->longitude_pulang,
+            // 'latitude_pulang'   => $request->latitude_pulang,
+            // 'longitude_pulang'   => $request->longitude_pulang,
+            // 'lokasi_pulang'   => $request->latitude_pulang. ',' .$request->longitude_pulang,
             'jam_pulang'   => $request->jam_pulang,
             'tanggal_pulang'   => $request->tanggal_pulang,
             'hari_pulang'   => $request->hari_pulang,
@@ -198,7 +198,7 @@ class AbsenLemburController extends Controller
     {
         $absen = AbsenLembur::findOrFail($request->id);
 
-        // $data = Storage::disk('local')->delete('public/absenlembur/'.$absen->foto);
+        $data = Storage::disk('local')->delete('public/absenlembur/'.$absen->foto);
         // $image_path = "ttd_lembur/". $absen->ttd;
         // File::delete($image_path);
                 

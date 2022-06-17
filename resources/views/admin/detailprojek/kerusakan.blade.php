@@ -41,7 +41,15 @@
                                 <td>{{ $row->volume }}</td>
                                 <td>{{ $row->satuan }}</td>
                                 <td>Rp. {{ number_format($row->total_harga, 2, ',', '.') }}</td>
-                                <td></td>
+                                <td>
+                                    @can('projekdetail-update')
+                                        <!-- <a href="{{ route('projekdetail.edit', $row->id) }}" class="btn btn-warning btn-sm">Edit</a> -->
+                                    @endcan
+                                    @can('projekdetail-destroy')
+                                        <!-- <a href="#!" class="btn btn-danger btn-sm btn-hapus" data-id="{{ $row['id'] }}">Hapus</a> -->
+                                        <a href="{{ route('projekdetail.kerusakandelete', $row->id) }}" class="btn btn-danger btn-sm">Hapus</a>
+                                    @endcan
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

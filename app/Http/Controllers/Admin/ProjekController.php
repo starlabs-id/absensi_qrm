@@ -8,6 +8,7 @@ use App\Models\AbsenLembur;
 use App\Models\Chat;
 use App\Models\ChatDetail;
 use App\Models\DetailProjek;
+use App\Models\JenisKerusakan;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\DB;
@@ -38,6 +39,10 @@ class ProjekController extends Controller
         $this->middleware('permission:projek-add', ['only' => ['projek_add']]);
         $this->middleware('permission:projek-update', ['only' => ['projek_update']]);
         $this->middleware('permission:projek-destroy', ['only' => ['projek_destroy']]);
+
+        $this->middleware('permission:approval-pm', ['only' => ['approval_pm']]);
+        $this->middleware('permission:approval-app', ['only' => ['approval_app']]);
+        $this->middleware('permission:approval-ap1', ['only' => ['approval_ap1']]);
     }
 
     public function index()
@@ -48,32 +53,46 @@ class ProjekController extends Controller
                         ->where('model_has_roles.model_id', Auth::user()->id)
                         ->first();
         
-        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        if($level['name'] == 'APP' || $level['name'] == 'AP1')
         {
             toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
             return redirect()->to('/');
         }
 
-        $projeks = Projek::latest()->when(request()->q, function($projeks) {
-            $projeks = $projeks->where('nama_projek', 'like', '%'. request()->q . '%');
-        })->paginate(10);
+        // $projeks = Projek::latest()->when(request()->q, function($projeks) {
+        //     $projeks = $projeks->where('nama_pekerjaan', 'like', '%'. request()->q . '%');
+        // })->paginate(10);
+
+        $projeks = Projek::select('projeks.*', 'A.name as approval_pm_id', 'B.name as approval_app_id', 'C.name as approval_ap1_id')
+                            ->leftjoin('users AS A', 'A.id', '=', 'projeks.approval_pm_id')
+                            ->leftjoin('users AS B', 'B.id', '=', 'projeks.approval_app_id')
+                            ->leftjoin('users AS C', 'C.id', '=', 'projeks.approval_ap1_id')
+                            ->get();
 
         return view('admin.projek.index', compact('projeks', 'level'));
     }
 
     public function show($id)
     {
-        $projeks = Projek::select('projeks.*', 'users.name')
-                        ->leftjoin('users', 'users.id', '=', 'projeks.marketing')
-                        ->where('projeks.id', '=', $id)
+        $projeks = Projek::select('projeks.*')
+                        // ->leftjoin('users', 'users.id', '=', 'projeks.marketing')
+                        ->where('id', '=', $id)
                         ->first();
         
-        $tukangs = Tukang::select('tukangs.*', 'projeks.nama_projek', 'users.name', 'shifts.nama_shift')
+        // $tukangs = Tukang::select('tukangs.*', 'projeks.nama_projek', 'users.name', 'shifts.nama_shift')
+        //                     ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
+        //                     ->leftjoin('users', 'users.id', '=', 'tukangs.user_id')
+        //                     ->leftjoin('shifts', 'shifts.id', '=', 'tukangs.shift_id')
+        //                     ->orderBy('tukangs.id', 'desc')
+        //                     ->where('projeks.id', '=', $id)
+        //                     ->get();
+                            
+        $tukangs = User::select('tukangs.projek_id', 'users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                            ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                            ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                            ->leftjoin('tukangs', 'tukangs.user_id', '=', 'users.id')
                             ->leftjoin('projeks', 'projeks.id', '=', 'tukangs.projek_id')
-                            ->leftjoin('users', 'users.id', '=', 'tukangs.user_id')
-                            ->leftjoin('shifts', 'shifts.id', '=', 'tukangs.shift_id')
-                            ->orderBy('tukangs.id', 'desc')
-                            ->where('projeks.id', '=', $id)
+                            ->where('roles.name', '=', "Karyawan")
                             ->get();
 
         $chatdetails = ChatDetail::select('chat_details.*', 'users.name', 'users.foto')
@@ -83,15 +102,24 @@ class ProjekController extends Controller
                             ->where('chats.projek_id', '=', $id)
                             ->get();
         
-        $detailprojeks = DetailProjek::select('detail_projeks.id', 'detail_projeks.uraian_pekerjaan', 'detail_projeks.volume_kontrak', 'detail_projeks.harga_satuan', 'projeks.id as pid', 'projeks.nama_projek')
+        $detailprojeks = DetailProjek::select('detail_projeks.*', 'projeks.id as pid', 'projeks.tanggal')
                                     ->leftjoin('projeks', 'projeks.id', '=', 'detail_projeks.projek_id')
                                     ->orderBy('detail_projeks.id', 'DESC')
                                     ->where('projek_id', $id)
                                     ->get();
+                                    
+
+        $jenis_kerusakan = JenisKerusakan::select('jenis_kerusakans.*', 'detail_projeks.id as pid', 'list_pekerjaans.nama_pekerjaan')
+                                            ->leftjoin('projeks', 'projeks.id', '=', 'jenis_kerusakans.id_projeks')
+                                            ->leftjoin('detail_projeks', 'detail_projeks.id', '=', 'jenis_kerusakans.id_detail_projeks')
+                                            ->leftjoin('list_pekerjaans', 'list_pekerjaans.id', '=', 'jenis_kerusakans.nama_kerusakan')
+                                            ->orderBy('detail_projeks.id', 'DESC')
+                                            ->where('jenis_kerusakans.id_projeks', '=', $id)
+                                            ->get();
 
         $chats = Chat::where('projek_id', '=', $id)->first();
 
-        return view('admin.projek.show', compact('projeks', 'tukangs', 'chatdetails', 'chats', 'detailprojeks'));
+        return view('admin.projek.show', compact('tukangs', 'chatdetails', 'chats', 'detailprojeks', 'jenis_kerusakan', 'projeks'));
     }
 
     public function create()
@@ -126,46 +154,16 @@ class ProjekController extends Controller
     public function add(Request $request)
     {
         $this->validate($request, [
-            'nama_projek'  => 'required',
-            'kode_projek'  => 'required',
-            'area_projek'  => 'required',
-            'nomor_kontrak'  => 'required',
-            'tanggal_kontrak'  => 'required',
-            'judul_kontrak'  => 'required',
-            'nilai_kontrak'  => 'required',
-            'durasi_kontrak'  => 'required',
-            'lokasi'  => 'required',
-            'pemberi_kerja'  => 'required',
-            'pm'  => 'required',
-            'marketing'  => 'required',
-            'supervisor'  => 'required',
-            'rencana_kerja'  => 'required',
-            'owner'  => 'required',
-            'tanggal_mulai'  => 'required',
-            'total_pekerja'  => 'required',
+            'tanggal'  => 'required',
+            'uraian_pekerjaan'  => 'required',
         ]); 
         $projek = Projek::create([
-            'nama_projek'   => $request->nama_projek,
-            'kode_projek'   => $request->kode_projek,
-            'area_projek'   => $request->area_projek,
-            'nomor_kontrak'   => $request->nomor_kontrak,
-            'tanggal_kontrak'   => $request->tanggal_kontrak,
-            'judul_kontrak'   => $request->judul_kontrak,
-            'nilai_kontrak'   => $request->nilai_kontrak,
-            'durasi_kontrak'   => $request->durasi_kontrak,
-            'lokasi'   => $request->lokasi,
-            'pemberi_kerja'   => $request->pemberi_kerja,
-            'pm'   => $request->pm,
-            'marketing'   => $request->marketing,
-            'supervisor'   => $request->supervisor,
-            'rencana_kerja'   => $request->rencana_kerja,
-            'owner'   => $request->owner,
-            'tanggal_mulai'   => $request->tanggal_mulai,
-            'total_volume_kontrak'   => $request->total_volume_kontrak,
-            'total_harga_satuan'   => $request->total_harga_satuan,
-            'total_volume_pekerjaan_hari_ini'   => $request->total_volume_pekerjaan_hari_ini,
-            'status'   => "process",
-            'total_pekerja'   => $request->total_pekerja,
+            'tanggal'   => $request->tanggal,
+            'uraian_pekerjaan'   => $request->uraian_pekerjaan,
+            'status_pekerjaan'   => "belum",
+            'approval_pm'   => "Belum",
+            'approval_app'   => "Belum",
+            'approval_ap1'   => "Belum",
             'edit_by'   => Auth::user()->id,
         ]);
 
@@ -178,79 +176,45 @@ class ProjekController extends Controller
     {
         $projek = Projek::where('id', '=', $id)->first();
 
-        $marketing = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
-                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
-                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
-                    ->where('roles.name', '=', "Marketing")
-                    ->get();
+        // $marketing = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+        //             ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+        //             ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+        //             ->where('roles.name', '=', "Marketing")
+        //             ->get();
 
-        $pm = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
-                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
-                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
-                    ->where('roles.name', '=', "PM")
-                    ->get();
+        // $pm = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+        //             ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+        //             ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+        //             ->where('roles.name', '=', "PM")
+        //             ->get();
 
-        $supervisor = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
-                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
-                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
-                    ->where('roles.name', '=', "Supervisor")
-                    ->get();
+        // $supervisor = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+        //             ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+        //             ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+        //             ->where('roles.name', '=', "Supervisor")
+        //             ->get();
 
-        $owner = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
-                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
-                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
-                    ->where('roles.name', '=', "Owner")
-                    ->get();
+        // $owner = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+        //             ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+        //             ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+        //             ->where('roles.name', '=', "Owner")
+        //             ->get();
 
-        return view('admin.projek.edit', compact('projek', 'marketing', 'pm', 'supervisor', 'owner'));
+        return view('admin.projek.edit', compact('projek'));
     }
 
     
     public function update(Request $request)
     {
         $this->validate($request, [
-            'nama_projek'  => 'required',
-            'kode_projek'  => 'required',
-            'area_projek'  => 'required',
-            'nomor_kontrak'  => 'required',
-            'tanggal_kontrak'  => 'required',
-            'judul_kontrak'  => 'required',
-            'nilai_kontrak'  => 'required',
-            'durasi_kontrak'  => 'required',
-            'lokasi'  => 'required',
-            'pemberi_kerja'  => 'required',
-            'pm'  => 'required',
-            'marketing'  => 'required',
-            'supervisor'  => 'required',
-            'rencana_kerja'  => 'required',
-            'owner'  => 'required',
-            'tanggal_mulai'  => 'required',
-            'total_volume_kontrak'  => 'required',
-            'total_harga_satuan'  => 'required',
-            'total_pekerja'  => 'required',
+            'tanggal'  => 'required',
+            'uraian_pekerjaan'  => 'required',
         ]); 
 
         $projek = Projek::findOrFail($request->id);
         $projek->update([
-            'nama_projek'   => $request->nama_projek,
-            'kode_projek'   => $request->kode_projek,
-            'area_projek'   => $request->area_projek,
-            'nomor_kontrak'   => $request->nomor_kontrak,
-            'tanggal_kontrak'   => $request->tanggal_kontrak,
-            'judul_kontrak'   => $request->judul_kontrak,
-            'nilai_kontrak'   => $request->nilai_kontrak,
-            'durasi_kontrak'   => $request->durasi_kontrak,
-            'lokasi'   => $request->lokasi,
-            'pemberi_kerja'   => $request->pemberi_kerja,
-            'pm'   => $request->pm,
-            'marketing'   => $request->marketing,
-            'supervisor'   => $request->supervisor,
-            'rencana_kerja'   => $request->rencana_kerja,
-            'owner'   => $request->owner,
-            'tanggal_mulai'   => $request->tanggal_mulai,
-            'total_volume_kontrak'   => $request->total_volume_kontrak,
-            'total_harga_satuan'   => $request->total_harga_satuan,
-            'total_pekerja'   => $request->total_pekerja,
+            'tanggal'   => $request->tanggal,
+            'uraian_pekerjaan'   => $request->uraian_pekerjaan,
             'edit_by'   => Auth::user()->id,
         ]);
 
@@ -262,8 +226,9 @@ class ProjekController extends Controller
     public function delete($id)
     {
         $projek = Projek::find($id);
-
-            $chat = Chat::where('projek_id', '=', '4')->first();
+            
+            // $chat = DB::table('chat')->where('projek_id', '=', $projek->id)->delete();
+            $chat = Chat::where('projek_id', '=', $projek->id)->first();
             if($chat != null) {
                 $chat_detail = ChatDetail::where('chat_id', '=', $chat->slug)->first();
                 if($chat_detail != null) {
@@ -271,26 +236,8 @@ class ProjekController extends Controller
                 }
                 $chat->delete();
             }
-
-            $tukang = Tukang::where('projek_id', '=', $projek->id)->first();
-            if($tukang->projek_id != null) {
-                $tukang->delete();
-            }
-
-            $absen = Absen::where('projek_id', '=', $projek->id)->first();
-            if($absen->projek_id != null) {
-                $absen->delete();
-            }
-
-            $absen_lembur = AbsenLembur::where('projek_id', '=', $projek->id)->first();
-            if($absen_lembur->projek_id != null) {
-                $absen_lembur->delete();
-            }
-
-            $detail_projek = DetailProjek::where('projek_id', '=', $projek->id)->first();
-            if($detail_projek->projek_id != null) {
-                $detail_projek->delete();
-            }
+            $jenis_kerusakan = DB::table('jenis_kerusakans')->where('id_projeks', '=', $projek->id)->delete();
+            $detail_projek = DB::table('detail_projeks')->where('projek_id', '=', $projek->id)->delete();
 
         $projek->delete();
 
@@ -343,5 +290,47 @@ class ProjekController extends Controller
         toastr()->success('Chat berhasil terkirim!');
         // return redirect()->route('projek.show', [$request->projek_id, '#chat']);
         return redirect()->route('projek.show', [$request->projek_id])->withFragment('chat');
+    }
+
+    public function approval_pm(Request $request)
+    {
+        $projek = Projek::findOrFail($request->id);
+        $projek->update([
+            'tanggal_approval_pm'   => date('Y-m-d H:i:s'),
+            'approval_pm'   => "Diterima",
+            'approval_pm_id' => Auth::user()->id
+        ]);
+
+        toastr()->success('Data berhasil disimpan!');
+        return redirect()->route('projek.index');
+    }
+
+    public function approval_app(Request $request)
+    {
+        $projek = Projek::findOrFail($request->id);
+        $projek->update([
+            'tanggal_approval_app'   => date('Y-m-d H:i:s'),
+            'approval_app'   => $request->approval_app,
+            'komen_app'   => $request->komen_app,
+            'approval_app_id' => Auth::user()->id
+        ]);
+
+        toastr()->success('Data berhasil disimpan!');
+        return redirect()->route('projek.index');
+    }
+
+    public function approval_ap1(Request $request)
+    {
+        $projek = Projek::findOrFail($request->id);
+        $projek->update([
+            'tanggal_approval_ap1'   => date('Y-m-d H:i:s'),
+            'approval_ap1'   => $request->approval_ap1,
+            'komen_ap1'   => $request->komen_ap1,
+            'status_pekerjaan'   => $request->approval_ap1,
+            'approval_ap1_id' => Auth::user()->id
+        ]);
+
+        toastr()->success('Data berhasil disimpan!');
+        return redirect()->route('projek.index');
     }
 }

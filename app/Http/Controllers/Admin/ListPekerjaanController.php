@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\ModelHasRoles;
 use App\Models\Permission;
-use App\Models\Shift;
+use App\Models\ListPekerjaan;
 use App\Models\RolePermission;
 use App\Models\Roles;
 use App\Models\Tukang;
@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
-class ShiftController extends Controller
+class ListPekerjaanController extends Controller
 {
     /**
      * index
@@ -32,10 +32,10 @@ class ShiftController extends Controller
     {
         $this->middleware('auth');
 
-        $this->middleware('permission:shift-list', ['only' => ['shift']]);
-        $this->middleware('permission:shift-add', ['only' => ['shift_add']]);
-        $this->middleware('permission:shift-update', ['only' => ['shift_update']]);
-        $this->middleware('permission:shift-destroy', ['only' => ['shift_destroy']]);
+        $this->middleware('permission:listpekerjaan-list', ['only' => ['listpekerjaan']]);
+        $this->middleware('permission:listpekerjaan-add', ['only' => ['listpekerjaan_add']]);
+        $this->middleware('permission:listpekerjaan-update', ['only' => ['listpekerjaan_update']]);
+        $this->middleware('permission:listpekerjaan-destroy', ['only' => ['listpekerjaan_destroy']]);
     }
 
     public function index()
@@ -46,28 +46,26 @@ class ShiftController extends Controller
                         ->where('model_has_roles.model_id', Auth::user()->id)
                         ->first();
         
-        if($level['name'] == 'Karyawan' || $level['name'] == 'APP' || $level['name'] == 'AP1')
-        {
-            toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
-            return redirect()->to('/');
-        }
+        // if($level['name'] == 'Karyawan')
+        // {
+        //     toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
+        //     return redirect()->to('/');
+        // }
 
-        $shifts = Shift::get();
+        $listpekerjaan = ListPekerjaan::orderBy('id', 'DESC')->get();
 
-        return view('admin.shift.index', compact('shifts', 'level'));
+        return view('admin.listpekerjaan.index', compact('listpekerjaan', 'level'));
     }
 
     public function add(Request $request)
     {
         $this->validate($request, [
-            'nama_shift'  => 'required',
-            'jam_masuk'  => 'required',
-            'jam_pulang'  => 'required',
+            'nama_pekerjaan'  => 'required',
+            'harga'  => 'required',
         ]); 
-        $shift = Shift::create([
-            'nama_shift'   => $request->nama_shift,
-            'jam_masuk'   => $request->jam_masuk,
-            'jam_pulang'   => $request->jam_pulang,
+        $shift = ListPekerjaan::create([
+            'nama_pekerjaan'   => $request->nama_pekerjaan,
+            'harga'   => $request->harga,
             'edit_by'   => Auth::user()->id,
         ]);
 
@@ -78,16 +76,14 @@ class ShiftController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'nama_shift'  => 'required',
-            'jam_masuk'  => 'required',
-            'jam_pulang'  => 'required',
+            'nama_pekerjaan'  => 'required',
+            'harga'  => 'required',
         ]); 
 
-        $shift = Shift::findOrFail($request->id);
+        $shift = ListPekerjaan::findOrFail($request->id);
         $shift->update([
-            'nama_shift'   => $request->nama_shift,
-            'jam_masuk'   => $request->jam_masuk,
-            'jam_pulang'   => $request->jam_pulang,
+            'nama_pekerjaan'   => $request->nama_pekerjaan,
+            'harga'   => $request->harga,
             'edit_by'   => Auth::user()->id,
         ]);
         
@@ -98,7 +94,7 @@ class ShiftController extends Controller
     public function destroy(Request $request)
     {
         if ($request->ajax()) {
-            $data = Shift::find($request->id)->delete();
+            $data = ListPekerjaan::find($request->id)->delete();
 
             return response()->json($data);
         }

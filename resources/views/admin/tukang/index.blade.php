@@ -27,7 +27,7 @@
                                     <label for="picker1">Pilih Projek</label>
                                     <select name="projek_id" class="form-control">
                                         @foreach($projeks as $row)
-                                            <option value="{{ $row->id }}"> {{ $row->nama_projek }}</option>
+                                            <option value="{{ $row->id }}"> {{ $row->tanggal }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -89,7 +89,7 @@
                             @foreach($tukangs as $row)
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $row->nama_projek }}</td>
+                                <td>{{ $row->uraian_pekerjaan }}</td>
                                 <td>{{ $row->name }}</td>
                                 <td>{{ $row->nama_shift }}</td>
                                 <td>Rp. {{ number_format($row->biaya_harian, 2, ',', '.') }}</td>

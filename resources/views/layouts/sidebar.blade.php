@@ -23,13 +23,21 @@
                 </a>
             </li>
             @endcan
-            @can('tukang-list')
+            @can('listpekerjaan-list')
             <li class="nav-item " data-item="">
+                <a class="nav-item-hold" href="{{ route('list_pekerjaan.index') }}">
+                    <i class="nav-icon i-Note"></i>
+                    <span class="nav-text">List Pekerjaan</span>
+                </a>
+            </li>
+            @endcan
+            @can('tukang-list')
+            <!-- <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('tukang.index') }}">
                     <i class="nav-icon i-Business-Man"></i>
                     <span class="nav-text">Tukang</span>
                 </a>
-            </li>
+            </li> -->
             @endcan
             @can('absen-list')
             <li class="nav-item " data-item="">
@@ -40,20 +48,20 @@
             </li>
             @endcan
             @can('absenlembur-list')
-            <li class="nav-item " data-item="">
+            <!-- <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('absenlembur.index') }}">
                     <i class="nav-icon i-Over-Time"></i>
                     <span class="nav-text">Lembur</span>
                 </a>
-            </li>
+            </li> -->
             @endcan
             @can('chat-list')
-            <li class="nav-item " data-item="">
+            <!-- <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('chat.index') }}">
                     <i class="nav-icon i-Speach-Bubble-Dialog"></i>
                     <span class="nav-text">Chat</span>
                 </a>
-            </li>
+            </li> -->
             @endcan
             @can('shift-list')
             <li class="nav-item " data-item="">
@@ -95,12 +103,12 @@
             </li>
             @endcan
             @can('karyawan-absenlembur-list')
-            <li class="nav-item " data-item="">
+            <!-- <li class="nav-item " data-item="">
                 <a class="nav-item-hold" href="{{ route('absensilembur.index') }}">
                     <i class="nav-icon i-Over-Time-2"></i>
                     <span class="nav-text">Lembur</span>
                 </a>
-            </li>
+            </li> -->
             @endcan
         </ul>
     </div>

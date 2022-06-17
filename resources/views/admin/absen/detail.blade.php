@@ -72,12 +72,12 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Foto</th>
-                                <th>TTD</th>
+                                <!-- <th>TTD</th> -->
                                 <th>Tanggal</th>
                                 <th>Jam Datang</th>
-                                <th>Lokasi Datang</th>
+                                <!-- <th>Lokasi Datang</th> -->
                                 <th>Jam Pulang</th>
-                                <th>Lokasi Pulang</th>
+                                <!-- <th>Lokasi Pulang</th> -->
                                 <th>Status</th>
                                 <th>Keterangan</th>
                                 <th>Aksi</th>
@@ -94,17 +94,17 @@
                                     @else
                                     @endif
                                 </td>
-                                <td>
+                                <!-- <td>
                                     @if($row->ttd != '')
                                         <img src="{{ asset('ttd/' . $row->ttd) }}" style="width:40%">
                                     @else
                                     @endif
-                                </td>
+                                </td> -->
                                 <td>{{ $row->hari_datang }}, {{ $row->tanggal_datang }}</td>
                                 <td>{{ $row->jam_datang }}</td>
-                                <td>{{ $row->lokasi_datang }}</td>
+                                <!-- <td>{{ $row->lokasi_datang }}</td> -->
                                 <td>{{ $row->jam_pulang }}</td>
-                                <td>{{ $row->lokasi_pulang }}</td>
+                                <!-- <td>{{ $row->lokasi_pulang }}</td> -->
                                 <td>
                                     @if($row->status == 'Hadir')
                                         <span class="badge badge-success m-2">Hadir</span>

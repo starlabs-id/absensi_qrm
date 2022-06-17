@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Feb 2022 pada 09.08
+-- Waktu pembuatan: 16 Jun 2022 pada 10.45
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 7.4.27
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `absensi_qrm`
+-- Database: `toilet_qrm`
 --
 
 -- --------------------------------------------------------
@@ -59,13 +59,6 @@ CREATE TABLE `absens` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data untuk tabel `absens`
---
-
-INSERT INTO `absens` (`id`, `lokasi_datang`, `latitude_datang`, `longitude_datang`, `ttd`, `foto`, `jam_datang`, `tanggal_datang`, `hari_datang`, `bulan_datang`, `tahun_datang`, `lokasi_pulang`, `latitude_pulang`, `longitude_pulang`, `jam_pulang`, `tanggal_pulang`, `hari_pulang`, `bulan_pulang`, `tahun_pulang`, `keterangan`, `validasi`, `jam_validasi`, `validasi_by`, `status`, `projek_id`, `user_id`, `tukang_id`, `edit_by`, `created_at`, `updated_at`) VALUES
-(31, '-8.6966272,115.2253952', '-8.6966272', '115.2253952', '6218855e534a0.png', 'pCmJzYXpnIdUC3aLiFUCxGXJsY4z0nzV3P8KH63F.jpg', '15:29:27', '25-02-2022', 'Jumat', 'Februari', '2022', '-8.6966272,115.2253952', '-8.6966272', '115.2253952', '15:30:58', '25-02-2022', 'Jumat', 'Februari', '2022', NULL, NULL, NULL, NULL, NULL, 3, 14, 9, 1, '2022-02-25 07:29:34', '2022-02-25 07:31:03');
 
 -- --------------------------------------------------------
 
@@ -108,13 +101,6 @@ CREATE TABLE `absen_lemburs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data untuk tabel `absen_lemburs`
---
-
-INSERT INTO `absen_lemburs` (`id`, `lokasi_datang`, `longitude_datang`, `latitude_datang`, `ttd`, `jam_datang`, `tanggal_datang`, `hari_datang`, `bulan_datang`, `tahun_datang`, `lokasi_pulang`, `longitude_pulang`, `latitude_pulang`, `jam_pulang`, `tanggal_pulang`, `hari_pulang`, `bulan_pulang`, `tahun_pulang`, `keterangan`, `foto`, `validasi`, `jam_validasi`, `validasi_by`, `total_biaya_lembur`, `status`, `projek_id`, `absen_id`, `user_id`, `tukang_id`, `edit_by`, `created_at`, `updated_at`) VALUES
-(6, '-8.6966272,115.2253952', '115.2253952', '-8.6966272', '621889caef33c.png', '15:47:40', '25-02-2022', 'Jumat', 'Februari', '2022', '-8.6966272,115.2253952', '115.2253952', '-8.6966272', '15:49:43', '25-02-2022', 'Jumat', 'Februari', '2022', NULL, 'dsAesznhGU8UrdX8PZAiF3BYYhJbGAaDktP4jzEk.jpg', NULL, NULL, NULL, NULL, NULL, 3, NULL, 14, 9, 1, '2022-02-25 07:48:26', '2022-02-25 07:49:45');
-
 -- --------------------------------------------------------
 
 --
@@ -123,7 +109,7 @@ INSERT INTO `absen_lemburs` (`id`, `lokasi_datang`, `longitude_datang`, `latitud
 
 CREATE TABLE `chats` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `slug` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `projek_id` bigint(20) DEFAULT NULL,
   `direktur_utama` int(11) DEFAULT NULL,
   `superadmin` int(11) DEFAULT NULL,
@@ -144,7 +130,7 @@ CREATE TABLE `chats` (
 --
 
 INSERT INTO `chats` (`id`, `slug`, `projek_id`, `direktur_utama`, `superadmin`, `owner`, `direktur_teknik`, `admin_teknik`, `pm`, `marketing`, `gm`, `co_gm`, `supervisor`, `created_at`, `updated_at`) VALUES
-(2, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 3, 4, 1, 13, NULL, 9, 11, 6, 10, NULL, 8, '2022-02-18 02:39:53', '2022-02-18 02:39:53');
+(5, '$2y$10$ee3T4BXSA9qdKQbAYZFQaeXBZlauk8RpZTM5QoAIaPLfjCX5io.8K', 13, 4, 1, 13, NULL, 9, 11, 5, 10, NULL, 8, '2022-06-16 03:52:42', '2022-06-16 03:52:42');
 
 -- --------------------------------------------------------
 
@@ -166,14 +152,7 @@ CREATE TABLE `chat_details` (
 --
 
 INSERT INTO `chat_details` (`id`, `chat_id`, `komentar`, `pengirim`, `created_at`, `updated_at`) VALUES
-(3, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'git commit -m', 1, '2022-02-18 02:46:36', '2022-02-18 02:46:36'),
-(5, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'git push origin', 1, '2022-02-18 04:03:16', '2022-02-18 04:03:16'),
-(6, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'git add .', 1, '2022-02-19 01:28:47', '2022-02-19 01:28:47'),
-(7, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'test route', 1, '2022-02-19 01:29:40', '2022-02-19 01:29:40'),
-(8, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'a', 1, '2022-02-19 01:36:43', '2022-02-19 01:36:43'),
-(9, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'tets route', 1, '2022-02-19 01:39:43', '2022-02-19 01:39:43'),
-(10, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', '#route new', 1, '2022-02-19 01:45:36', '2022-02-19 01:45:36'),
-(11, '$2y$10$mHvH0cq5gokOv60bNRuA0.cF5uPYmYD8cryikxlBv9a', 'route tester', 1, '2022-02-19 01:47:06', '2022-02-19 01:47:06');
+(14, '$2y$10$ee3T4BXSA9qdKQbAYZFQaeXBZlauk8RpZTM5QoAIaPLfjCX5io.8K', 'Haloo', 1, '2022-06-16 03:52:54', '2022-06-16 03:52:54');
 
 -- --------------------------------------------------------
 
@@ -184,25 +163,14 @@ INSERT INTO `chat_details` (`id`, `chat_id`, `komentar`, `pengirim`, `created_at
 CREATE TABLE `detail_projeks` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `projek_id` bigint(20) DEFAULT NULL,
-  `uraian_pekerjaan` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `volume_kontrak` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `harga_satuan` int(11) DEFAULT NULL,
-  `volume_pekerjaan_hari_ini` int(11) DEFAULT NULL,
-  `volume_dikerjakan` int(11) DEFAULT NULL,
-  `prestasi_keuangan_hari_ini` int(11) DEFAULT NULL,
-  `prestasi_fisik_hari_ini` int(11) DEFAULT NULL,
-  `tanggal` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nama_pekerjaan` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('baik','penggantian','perbaikan_ringan') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keterangan` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lokasi` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shift` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `jam` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `foto_1` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `foto_2` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `foto_3` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `foto_4` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `foto_5` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `foto_6` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `foto_7` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `foto_8` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `foto_9` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `foto_10` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keterangan` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `edit_by` bigint(20) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -212,8 +180,8 @@ CREATE TABLE `detail_projeks` (
 -- Dumping data untuk tabel `detail_projeks`
 --
 
-INSERT INTO `detail_projeks` (`id`, `projek_id`, `uraian_pekerjaan`, `volume_kontrak`, `harga_satuan`, `volume_pekerjaan_hari_ini`, `volume_dikerjakan`, `prestasi_keuangan_hari_ini`, `prestasi_fisik_hari_ini`, `tanggal`, `foto_1`, `foto_2`, `foto_3`, `foto_4`, `foto_5`, `foto_6`, `foto_7`, `foto_8`, `foto_9`, `foto_10`, `keterangan`, `edit_by`, `created_at`, `updated_at`) VALUES
-(2, 3, 'a', '1', 1, 1, 1, 1, 1, '2022-02-18', '9NqMB6H0nuijP92d04C4wyran9HG6ov3C9fWceKC.jpg', 'ON8m1Sxm1Bj5t5FX6fugn2WVAftI1Eg7u4VBsE6P.jpg', 'p7CQH2ZesdBVdWxuFvw0qCuoShoHaCZjuRKW4aPJ.jpg', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1111', 1, '2022-02-19 07:14:32', '2022-02-19 07:14:32');
+INSERT INTO `detail_projeks` (`id`, `projek_id`, `nama_pekerjaan`, `status`, `keterangan`, `lokasi`, `shift`, `jam`, `foto_1`, `foto_2`, `edit_by`, `created_at`, `updated_at`) VALUES
+(11, 13, 'Cek Rutin', 'penggantian', NULL, 'TOILET GH01 PRIA', 'pagi', '10:38:23', 'ScGOH9WUm9u0BsU5oadJgple2vcHnyBooNgT8gao.jpg', 'XM906uXqngJLWFhU8VGT3wPjSoqfHahNjB5mi2zW.jpg', 1, '2022-06-16 02:38:49', '2022-06-16 02:38:49');
 
 -- --------------------------------------------------------
 
@@ -230,6 +198,74 @@ CREATE TABLE `failed_jobs` (
   `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `foto_kerusakans`
+--
+
+CREATE TABLE `foto_kerusakans` (
+  `id_projek` int(11) NOT NULL,
+  `id_detail_projek` int(11) DEFAULT NULL,
+  `foto` varchar(50) DEFAULT NULL,
+  `edit_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `jenis_kerusakans`
+--
+
+CREATE TABLE `jenis_kerusakans` (
+  `id` int(11) NOT NULL,
+  `id_projeks` int(11) DEFAULT NULL,
+  `id_detail_projeks` int(11) DEFAULT NULL,
+  `nama_kerusakan` varchar(50) DEFAULT NULL,
+  `foto` varchar(50) DEFAULT NULL,
+  `harga` varchar(30) DEFAULT NULL,
+  `satuan` varchar(30) DEFAULT NULL,
+  `total_harga` varchar(30) DEFAULT NULL,
+  `volume` varchar(30) DEFAULT NULL,
+  `edit_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `jenis_kerusakans`
+--
+
+INSERT INTO `jenis_kerusakans` (`id`, `id_projeks`, `id_detail_projeks`, `nama_kerusakan`, `foto`, `harga`, `satuan`, `total_harga`, `volume`, `edit_by`, `created_at`, `updated_at`) VALUES
+(25, 13, 11, '1', 'V8Z1Iwo2sgsCAtKVDE8GZ0jrqtSQqdtSOPVhPelI.jpg', '50000', 'Pcs', '150000000', '3000', 1, '2022-06-16 02:39:17', '2022-06-16 02:39:17'),
+(26, 13, 11, '2', 'xuTftSg1Hhf4WyVp0Su8NZbx3JM5Bg00XBcf7U8N.jpg', '100000', 'Sheet', '10000000', '100', 1, '2022-06-16 08:42:26', '2022-06-16 08:42:26');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `list_pekerjaans`
+--
+
+CREATE TABLE `list_pekerjaans` (
+  `id` int(11) NOT NULL,
+  `nama_pekerjaan` varchar(30) DEFAULT NULL,
+  `harga` varchar(30) DEFAULT NULL,
+  `edit_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `list_pekerjaans`
+--
+
+INSERT INTO `list_pekerjaans` (`id`, `nama_pekerjaan`, `harga`, `edit_by`, `created_at`, `updated_at`) VALUES
+(1, 'PENGGANTIAN JET SHOWER', '50000', NULL, NULL, NULL),
+(2, 'PENGGANTIAN KRAN GESER WASTAFE', '100000', NULL, NULL, NULL),
+(3, 'PENGGANTIAN FLUSHING URINAL', '75000', 1, '2022-06-16 02:10:22', '2022-06-16 02:10:22');
 
 -- --------------------------------------------------------
 
@@ -302,7 +338,8 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (7, 'App\\Models\\User', 10),
 (9, 'App\\Models\\User', 11),
 (10, 'App\\Models\\User', 8),
-(11, 'App\\Models\\User', 14);
+(11, 'App\\Models\\User', 14),
+(11, 'App\\Models\\User', 15);
 
 -- --------------------------------------------------------
 
@@ -384,7 +421,10 @@ INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at
 (53, 'guest-proyek-list', 'web', '2022-02-25 06:44:34', '2022-02-25 06:44:34'),
 (54, 'karyawan-absenlembur-list', 'web', '2022-02-25 07:06:58', '2022-02-25 07:06:58'),
 (55, 'karyawan-absenlembur-add', 'web', '2022-02-25 07:07:01', '2022-02-25 07:07:01'),
-(56, 'karyawan-absenlembur-update', 'web', '2022-02-25 07:07:06', '2022-02-25 07:07:06');
+(56, 'karyawan-absenlembur-update', 'web', '2022-02-25 07:07:06', '2022-02-25 07:07:06'),
+(57, 'approval-pm', 'web', '2022-06-16 03:44:18', '2022-06-16 03:44:18'),
+(58, 'approval-app', 'web', '2022-06-16 03:44:29', '2022-06-16 03:44:29'),
+(59, 'approval-ap1', 'web', '2022-06-16 03:44:35', '2022-06-16 03:44:35');
 
 -- --------------------------------------------------------
 
@@ -412,32 +452,20 @@ CREATE TABLE `personal_access_tokens` (
 
 CREATE TABLE `projeks` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `nama_projek` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `kode_projek` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `area_projek` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `nomor_kontrak` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tanggal_kontrak` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `judul_kontrak` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `nilai_kontrak` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `durasi_kontrak` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `durasi_projek` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lokasi` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pemberi_kerja` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pm` bigint(20) UNSIGNED DEFAULT NULL,
-  `marketing` bigint(20) UNSIGNED DEFAULT NULL,
-  `supervisor` bigint(20) UNSIGNED DEFAULT NULL,
-  `rencana_kerja` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `owner` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tanggal_mulai` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tanggal_selesai` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `total_volume_kontrak` int(20) DEFAULT NULL,
-  `total_harga_satuan` int(11) DEFAULT NULL,
-  `total_volume_pekerjaan_sebelumnya` int(11) DEFAULT NULL,
-  `total_volume_pekerjaan_hari_ini` int(20) DEFAULT NULL,
-  `total_prestasi_keuangan` int(11) DEFAULT NULL,
-  `total_prestasi_fisik` int(11) DEFAULT NULL,
-  `status` enum('closing','process') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `total_pekerja` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tanggal` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uraian_pekerjaan` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status_pekerjaan` enum('belum','Diterima','Reject') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `approval_app` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `approval_app_id` int(11) DEFAULT NULL,
+  `komen_app` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tanggal_approval_app` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `approval_ap1_id` int(11) DEFAULT NULL,
+  `approval_ap1` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `komen_ap1` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tanggal_approval_ap1` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `approval_pm_id` int(11) DEFAULT NULL,
+  `approval_pm` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tanggal_approval_pm` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `edit_by` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -447,8 +475,8 @@ CREATE TABLE `projeks` (
 -- Dumping data untuk tabel `projeks`
 --
 
-INSERT INTO `projeks` (`id`, `nama_projek`, `kode_projek`, `area_projek`, `nomor_kontrak`, `tanggal_kontrak`, `judul_kontrak`, `nilai_kontrak`, `durasi_kontrak`, `durasi_projek`, `lokasi`, `pemberi_kerja`, `pm`, `marketing`, `supervisor`, `rencana_kerja`, `owner`, `tanggal_mulai`, `tanggal_selesai`, `total_volume_kontrak`, `total_harga_satuan`, `total_volume_pekerjaan_sebelumnya`, `total_volume_pekerjaan_hari_ini`, `total_prestasi_keuangan`, `total_prestasi_fisik`, `status`, `total_pekerja`, `edit_by`, `created_at`, `updated_at`) VALUES
-(3, 'Tol Bali Mandara', 'A', 'Bali', 'A', '2022-02-01', 'A', 'A', 'A', NULL, 'A', 'A', 11, 6, 8, 'A', '13', '2022-02-01', NULL, 10, 10, 51, 1, 51, 51, 'process', '15', 1, '2022-02-17 03:20:06', '2022-02-19 07:14:32');
+INSERT INTO `projeks` (`id`, `tanggal`, `uraian_pekerjaan`, `status_pekerjaan`, `approval_app`, `approval_app_id`, `komen_app`, `tanggal_approval_app`, `approval_ap1_id`, `approval_ap1`, `komen_ap1`, `tanggal_approval_ap1`, `approval_pm_id`, `approval_pm`, `tanggal_approval_pm`, `edit_by`, `created_at`, `updated_at`) VALUES
+(13, '2022-06-16', 'Toilet Dom', 'Diterima', 'Diterima', 1, 'OKE', '2022-06-16 11:42:54', 1, 'Diterima', 'Terbitkan SO', '2022-06-16 11:52:04', 1, 'Diterima', '2022-06-16 11:42:48', 1, '2022-06-16 02:38:15', '2022-06-16 03:52:04');
 
 -- --------------------------------------------------------
 
@@ -697,7 +725,10 @@ INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (55, 1),
 (55, 11),
 (56, 1),
-(56, 11);
+(56, 11),
+(57, 1),
+(58, 1),
+(59, 1);
 
 -- --------------------------------------------------------
 
@@ -746,7 +777,8 @@ CREATE TABLE `tukangs` (
 --
 
 INSERT INTO `tukangs` (`id`, `biaya_harian`, `projek_id`, `shift_id`, `biaya_lembur`, `user_id`, `edit_by`, `created_at`, `updated_at`) VALUES
-(9, 125000, 3, 2, 15000, 14, 1, '2022-02-21 01:30:55', '2022-02-21 01:30:55');
+(18, 125000, 10, 2, 15000, 14, 1, '2022-06-15 08:16:56', '2022-06-15 08:16:56'),
+(19, 125000, 10, 2, 15000, 15, 1, '2022-06-15 08:27:05', '2022-06-15 08:27:05');
 
 -- --------------------------------------------------------
 
@@ -775,17 +807,18 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `two_factor_secret`, `two_factor_recovery_codes`, `foto`, `no_telp_hp`, `ttd`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Kevin R', 'admin@mail.com', NULL, '$2y$10$KisUOW36KysS/0BKijXQde3MfACHo08vx39.5sUZeWCr/4W83gruW', NULL, NULL, 'sz0fnkw0xS9u1nOSGW0rM9fYKD9g7F2mwnrUfzGS.jpg', '081338639778', NULL, NULL, '2022-02-09 23:50:49', '2022-02-16 04:03:15'),
+(1, 'Kevin R', 'admin@mail.com', NULL, '$2y$10$US.2COHH1Gvb/9JnjU8VzeJV1Rjpd9V1IGCNvXa/rV2qU1B9yRKKm', NULL, NULL, 'kPTRQgVt8ArWGclwHRNMpmsWubGp2KfXzYgl29Zl.png', '081338639778', NULL, NULL, '2022-02-09 23:50:49', '2022-06-14 06:51:07'),
 (3, 'Bareel', 'bareel@gmail.com', NULL, '$2y$10$US.2COHH1Gvb/9JnjU8VzeJV1Rjpd9V1IGCNvXa/rV2qU1B9yRKKm', NULL, NULL, NULL, '087730786790', NULL, NULL, '2022-02-11 20:04:26', '2022-02-14 02:12:22'),
-(4, 'Yusuf Ali', 'yusufali@gmail.com', NULL, '$2y$10$dYsC1nS.Hcit06Re4T8z9OGfqfwbd1YIke4o0psWXKJ1uSfwMvvfO', NULL, NULL, NULL, '081237728888', NULL, NULL, '2022-02-16 05:54:43', '2022-02-16 05:54:43'),
+(4, 'Yusuf Ali', 'pakyus@gmail.com', NULL, '$2y$10$dYsC1nS.Hcit06Re4T8z9OGfqfwbd1YIke4o0psWXKJ1uSfwMvvfO', NULL, NULL, NULL, '081237728888', NULL, NULL, '2022-02-16 05:54:43', '2022-02-16 05:54:43'),
 (5, 'Ismed Andrian', 'ismedandrian@gmail.com', NULL, '$2y$10$emrs0inLJCMKRqf7cIkE1uLKKaKkEOIyThYDaqVEbOon0Fo97aKmq', NULL, NULL, NULL, '0811386959', NULL, NULL, '2022-02-16 06:03:31', '2022-02-16 06:03:31'),
 (6, 'Andri', 'andri@gmail.com', NULL, '$2y$10$OrxrA8qRVUF3PHdCoL2g9Ow0ZbNwfGBer97RnSxwwVm4/GMsZvpKG', NULL, NULL, NULL, '081310106486', NULL, NULL, '2022-02-16 06:05:06', '2022-02-16 06:05:06'),
 (8, 'Alit', 'alit.arc013@gmail.com', NULL, '$2y$10$IO9qr.ax/NGHzaSNTa55uumr6460K0sLCwd83T.XzQyUAZTa9ftAu', NULL, NULL, NULL, '081237846440', NULL, NULL, '2022-02-16 06:06:38', '2022-02-16 06:06:38'),
 (9, 'Lintang', 'garbhadana@gmail.com', NULL, '$2y$10$8t6Qyj8yW2u4xmlxvEA1x.e0AiUALoKj75l0k2R9FGtNG1GYD4viy', NULL, NULL, NULL, '085847184272', NULL, NULL, '2022-02-16 06:08:17', '2022-02-16 06:08:17'),
 (10, 'Rima', 'rimasilvia22@gmail.com', NULL, '$2y$10$isONkxEzVVfUAgbdHQAQVutrOIWaEyxhJGPVFuAud1YteNaR0/y5C', NULL, NULL, NULL, '08113934003', NULL, NULL, '2022-02-16 06:08:52', '2022-02-16 06:08:52'),
 (11, 'Sukma', 'sukma.naindya0209@gmail.com', NULL, '$2y$10$FgJ5GRHfKZmsMkQG9HackOLDVCR7d64Q4gCj6s0cNIf2BX.GtdufW', NULL, NULL, NULL, '087863200314', NULL, NULL, '2022-02-16 06:14:41', '2022-02-16 06:14:41'),
-(13, 'Luhut', 'opungluhut@gmail.com', NULL, '$2y$10$WfrWrXU..FVCviRY4/rqQ.PVDQYmgnM255liDt05/Jtdb9H6dqdeW', NULL, NULL, NULL, '081111111', NULL, NULL, '2022-02-16 06:32:16', '2022-02-16 06:32:16'),
-(14, 'Karyawan', 'karyawan@gmail.com', NULL, '$2y$10$fvOMf6mI/mdWrsVjt4cltuyalfCFxnp6SZcHZdIpTL618KHhq0rs.', NULL, NULL, NULL, '081223', NULL, NULL, '2022-02-18 03:45:56', '2022-02-18 03:45:56');
+(13, 'Owner', 'owner@gmail.com', NULL, '$2y$10$WfrWrXU..FVCviRY4/rqQ.PVDQYmgnM255liDt05/Jtdb9H6dqdeW', NULL, NULL, NULL, '081111111', NULL, NULL, '2022-02-16 06:32:16', '2022-02-16 06:32:16'),
+(14, 'Karyawan', 'karyawan@gmail.com', NULL, '$2y$10$fvOMf6mI/mdWrsVjt4cltuyalfCFxnp6SZcHZdIpTL618KHhq0rs.', NULL, NULL, NULL, '081223', NULL, NULL, '2022-02-18 03:45:56', '2022-02-18 03:45:56'),
+(15, 'Yaman', 'teknisia@gmail.com', NULL, '$2y$10$edhJxn98PpHaB3nHcCOI9esV9c/H0Zxe7iUSX1adGh0DHRebQnuWW', NULL, NULL, NULL, '08111111', NULL, NULL, '2022-05-21 03:24:10', '2022-05-21 03:24:10');
 
 --
 -- Indexes for dumped tables
@@ -827,6 +860,24 @@ ALTER TABLE `detail_projeks`
 ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indeks untuk tabel `foto_kerusakans`
+--
+ALTER TABLE `foto_kerusakans`
+  ADD PRIMARY KEY (`id_projek`);
+
+--
+-- Indeks untuk tabel `jenis_kerusakans`
+--
+ALTER TABLE `jenis_kerusakans`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `list_pekerjaans`
+--
+ALTER TABLE `list_pekerjaans`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `migrations`
@@ -928,25 +979,43 @@ ALTER TABLE `absen_lemburs`
 -- AUTO_INCREMENT untuk tabel `chats`
 --
 ALTER TABLE `chats`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `chat_details`
 --
 ALTER TABLE `chat_details`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_projeks`
 --
 ALTER TABLE `detail_projeks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `foto_kerusakans`
+--
+ALTER TABLE `foto_kerusakans`
+  MODIFY `id_projek` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT untuk tabel `jenis_kerusakans`
+--
+ALTER TABLE `jenis_kerusakans`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT untuk tabel `list_pekerjaans`
+--
+ALTER TABLE `list_pekerjaans`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `migrations`
@@ -958,7 +1027,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT untuk tabel `personal_access_tokens`
@@ -970,7 +1039,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT untuk tabel `projeks`
 --
 ALTER TABLE `projeks`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT untuk tabel `roles`
@@ -988,13 +1057,13 @@ ALTER TABLE `shifts`
 -- AUTO_INCREMENT untuk tabel `tukangs`
 --
 ALTER TABLE `tukangs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

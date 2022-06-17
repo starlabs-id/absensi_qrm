@@ -56,8 +56,8 @@
                     <span class="pull-right">
                         <!-- <a class="btn btn-success btn-sm" href="#modal-import" data-toggle="modal">Import</a>
                         <a class="btn btn-light btn-sm" href="{{ route('user_export') }}" target="_blank" style="margin-right: 5px;">Export</a> -->
-                        @can('karyawan_absen_add')
-                            <a href="{{ route('absensi.create', $tukangs->id) }}" class="btn btn-danger btn-sm">Absen</a>
+                        @can('karyawan-absen-add')
+                            <a href="{{ route('absensi.create') }}" class="btn btn-danger btn-sm">Absen</a>
                         @endcan
                         <button class="btn btn-warning btn-sm"><a href="{{ route('absensi.index') }}">Kembali</a></button>
                     </span>
@@ -70,12 +70,12 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Foto</th>
-                                <th>TTD</th>
+                                <!-- <th>TTD</th> -->
                                 <th>Tanggal</th>
                                 <th>Jam Datang</th>
-                                <th>Lokasi Datang</th>
+                                <!-- <th>Lokasi Datang</th> -->
                                 <th>Jam Pulang</th>
-                                <th>Lokasi Pulang</th>
+                                <!-- <th>Lokasi Pulang</th> -->
                                 <th>Status</th>
                                 <th>Keterangan</th>
                                 <th>Aksi</th>
@@ -92,17 +92,17 @@
                                     @else
                                     @endif
                                 </td>
-                                <td>
+                                <!-- <td>
                                     @if($row->ttd != '')
                                         <img src="{{ asset('ttd/' . $row->ttd) }}" style="width:40%">
                                     @else
                                     @endif
-                                </td>
+                                </td> -->
                                 <td>{{ $row->hari_datang }}, {{ $row->tanggal_datang }}</td>
                                 <td>{{ $row->jam_datang }}</td>
-                                <td>{{ $row->lokasi_datang }}</td>
+                                <!-- <td>{{ $row->lokasi_datang }}</td> -->
                                 <td>{{ $row->jam_pulang }}</td>
-                                <td>{{ $row->lokasi_pulang }}</td>
+                                <!-- <td>{{ $row->lokasi_pulang }}</td> -->
                                 <td>
                                     @if($row->status == 'Hadir')
                                         <span class="badge badge-success m-2">Hadir</span>
@@ -132,7 +132,7 @@
                                                 <input type="text" hidden class="form-control" name="latitude_pulang" id="latitude" required>
                                                 <input type="text" hidden class="form-control" name="longitude_pulang" id="longitude" required>
                                                 @if($row->jam_pulang == '')
-                                                    <button type="submit" class="btn btn-xs btn-primary pull-right" style="margin-left:5px;">Absen Pulang</button>
+                                                    <button type="submit" class="btn btn-xs btn-primary pull-right" style="margin-left:5px;" onclick="return confirm('Apakah anda yakin ingin pulang ?')">Absen Pulang</button>
                                                 @else
                                                 @endif
                                             </form>

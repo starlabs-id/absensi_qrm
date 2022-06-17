@@ -27,7 +27,7 @@
                                     <label for="picker1">Pilih Projek</label>
                                     <select name="projek_id" class="form-control">
                                         @foreach($projeks as $row)
-                                            <option value="{{ $row->id }}"> {{ $row->nama_projek }}</option>
+                                            <option value="{{ $row->id }}">{{ date('d-m-Y', strtotime($row['tanggal'])) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -64,9 +64,9 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="picker1">Pilih Owner</label>
-                                    <select name="owner" id="" class="form-control">
-                                        @foreach($owner as $row)
+                                    <label for="picker1">Pilih APP</label>
+                                    <select name="app" id="" class="form-control">
+                                        @foreach($app as $row)
                                             <option value="{{ $row->id }}"> {{ $row->namea }}</option>
                                         @endforeach
                                     </select>
@@ -83,7 +83,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="picker1">Pilih PM</label>
+                                    <label for="picker1">Pilih Marketing</label>
                                     <select name="marketing" id="" class="form-control">
                                         @foreach($marketing as $row)
                                             <option value="{{ $row->id }}"> {{ $row->namea }}</option>
@@ -114,6 +114,14 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label for="picker1">Pilih AP1</label>
+                                    <select name="ap1" id="" class="form-control">
+                                        @foreach($ap1 as $row)
+                                            <option value="{{ $row->id }}"> {{ $row->namea }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -133,6 +141,7 @@
                         <tr>
                             <th>No.</th>
                             <th>Nama Proyek</th>
+                            <th>Tanggal</th>
                             <th>Peserta</th>
                             <th>Aksi</th>
                         </tr>
@@ -142,7 +151,8 @@
                             @foreach($chats as $row)
                                 <tr>
                                     <td>{{ $no++ }}</td>
-                                    <td>{{ $row->nama_projek }}</td>
+                                    <td>{{ $row->uraian_pekerjaan }}</td>
+                                    <td>{{ date('d/m/Y', strtotime($row['tanggal'])) }}</td>
                                     <td>
                                         @if($row->superadmin == '')
                                         @else

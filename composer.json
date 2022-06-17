@@ -16,7 +16,8 @@
         "spatie/laravel-permission": "^5.5",
         "yajra/laravel-datatables-oracle": "^9.19",
         "intervention/image": "^2.5",
-        "yoeunes/toastr": "^1.2"
+        "yoeunes/toastr": "^1.2",
+        "barryvdh/laravel-dompdf": "^0.8.5"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

@@ -54,7 +54,7 @@ class UsersController extends Controller
                         ->where('model_has_roles.model_id', Auth::user()->id)
                         ->first();
         
-        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        if($level['name'] == 'Karyawan' || $level['name'] == 'APP' || $level['name'] == 'AP1')
         {
             toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
             return redirect()->to('/');
@@ -88,7 +88,9 @@ class UsersController extends Controller
 
         if($error->fails())
         {
-            return response()->json(['errors' => $error->errors()->all()]);
+            // return response()->json(['errors' => $error->errors()->all()]);
+            toastr()->error('Data sudah ada atau input lagi!');
+            return redirect()->back();
         }
 
         $data                   = new User;

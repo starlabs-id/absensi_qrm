@@ -8,6 +8,9 @@ use App\Models\AbsenLembur;
 use App\Models\Chat;
 use App\Models\ChatDetail;
 use App\Models\DetailProjek;
+use App\Models\FotoKerusakan;
+use App\Models\JenisKerusakan;
+use App\Models\ListPekerjaan;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\DB;
@@ -48,13 +51,13 @@ class DetailProjekController extends Controller
                         ->where('model_has_roles.model_id', Auth::user()->id)
                         ->first();
         
-        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        if($level['name'] == 'APP' || $level['name'] == 'AP1')
         {
             toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
             return redirect()->to('/');
         }
 
-        $detailprojeks = DetailProjek::select('detail_projeks.id', 'detail_projeks.uraian_pekerjaan', 'detail_projeks.volume_kontrak', 'detail_projeks.harga_satuan', 'projeks.id as pid', 'projeks.nama_projek')
+        $detailprojeks = DetailProjek::select('detail_projeks.*', 'projeks.id as pid', 'projeks.tanggal')
                                     ->leftjoin('projeks', 'projeks.id', '=', 'detail_projeks.projek_id')
                                     ->orderBy('detail_projeks.id', 'DESC')
                                     ->get();
@@ -72,6 +75,31 @@ class DetailProjekController extends Controller
         return view('admin.detailprojek.show', compact('detailprojeks'));
     }
 
+    public function kerusakan($id)
+    {
+        $detailprojeks = DetailProjek::select('detail_projeks.*', 'projeks.uraian_pekerjaan')
+                                    ->leftjoin('projeks', 'projeks.id', '=', 'detail_projeks.projek_id')
+                                    ->where('detail_projeks.id', '=', $id)
+                                    ->first();
+
+        $jenis_kerusakan = JenisKerusakan::select('jenis_kerusakans.*', 'detail_projeks.id as pid', 'list_pekerjaans.nama_pekerjaan')
+                                    ->leftjoin('projeks', 'projeks.id', '=', 'jenis_kerusakans.id_projeks')
+                                    ->leftjoin('detail_projeks', 'detail_projeks.id', '=', 'jenis_kerusakans.id_detail_projeks')
+                                    ->leftjoin('list_pekerjaans', 'list_pekerjaans.id', '=', 'jenis_kerusakans.nama_kerusakan')
+                                    ->orderBy('detail_projeks.id', 'DESC')
+                                    ->where('jenis_kerusakans.id_detail_projeks', '=', $id)
+                                    ->get();
+
+        $foto_kerusakan = FotoKerusakan::select('foto_kerusakans.*', 'detail_projeks.id as pid')
+                                    ->leftjoin('projeks', 'projeks.id', '=', 'foto_kerusakans.id_projek')
+                                    ->leftjoin('detail_projeks', 'detail_projeks.id', '=', 'foto_kerusakans.id_detail_projek')
+                                    ->orderBy('detail_projeks.id', 'DESC')
+                                    ->where('foto_kerusakans.id_detail_projek', '=', $id)
+                                    ->get();
+
+        return view('admin.detailprojek.kerusakan', compact('detailprojeks', 'jenis_kerusakan', 'foto_kerusakan'));
+    }
+
     public function create()
     {
         $projeks = Projek::get();
@@ -83,189 +111,47 @@ class DetailProjekController extends Controller
     {
         $this->validate($request, [
             'projek_id' => 'required',
-            'uraian_pekerjaan'  => 'required',
-            'volume_kontrak'  => 'required',
-            'harga_satuan'  => 'required',
-            'volume_pekerjaan_hari_ini'  => 'required',
-            'volume_dikerjakan'  => 'required',
-            'prestasi_keuangan_hari_ini'  => 'required',
-            'prestasi_fisik_hari_ini'  => 'required',
-            'tanggal'  => 'required',
+            'nama_pekerjaan'  => 'required',
+            'status'  => 'required',
+            'lokasi'  => 'required',
+            'shift'  => 'required',
+            'jam'  => 'required',
+            'foto_1'  => 'required',
         ]); 
-        
-        if($request->hasFile('foto_1') != '') {
-            
-            if($request->file('foto_1') != '')
-            {
-                $foto_1 = $request->file('foto_1');
-                $foto_1->storeAs('public/projekdetail', $foto_1->hashName());
-                $foto_1 = $foto_1->hashName();
-            }
-            else{
-                $foto_1 = null;
-            }
-            
-            if($request->file('foto_2') != '')
-            {
-                $foto_2 = $request->file('foto_2');
-                $foto_2->storeAs('public/projekdetail', $foto_2->hashName());
-                $foto_2 = $foto_2->hashName();
-            }
-            else{
-                $foto_2 = null;
-            }
-            
-            if($request->file('foto_3') != '')
-            {
-                $foto_3 = $request->file('foto_3');
-                $foto_3->storeAs('public/projekdetail', $foto_3->hashName());
-                $foto_3 = $foto_3->hashName();
-            }
-            else{
-                $foto_3 = null;
-            }
-            
-            if($request->file('foto_4') != '')
-            {
-                $foto_4 = $request->file('foto_4');
-                $foto_4->storeAs('public/projekdetail', $foto_4->hashName());
-                $foto_4 = $foto_4->hashName();
-            }
-            else{
-                $foto_4 = null;
-            }
-            
-            if($request->file('foto_5') != '')
-            {
-                $foto_5 = $request->file('foto_5');
-                $foto_5->storeAs('public/projekdetail', $foto_5->hashName());
-                $foto_5 = $foto_5->hashName();
-            }
-            else{
-                $foto_5 = null;
-            }
-            
-            if($request->file('foto_6') != '')
-            {
-                $foto_6 = $request->file('foto_6');
-                $foto_6->storeAs('public/projekdetail', $foto_6->hashName());
-                $foto_6 = $foto_6->hashName();
-            }
-            else{
-                $foto_6 = null;
-            }
-            
-            if($request->file('foto_7') != '')
-            {
-                $foto_7 = $request->file('foto_7');
-                $foto_7->storeAs('public/projekdetail', $foto_7->hashName());
-                $foto_7 = $foto_7->hashName();
-            }
-            else{
-                $foto_7 = null;
-            }
-            
-            if($request->file('foto_8') != '')
-            {
-                $foto_8 = $request->file('foto_8');
-                $foto_8->storeAs('public/projekdetail', $foto_8->hashName());
-                $foto_8 = $foto_8->hashName();
-            }
-            else{
-                $foto_8 = null;
-            }
-            
-            if($request->file('foto_9') != '')
-            {
-                $foto_9 = $request->file('foto_9');
-                $foto_9->storeAs('public/projekdetail', $foto_9->hashName());
-                $foto_9 = $foto_9->hashName();
-            }
-            else{
-                $foto_9 = null;
-            }
-            
-            if($request->file('foto_10') != '')
-            {
-                $foto_10 = $request->file('foto_10');
-                $foto_10->storeAs('public/projekdetail', $foto_10->hashName());
-                $foto_10 = $foto_10->hashName();
-            }
-            else{
-                $foto_10 = null;
-            }
-            
-            $detailprojeks = DetailProjek::create([
-                'projek_id'   => $request->projek_id,
-                'uraian_pekerjaan'   => $request->uraian_pekerjaan,
-                'volume_kontrak'   => $request->volume_kontrak,
-                'harga_satuan'   => $request->harga_satuan,
-                'volume_pekerjaan_hari_ini'   => $request->volume_pekerjaan_hari_ini,
-                'volume_dikerjakan'   => $request->volume_dikerjakan,
-                'prestasi_keuangan_hari_ini'   => $request->prestasi_keuangan_hari_ini,
-                'prestasi_fisik_hari_ini'   => $request->prestasi_fisik_hari_ini,
-                'tanggal'   => $request->tanggal,
-                'foto_1'   => $foto_1,
-                'foto_2'   => $foto_2,
-                'foto_3'   => $foto_3,
-                'foto_4'   => $foto_4,
-                'foto_5'   => $foto_5,
-                'foto_6'   => $foto_6,
-                'foto_7'   => $foto_7,
-                'foto_8'   => $foto_8,
-                'foto_9'   => $foto_9,
-                'foto_10'   => $foto_10,
-                'keterangan'   => $request->keterangan,
-                'edit_by'   => Auth::user()->id,
-            ]);
 
-            $projeks = Projek::findOrFail($request->projek_id);
-    
-            $total_volume_pekerjaan_sebelumnya = $projeks->total_volume_pekerjaan_sebelumnya + $detailprojeks->volume_pekerjaan_hari_ini;
-            $total_prestasi_keuangan = $projeks->total_prestasi_keuangan + $detailprojeks->prestasi_keuangan_hari_ini;
-            $total_prestasi_fisik = $projeks->total_prestasi_fisik + $detailprojeks->prestasi_fisik_hari_ini;
-    
-            $projeks->update([
-                'total_volume_pekerjaan_sebelumnya'   => $total_volume_pekerjaan_sebelumnya,
-                'total_volume_pekerjaan_hari_ini'   => $detailprojeks->volume_pekerjaan_hari_ini,
-                'total_prestasi_keuangan'   => $total_prestasi_keuangan,
-                'total_prestasi_fisik'   => $total_prestasi_fisik,
-            ]);
-     
-            toastr()->success('Data berhasil disimpan!');
-            return redirect()->route('projekdetail.index');
-        }
-        else{
-            $detailprojeks = DetailProjek::create([
-                'projek_id'   => $request->projek_id,
-                'uraian_pekerjaan'   => $request->uraian_pekerjaan,
-                'volume_kontrak'   => $request->volume_kontrak,
-                'harga_satuan'   => $request->harga_satuan,
-                'volume_pekerjaan_hari_ini'   => $request->volume_pekerjaan_hari_ini,
-                'volume_dikerjakan'   => $request->volume_dikerjakan,
-                'prestasi_keuangan_hari_ini'   => $request->prestasi_keuangan_hari_ini,
-                'prestasi_fisik_hari_ini'   => $request->prestasi_fisik_hari_ini,
-                'tanggal'   => $request->tanggal,
-                'keterangan'   => $request->keterangan,
-                'edit_by'   => Auth::user()->id,
-            ]);
+        $data= new DetailProjek();
 
-            $projeks = Projek::findOrFail($request->projek_id);
-    
-            $total_volume_pekerjaan_sebelumnya = $projeks->total_volume_pekerjaan_sebelumnya + $detailprojeks->volume_pekerjaan_hari_ini;
-            $total_prestasi_keuangan = $projeks->total_prestasi_keuangan + $detailprojeks->prestasi_keuangan_hari_ini;
-            $total_prestasi_fisik = $projeks->total_prestasi_fisik + $detailprojeks->prestasi_fisik_hari_ini;
-    
-            $projeks->update([
-                'total_volume_pekerjaan_sebelumnya'   => $total_volume_pekerjaan_sebelumnya,
-                'total_volume_pekerjaan_hari_ini'   => $detailprojeks->volume_pekerjaan_hari_ini,
-                'total_prestasi_keuangan'   => $total_prestasi_keuangan,
-                'total_prestasi_fisik'   => $total_prestasi_fisik,
-            ]);
-     
-            toastr()->success('Data berhasil disimpan!');
-            return redirect()->route('projekdetail.index');
+        if($request->hasFile('foto_1')) {
+            Storage::disk('local')->delete('public/projekdetail/'.$data->foto_1);
+
+            $file       =   $request->file('foto_1');
+            $fileName   =   $file->hashName();
+            $location   =   public_path('storage/projekdetail/'. $fileName);
+            Image::make($file)->save($location);
+            $data->foto_1 = $fileName;
         }
+
+        if($request->hasFile('foto_2')) {
+            Storage::disk('local')->delete('public/projekdetail/'.$data->foto_2);
+
+            $file       =   $request->file('foto_2');
+            $fileName   =   $file->hashName();
+            $location   =   public_path('storage/projekdetail/'. $fileName);
+            Image::make($file)->save($location);
+            $data->foto_2 = $fileName;
+        }
+        $data->projek_id   		= $request->projek_id;
+        $data->nama_pekerjaan   		= $request->nama_pekerjaan;
+        $data->status   		= $request->status;
+        $data->lokasi   		= $request->lokasi;
+        $data->shift   		= $request->shift;
+        $data->jam   		= $request->jam;
+        $data->edit_by   		= Auth::user()->id;
+
+        $data->save();
+    
+        toastr()->success('Data berhasil disimpan!');
+        return redirect()->route('projekdetail.index');
     }
 
     public function edit($id)
@@ -280,34 +166,19 @@ class DetailProjekController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'projek_id' => 'required',
-            'uraian_pekerjaan'  => 'required',
-            'volume_kontrak'  => 'required',
-            'harga_satuan'  => 'required',
-            'volume_pekerjaan_hari_ini'  => 'required',
-            'volume_dikerjakan'  => 'required',
-            'prestasi_keuangan_hari_ini'  => 'required',
-            'prestasi_fisik_hari_ini'  => 'required',
-            'tanggal'  => 'required',
+            'nama_pekerjaan'  => 'required',
+            'status'  => 'required',
+            'lokasi'  => 'required',
+            'shift'  => 'required',
         ]); 
 
-        // $detailprojeks = DetailProjek::findOrFail($request->id);
-        // Storage::disk('local')->delete('public/projekdetail/'.$detailprojeks->foto_1);
-
-        // $foto_1 = $request->file('foto_1');
-        // $foto_1->storeAs('public/projekdetail', $foto_1->hashName());
-        // $foto_1 = $foto_1->hashName();
         $detailprojeks = DetailProjek::findOrFail($request->id);
 
-        $detailprojeks->projek_id   		= $request->projek_id;
-        $detailprojeks->uraian_pekerjaan        = $request->uraian_pekerjaan;
-        $detailprojeks->volume_kontrak        = $request->volume_kontrak;
-        $detailprojeks->harga_satuan        = $request->harga_satuan;
-        $detailprojeks->volume_pekerjaan_hari_ini        = $request->volume_pekerjaan_hari_ini;
-        $detailprojeks->volume_dikerjakan       = $request->volume_dikerjakan;
-        $detailprojeks->prestasi_keuangan_hari_ini            = $request->prestasi_keuangan_hari_ini;
-        $detailprojeks->prestasi_fisik_hari_ini           = $request->prestasi_fisik_hari_ini;
-        $detailprojeks->tanggal       = $request->tanggal;
+        $detailprojeks->nama_pekerjaan   		= $request->nama_pekerjaan;
+        $detailprojeks->status        = $request->status;
+        $detailprojeks->keterangan        = $request->keterangan;
+        $detailprojeks->lokasi        = $request->lokasi;
+        $detailprojeks->shift        = $request->shift;
 
         if($request->hasFile('foto_1')) {
             Storage::disk('local')->delete('public/projekdetail/'.$detailprojeks->foto_1);
@@ -329,102 +200,7 @@ class DetailProjekController extends Controller
             $detailprojeks->foto_2 = $fileName;
         }
 
-        if($request->hasFile('foto_3')) {
-            Storage::disk('local')->delete('public/projekdetail/'.$detailprojeks->foto_3);
-
-            $file       =   $request->file('foto_3');
-            $fileName   =   $file->hashName();
-            $location   =   public_path('storage/projekdetail/'. $fileName);
-            Image::make($file)->save($location);
-            $detailprojeks->foto_3 = $fileName;
-        }
-
-        if($request->hasFile('foto_4')) {
-            Storage::disk('local')->delete('public/projekdetail/'.$detailprojeks->foto_4);
-
-            $file       =   $request->file('foto_4');
-            $fileName   =   $file->hashName();
-            $location   =   public_path('storage/projekdetail/'. $fileName);
-            Image::make($file)->save($location);
-            $detailprojeks->foto_4 = $fileName;
-        }
-
-        if($request->hasFile('foto_5')) {
-            Storage::disk('local')->delete('public/projekdetail/'.$detailprojeks->foto_5);
-
-            $file       =   $request->file('foto_5');
-            $fileName   =   $file->hashName();
-            $location   =   public_path('storage/projekdetail/'. $fileName);
-            Image::make($file)->save($location);
-            $detailprojeks->foto_5 = $fileName;
-        }
-
-        if($request->hasFile('foto_6')) {
-            Storage::disk('local')->delete('public/projekdetail/'.$detailprojeks->foto_6);
-
-            $file       =   $request->file('foto_6');
-            $fileName   =   $file->hashName();
-            $location   =   public_path('storage/projekdetail/'. $fileName);
-            Image::make($file)->save($location);
-            $detailprojeks->foto_6 = $fileName;
-        }
-
-        if($request->hasFile('foto_7')) {
-            Storage::disk('local')->delete('public/projekdetail/'.$detailprojeks->foto_7);
-
-            $file       =   $request->file('foto_7');
-            $fileName   =   $file->hashName();
-            $location   =   public_path('storage/projekdetail/'. $fileName);
-            Image::make($file)->save($location);
-            $detailprojeks->foto_7 = $fileName;
-        }
-
-        if($request->hasFile('foto_8')) {
-            Storage::disk('local')->delete('public/projekdetail/'.$detailprojeks->foto_8);
-
-            $file       =   $request->file('foto_8');
-            $fileName   =   $file->hashName();
-            $location   =   public_path('storage/projekdetail/'. $fileName);
-            Image::make($file)->save($location);
-            $detailprojeks->foto_8 = $fileName;
-        }
-
-        if($request->hasFile('foto_9')) {
-            Storage::disk('local')->delete('public/projekdetail/'.$detailprojeks->foto_9);
-
-            $file       =   $request->file('foto_9');
-            $fileName   =   $file->hashName();
-            $location   =   public_path('storage/projekdetail/'. $fileName);
-            Image::make($file)->save($location);
-            $detailprojeks->foto_9 = $fileName;
-        }
-
-        if($request->hasFile('foto_10')) {
-            Storage::disk('local')->delete('public/projekdetail/'.$detailprojeks->foto_10);
-
-            $file       =   $request->file('foto_10');
-            $fileName   =   $file->hashName();
-            $location   =   public_path('storage/projekdetail/'. $fileName);
-            Image::make($file)->save($location);
-            $detailprojeks->foto_10 = $fileName;
-        }
-
         $detailprojeks->save();
-
-        
-
-        $projeks = Projek::findOrFail($request->projek_id);
-
-        $total_volume_pekerjaan_sebelumnya = $projeks->total_volume_pekerjaan_sebelumnya + $detailprojeks->volume_pekerjaan_hari_ini;
-        $total_prestasi_keuangan = $projeks->total_prestasi_keuangan + $detailprojeks->prestasi_keuangan_hari_ini;
-        $total_prestasi_fisik = $projeks->total_prestasi_fisik + $detailprojeks->prestasi_fisik_hari_ini;
-
-        $projeks->update([
-            'total_volume_pekerjaan_sebelumnya'   => $total_volume_pekerjaan_sebelumnya,
-            'total_volume_pekerjaan_hari_ini'   => $detailprojeks->volume_pekerjaan_hari_ini,
-            'total_prestasi_keuangan'   => $total_prestasi_keuangan,
-            'total_prestasi_fisik'   => $total_prestasi_fisik,
-        ]);
     
         toastr()->success('Data berhasil disimpan!');
         return redirect()->route('projekdetail.index');
@@ -438,5 +214,100 @@ class DetailProjekController extends Controller
 
             return response()->json($data);
         }
+    }
+    
+    public function delete($id)
+    {
+        $detail = DetailProjek::find($id);
+
+            $query1 = DB::table('foto_kerusakans')->where('id_detail_projek', '=', $detail->id)->delete();
+            $query2 = DB::table('jenis_kerusakans')->where('id_detail_projeks', '=', $detail->id)->delete();
+
+        $detail->delete();
+
+        toastr()->success('Data berhasil dihapus!');
+        return redirect()->route('projekdetail.index');
+    }
+
+
+
+    // KERUSAKAN
+    public function kerusakan_create($id)
+    {
+        $projeks = Projek::get();
+        $list_pekerjaan = ListPekerjaan::get();
+        $detailprojeks = DetailProjek::where('id', '=', $id)->first();
+
+        return view('admin.detailprojek.kerusakan_create', compact('projeks', 'list_pekerjaan', 'detailprojeks'));
+    }
+
+    public function kerusakan_add(Request $request)
+    {
+        $this->validate($request, [
+            'id_detail_projeks' => 'required',
+            'nama_kerusakan'  => 'required',
+            'satuan'  => 'required',
+            'volume'  => 'required',
+        ]);
+
+        $list = ListPekerjaan::where('id', '=', $request->nama_kerusakan)->first();
+        $total_harga = $list->harga * $request->volume;
+        $id_projeks = DetailProjek::where('id', '=', $request->id_detail_projeks)->first();
+
+        $data= new JenisKerusakan();
+
+        if($request->hasFile('foto')) {
+            Storage::disk('local')->delete('public/foto_kerusakan/'.$data->foto);
+
+            $file       =   $request->file('foto');
+            $fileName   =   $file->hashName();
+            $location   =   public_path('storage/foto_kerusakan/'. $fileName);
+            Image::make($file)->save($location);
+            $data->foto = $fileName;
+        }
+
+        $data->id_detail_projeks   		= $request->id_detail_projeks;
+        $data->id_projeks   		= $id_projeks->projek_id;
+        $data->nama_kerusakan   		= $request->nama_kerusakan;
+        $data->harga   		= $list->harga;
+        $data->satuan   		= $request->satuan;
+        $data->total_harga   		= $total_harga;
+        $data->volume   		= $request->volume;
+        $data->edit_by   		= Auth::user()->id;
+
+        $data->save();
+
+
+
+        // $data = new FotoKerusakan();
+
+        // if($request->hasFile('foto')) {
+        //     Storage::disk('local')->delete('public/foto_kerusakan/'.$data->foto);
+
+        //     $file       =   $request->file('foto');
+        //     $fileName   =   $file->hashName();
+        //     $location   =   public_path('storage/foto_kerusakan/'. $fileName);
+        //     Image::make($file)->save($location);
+        //     $data->foto = $fileName;
+        // }
+
+        // $data->id_detail_projek   		= $request->id_detail_projeks;
+        // $data->id_projek   		= $id_projeks->projek_id;
+        // $data->edit_by   		= Auth::user()->id;
+
+        // $data->save();
+    
+        toastr()->success('Data berhasil disimpan!');
+        return redirect()->route('projekdetail.index');
+    }
+    
+    public function kerusakan_delete($id)
+    {
+        $jenis = JenisKerusakan::find($id);
+            // $query = DB::table('foto_kerusakans')->where('id_detail_projek', '=', $jenis->id_detail_projeks)->delete();
+        $jenis->delete();
+
+        toastr()->success('Data berhasil dihapus!');
+        return redirect()->route('projekdetail.index');
     }
 }

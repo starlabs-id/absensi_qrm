@@ -17,10 +17,7 @@
                 <div id="smartwizard" class="col-md-12">
                     <ul>
                         <li>
-                            <a href="#data">Data</a>
-                        </li>
-                        <li>
-                            <a href="#detail_harian">Detail Harian</a>
+                            <a href="#data">Detail</a>
                         </li>
                         <li>
                             <a href="#tukang">Daftar Tukang</a>
@@ -33,156 +30,79 @@
 
                     <div>
                         <div id="data">
-                            <h4>Data</h4>
+                            <h4>Detail</h4>
                             <br>
                             <div class="row">
-                                <div class="col-md-3 col-6">
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Nama Proyek</p>
-                                        <span>{{ $projeks->nama_projek }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Kode Proyek</p>
-                                        <span>{{ $projeks->kode_projek }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Nomor Kontrak</p>
-                                        <span>{{ $projeks->nomor_kontrak }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Tanggal Kontrak</p>
-                                        <span>{{ date('d/m/Y', strtotime($projeks['tanggal_kontrak'])) }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Tanggal Selesai</p>
-                                        <span>
-                                            @if($projeks->tanggal_selesai == null)
-                                                <span class="badge badge-success m-2">{{ $projeks->status }}</span>
-                                            @else
-                                                <span class="badge badge-danger m-2">{{ $projeks->tanggal_selesai }}</span>
-                                            @endif
-                                        </span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Total Prestasi Fisik</p>
-                                        <span>Rp. {{ number_format($projeks->total_prestasi_fisik, 2, ',', '.') }}</span>
-                                    </div>
+                                <div class="table-responsive">
+                                    <table id="alternative_pagination_table" class="display table table-striped" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Tanggal</th>
+                                                <th>Nama Pekerjaan</th>
+                                                <th>Status</th>
+                                                <th>Lokasi</th>
+                                                <th>Shift</th>
+                                                <th>Foto 1</th>
+                                                <th>Foto 2</th>
+                                                <th>Keterangan</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php $no = 1; ?>
+                                            @foreach($detailprojeks as $row)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td>{{ date('d/m/Y', strtotime($row['tanggal'])) }} {{ $row->jam }}</td>
+                                                <td>{{ $row->nama_pekerjaan }}</td>
+                                                <td>
+                                                    @if($row->status == 'baik')
+                                                        <span class="badge badge-success m-2">Baik</span>
+                                                    @elseif($row->status == 'penggantian')
+                                                        <span class="badge badge-danger m-2">Penggantian</span>
+                                                    @else
+                                                        <span class="badge badge-danger m-2">Perbaikan Ringan</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $row->lokasi }}</td>
+                                                <td>{{ $row->shift }}</td>
+                                                <td>
+                                                    @if($row->foto_1 != '')
+                                                        <img class="d-block" width="100%" src="{{ asset('storage/projekdetail/'. $row->foto_1) }}">
+                                                    @else
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($row->foto_2 != '')
+                                                        <img class="d-block" width="100%" src="{{ asset('storage/projekdetail/'. $row->foto_2) }}">
+                                                    @else
+                                                    @endif
+                                                </td>
+                                                <td>{{ $row->keterangan }}</td>
+                                                <td>
+                                                    @can('projekdetail-list')
+                                                        <a href="{{ route('projekdetail.kerusakan', $row->id) }}" class="btn btn-success btn-sm">Detail Kerusakan</a>
+                                                    @endcan
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-md-3 col-6">
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Judul Kontrak</p>
-                                        <span>{{ $projeks->judul_kontrak }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Nilai Kontrak</p>
-                                        <span>{{ $projeks->nilai_kontrak }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Durasi Kontrak</p>
-                                        <span>{{ $projeks->durasi_kontrak }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Durasi Proyek</p>
-                                        <span>{{ $projeks->durasi_proyek }} Hari</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Total Volume Pekerjaan Sebelumnya</p>
-                                        <span>{{ $projeks->total_volume_pekerjaan_sebelumnya }} ㎡</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Total Pekerja</p>
-                                        <span>{{ $projeks->total_pekerja }} Orang</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-6">
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Lokasi</p>
-                                        <span>{{ $projeks->lokasi }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Pemberi Kerja</p>
-                                        <span>{{ $projeks->pemberi_kerja }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">PM</p>
-                                        <span>{{ $projeks->pm }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Marketing</p>
-                                        <span>{{ $projeks->name }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Total Volume Pekerjaan Hari Ini</p>
-                                        <span>{{ $projeks->total_volume_pekerjaan_hari_ini }} ㎡</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-6">
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Supervisor</p>
-                                        <span>{{ $projeks->supervisor }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Rencana Kerja</p>
-                                        <span>{{ $projeks->rencana_kerja }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Owner</p>
-                                        <span>{{ $projeks->owner }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Tanggal Mulai</p>
-                                        <span>{{ date('d/m/Y', strtotime($projeks['tanggal_mulai'])) }}</span>
-                                    </div>
-                                    <div class="mb-4">
-                                        <p class="text-primary mb-1">Total Prestasi Keuangan</p>
-                                        <span>Rp. {{ number_format($projeks->total_prestasi_keuangan, 2, ',', '.') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="detail_harian">
-                            <h4>Detail Harian</h4>
-                            <br>
-                            <div class="table-responsive">
-                                <table id="alternative_pagination_table" class="display table table-striped" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Uraian Pekerjaan</th>
-                                            <th>Volume Kontrak</th>
-                                            <th>Harga Satuan</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php $no = 1; ?>
-                                        @foreach($detailprojeks as $row)
-                                        <tr>
-                                            <td>{{ $no++ }}</td>
-                                            <td>{{ $row->uraian_pekerjaan }}</td>
-                                            <td>{{ $row->volume_kontrak }}</td>
-                                            <td>{{ $row->harga_satuan }}</td>
-                                            <td>
-                                                <a href="{{ route('projekdetail.show', $row->id) }}" class="btn btn-success btn-sm">Detail</a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
 
                         <div id="tukang">
-                            <h4>Daftar Tukang</h4>
+                            <h4>Daftar Karyawan</h4>
                             <br>
                             <div class="table-responsive">
                                 <table id="" class="display table table-striped" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>No.</th>
-                                            <th>Karyawan</th>
-                                            <th>Shift</th>
+                                            <th>Nama</th>
+                                            <!-- <th>Shift</th> -->
                                             <!-- <th>Biaya Harian</th>
                                             <th>Biaya Lembur</th> -->
                                         </tr>
@@ -191,8 +111,8 @@
                                     @foreach($tukangs as $row)
                                     <tr>
                                         <td>{{ $no++ }}</td>
-                                        <td>{{ $row->name }}</td>
-                                        <td>{{ $row->nama_shift }}</td>
+                                        <td>{{ $row->namea }}</td>
+                                        <!-- <td>{{ $row->nama_shift }}</td> -->
                                         <!-- <td>Rp. {{ number_format($row->biaya_harian, 2, ',', '.') }}</td>
                                         <td>Rp. {{ number_format($row->biaya_lembur, 2, ',', '.') }}</td> -->
                                     </tr>
@@ -237,6 +157,8 @@
                                             <div class="form-group">
                                                 <input type="hidden" name="projek_id" value="{{ $projeks['id'] }}" class="form-control" readonly>
                                                 <input type="hidden" name="chat_id" value="{{ $chats['slug'] }}" class="form-control" readonly>
+                                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" class="form-control" readonly>
+
                                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}" class="form-control" readonly>
                                                 <textarea class="form-control form-control-rounded" placeholder="Type your message" name="komentar" id="komentar" cols="30" rows="3"></textarea>
                                             </div>

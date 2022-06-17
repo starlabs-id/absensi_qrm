@@ -8,10 +8,12 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DetailProjekController;
 use App\Http\Controllers\Admin\ProjekController;
 use App\Http\Controllers\Admin\ShiftController;
+use App\Http\Controllers\Admin\ListPekerjaanController;
 use App\Http\Controllers\Admin\TukangController;
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\GuestController;
+use App\Models\ListLokasi;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,9 +28,13 @@ use Illuminate\Support\Facades\Storage;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.index');
-})->name('home')->middleware('auth');
+// Route::get('/', function () {
+//     return view('admin.index');
+// })->name('home')->middleware('auth');
+
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+
+Route::get('pdf_so/{id}', [DashboardController::class, 'pdf_so'])->name('pdf.so');
 
 Route::prefix('admin')->group(function () {
 
@@ -71,6 +77,9 @@ Route::prefix('admin')->group(function () {
         Route::get('projek_destroy', [ProjekController::class, 'destroy'])->name('projek.destroy');
         Route::post('projek_chat_detail_add', [ProjekController::class, 'chat_detail_add'])->name('projek_chat.add');
         Route::get('projek_delete/{id}', [ProjekController::class, 'delete'])->name('projek.delete');
+        Route::get('projek_approval_pm/{id}', [ProjekController::class, 'approval_pm'])->name('projek.approval_pm');
+        Route::post('projek_approval_app', [ProjekController::class, 'approval_app'])->name('projek.approval_app');
+        Route::post('projek_approval_ap1', [ProjekController::class, 'approval_ap1'])->name('projek.approval_ap1');
 
         Route::get('projekdetail', [DetailProjekController::class, 'index'])->name('projekdetail.index');
         Route::get('projekdetail_show/{id}', [DetailProjekController::class, 'show'])->name('projekdetail.show');
@@ -79,11 +88,27 @@ Route::prefix('admin')->group(function () {
         Route::get('projekdetail_edit/{id}', [DetailProjekController::class, 'edit'])->name('projekdetail.edit');
         Route::post('projekdetail_update', [DetailProjekController::class, 'update'])->name('projekdetail.update');
         Route::get('projekdetail_destroy', [DetailProjekController::class, 'destroy'])->name('projekdetail.destroy');
+        Route::get('projekdetail_delete/{id}', [DetailProjekController::class, 'delete'])->name('projekdetail.delete');
+        
+        Route::get('projekdetail_kerusakan/{id}', [DetailProjekController::class, 'kerusakan'])->name('projekdetail.kerusakan');
+        Route::get('projekdetailkerusakan_create/{id}', [DetailProjekController::class, 'kerusakan_create'])->name('projekdetail.kerusakancreate');
+        Route::post('projekdetailkerusakan_add', [DetailProjekController::class, 'kerusakan_add'])->name('projekdetail.kerusakanadd');
+        Route::get('projekdetailkerusakan_delete/{id}', [DetailProjekController::class, 'kerusakan_delete'])->name('projekdetail.kerusakandelete');
 
         Route::get('shift', [ShiftController::class, 'index'])->name('shift.index');
         Route::post('shift_add', [ShiftController::class, 'add'])->name('shift.add');
         Route::post('shift_update', [ShiftController::class, 'update'])->name('shift.update');
         Route::get('shift_destroy', [ShiftController::class, 'destroy'])->name('shift.destroy');
+
+        Route::get('listlokasi', [ListLokasi::class, 'index'])->name('listlokasi.index');
+        Route::post('listlokasi_add', [ListLokasi::class, 'add'])->name('listlokasi_add');
+        Route::post('listlokasi_update', [ListLokasi::class, 'update'])->name('listlokasi_update');
+        Route::get('listlokasi_destroy', [ListLokasi::class, 'destroy'])->name('listlokasi_destroy');
+
+        Route::get('list_pekerjaan', [ListPekerjaanController::class, 'index'])->name('list_pekerjaan.index');
+        Route::post('list_pekerjaan_add', [ListPekerjaanController::class, 'add'])->name('list_pekerjaan.add');
+        Route::post('list_pekerjaan_update', [ListPekerjaanController::class, 'update'])->name('list_pekerjaan.update');
+        Route::get('list_pekerjaan_destroy', [ListPekerjaanController::class, 'destroy'])->name('list_pekerjaan.destroy');
         
         Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
         Route::get('chat_show/{slug}', [ChatController::class, 'show'])->name('chat.show');
@@ -127,6 +152,9 @@ Route::prefix('guest')->group(function () {
         Route::post('proyek_chat_detail_add', [GuestController::class, 'chat_detail_add'])->name('proyek_chat.add');
 
         Route::get('proyekdetail_show/{id}', [GuestController::class, 'detail_show'])->name('proyekdetail.show');
+
+        Route::post('proyek_approval_app', [GuestController::class, 'approval_app'])->name('proyek.approval_app');
+        Route::post('proyek_approval_ap1', [GuestController::class, 'approval_ap1'])->name('proyek.approval_ap1');
     });
 });
 
@@ -137,7 +165,7 @@ Route::prefix('karyawan')->group(function () {
 
         Route::get('absensi', [KaryawanController::class, 'index'])->name('absensi.index');
         Route::get('absensi_detail/{id}/{user_id}', [KaryawanController::class, 'detail'])->name('absensi.detail');
-        Route::get('absensi_create/{id}', [KaryawanController::class, 'create'])->name('absensi.create');
+        Route::get('absensi_create', [KaryawanController::class, 'create'])->name('absensi.create');
         Route::post('absensi_add', [KaryawanController::class, 'add'])->name('absensi.add');
         Route::post('absensi_update', [KaryawanController::class, 'update'])->name('absensi.update');
 

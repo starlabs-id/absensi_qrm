@@ -51,13 +51,13 @@ class ChatController extends Controller
                         ->where('model_has_roles.model_id', Auth::user()->id)
                         ->first();
         
-        if($level['name'] == 'Karyawan' || $level['name'] == 'Owner')
+        if($level['name'] == 'Karyawan' || $level['name'] == 'APP' || $level['name'] == 'AP1')
         {
             toastr()->error('Anda dilarang masuk ke area ini.', 'Oopss...');
             return redirect()->to('/');
         }
 
-        $chats = Chat::select('chats.id', 'chats.slug', 'A.name as superadmin', 'B.name as direktur_utama', 'C.name as owner', 'D.name as direktur_teknik', 'E.name as admin_teknik', 'F.name as pm', 'G.name as marketing', 'H.name as gm', 'I.name as co_gm', 'J.name as supervisor', 'projeks.nama_projek')
+        $chats = Chat::select('chats.id', 'chats.slug', 'A.name as superadmin', 'B.name as direktur_utama', 'C.name as owner', 'D.name as direktur_teknik', 'E.name as admin_teknik', 'F.name as pm', 'G.name as marketing', 'H.name as gm', 'I.name as co_gm', 'J.name as supervisor', 'K.name as app', 'L.name as ap1', 'projeks.uraian_pekerjaan', 'projeks.tanggal')
                             ->leftjoin('projeks', 'projeks.id', '=', 'chats.projek_id')
                             ->leftjoin('users AS A', 'A.id', '=', 'chats.superadmin')
                             ->leftjoin('users AS B', 'B.id', '=', 'chats.direktur_utama')
@@ -69,6 +69,8 @@ class ChatController extends Controller
                             ->leftjoin('users AS H', 'H.id', '=', 'chats.gm')
                             ->leftjoin('users AS I', 'I.id', '=', 'chats.co_gm')
                             ->leftjoin('users AS J', 'J.id', '=', 'chats.supervisor')
+                            ->leftjoin('users AS K', 'K.id', '=', 'chats.app')
+                            ->leftjoin('users AS L', 'L.id', '=', 'chats.ap1')
                             ->orderBy('chats.id', 'desc')
                             ->get();
 
@@ -133,7 +135,19 @@ class ChatController extends Controller
                     ->where('roles.name', '=', "Co GM")
                     ->get();
 
-        return view('admin.chat.index', compact('chats', 'projeks', 'marketing', 'pm', 'supervisor', 'owner', 'superadmin', 'direktur_utama', 'direktur_teknik', 'admin_teknik', 'gm', 'co_gm', 'level'));
+        $app = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "APP")
+                    ->get();
+
+        $ap1 = User::select('users.id', 'users.name as namea', 'roles.id as ris', 'roles.name')
+                    ->leftjoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                    ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                    ->where('roles.name', '=', "AP1")
+                    ->get();
+
+        return view('admin.chat.index', compact('chats', 'projeks', 'marketing', 'pm', 'supervisor', 'owner', 'superadmin', 'direktur_utama', 'direktur_teknik', 'admin_teknik', 'gm', 'co_gm', 'app', 'ap1', 'level'));
     }
 
     public function add(Request $request)
@@ -145,13 +159,15 @@ class ChatController extends Controller
             'owner'  => 'required',
             'admin_teknik'  => 'required',
             'pm'  => 'required',
+            'app'  => 'required',
+            'ap1'  => 'required',
         ]); 
 
         $projeks = Projek::where('id', '=', $request->projek_id)->first();
 
         $chat = Chat::create([
             'projek_id'   => $request->projek_id,
-            'slug'           => bcrypt($projeks->nama_projek),
+            'slug'           => bcrypt($projeks->tanggal),
             'direktur_utama'   => $request->direktur_utama,
             'superadmin'   => $request->superadmin,
             'owner'   => $request->owner,
@@ -162,6 +178,8 @@ class ChatController extends Controller
             'gm'   => $request->gm,
             'co_gm'   => $request->co_gm,
             'supervisor'   => $request->supervisor,
+            'app'   => $request->app,
+            'ap1'   => $request->ap1,
             'edit_by'   => Auth::user()->id,
         ]);
 
@@ -171,7 +189,7 @@ class ChatController extends Controller
 
     public function edit($id)
     {
-        $chats = Chat::select('chats.*', 'A.name as superadmin', 'B.name as direktur_utama', 'C.name as owner', 'D.name as direktur_teknik', 'E.name as admin_teknik', 'F.name as pm', 'G.name as marketing', 'H.name as gm', 'I.name as co_gm', 'J.name as supervisor', 'projeks.nama_projek')
+        $chats = Chat::select('chats.*', 'A.name as superadmin', 'B.name as direktur_utama', 'C.name as owner', 'D.name as direktur_teknik', 'E.name as admin_teknik', 'F.name as pm', 'G.name as marketing', 'H.name as gm', 'I.name as co_gm', 'J.name as supervisor', 'projeks.uraian_pekerjaan')
                             ->leftjoin('projeks', 'projeks.id', '=', 'chats.projek_id')
                             ->leftjoin('users AS A', 'A.id', '=', 'chats.superadmin')
                             ->leftjoin('users AS B', 'B.id', '=', 'chats.direktur_utama')
@@ -301,7 +319,7 @@ class ChatController extends Controller
 
         $chats = Chat::where('slug', '=', $slug)->first();
 
-        $projeks = Chat::select('chats.slug', 'projeks.nama_projek')
+        $projeks = Chat::select('chats.slug', 'projeks.uraian_pekerjaan')
                     ->where('chats.slug', '=', $slug)
                     ->leftjoin('projeks', 'projeks.id', '=', 'chats.projek_id')
                     ->first();
